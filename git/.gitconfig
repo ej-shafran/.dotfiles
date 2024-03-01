@@ -1,0 +1,45 @@
+[user]
+  name = ej-shafran
+  email = ejshafran@hilma.tech
+[credential]
+  helper = store
+[init]
+  defaultBranch = main
+[alias]
+  co = checkout
+  pop = stash pop
+  ac = commit -a
+  s = status --short
+  bis = bisect start
+  bib = bisect bad
+  big = bisect good
+  aa = add -A
+  cm = commit
+  lo = log --oneline
+  conf = config --global
+  graph = log --oneline --graph
+  ap = add -p
+  unstage = restore --staged
+  sm = submodule
+  empty = commit -a --allow-empty-message -m \"\"
+[core]
+  editor = nvim
+  pager = delta
+  autocrlf = input
+[mergetool "nvimdiff"]
+  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\" -c 'wincmd 3l' -c 'wincmd J' -c 'wincmd k' -c 'wincmd w' -c 'wincmd x'"
+  trustExitCode = false
+[merge]
+  tool = nvimdiff
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true
+  light = false
+  side-by-side = true
+[diff]
+  colorMoved = default
+[pull]
+  rebase = false
+[push]
+  autoSetupRemote = true
