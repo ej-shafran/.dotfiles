@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+set -e
+
+TARGET="tsconfig.json"
+MAIN_FOREGROUND="111"
+ERROR_FOREGROUND="#AA2233"
+CURSOR_FOREGROUND="#292"
+
+main_styled() {
+  local input="$1"
+
+  gum style --foreground $MAIN_FOREGROUND --bold "$input"
+}
+
+error_styled() {
+  local input="$1"
+
+  gum style --foreground $ERROR_FOREGROUND "$input"
+}
+
+info() {
+  printf "[ $(main_styled "INFO") ] %s\n\n" "$1"
+}
+
+err() {
+  printf "[ $(error_styled "ERROR") ] %s\n\n" "$1"
+}
+
+choose() {
+  gum choose --ordered --cursor.foreground="$CURSOR_FOREGROUND"
+}
+
+get_tsconfigs() {
+  curl -s 'https://github.com/tsconfig/bases/tree/main/bases' | jq .payload.tree.items[].name -r 
+}
+
+if [ -f "$TARGET" ]; then
+  err "\`tsconfig.json\` already exists."
+  gum confirm --selected.background $ERROR_FOREGROUND "Should it be overwritten?" || exit 1
+fi
+
+info "fetching availble \`tsconfig\` templates..."
+info "please select a \`tsconfig\` template:" 
+choice=$(get_tsconfigs | choose)
+
+info "downloading \`$(main_styled "$choice")\` as \`$(main_styled "$TARGET")\`..."
+wget -q "https://raw.githubusercontent.com/tsconfig/bases/main/bases/$choice" -O "$TARGET"

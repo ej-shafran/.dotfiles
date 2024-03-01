@@ -1,0 +1,23 @@
+.\" Manpage for git-explode
+.TH GIT_EXPLODE 1 "26 June 2023" "Git 2.34.1" "Git Manual"
+.SH NAME
+git-explode \- Discard all changes in the current Git repo
+.SH SYNOPSIS
+\fIgit explode\fR [OPTIONS]
+.SH DESCRIPTION
+Prompts the user to confirm the action (unless \-y is passed). After that, equivalent to calling
+.RS 4
+git checkout \-f && git clean \-f .
+.RE 0
+which will discard all the changes within the scope of the current directory.
+.SH OPTIONS
+\-y
+.RS 4
+Discard all changes without prompting.
+.SH SEE ALSO
+git-checkout(1), git-clean(1)
+.SH BUGS
+No known bugs.
+.SH "GIT"
+.sp
+Part of the \fBgit\fR(1) suite
