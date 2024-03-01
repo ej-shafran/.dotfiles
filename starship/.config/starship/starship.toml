@@ -1,0 +1,48 @@
+format = """$all$line_break$character"""
+
+[character]
+success_symbol = '[](cyan)'
+error_symbol = '[](red)'
+
+[memory_usage]
+disabled = false
+style = "dimmed white"
+
+[directory]
+style = "cyan"
+
+[git_status]
+style = "purple"
+
+[git_branch]
+style = "purple"
+
+[battery]
+full_symbol = "• "
+charging_symbol = "⇡ "
+discharging_symbol = "⇣ "
+unknown_symbol = "❓ "
+empty_symbol = "❗ "
+
+[erlang]
+symbol = "ⓔ "
+
+[nodejs]
+symbol = "[⬢](bold green) "
+
+[pulumi]
+symbol = "🧊 "
+
+# DISABLED
+
+[cmd_duration]
+disabled = true
+
+[aws]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[kotlin]
+disabled = true
