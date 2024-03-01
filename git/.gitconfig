@@ -1,0 +1,75 @@
+# Include a `.gitconfig` with local information
+[include]
+  path = "~/.gitconfig.local"
+
+[core]
+  autocrlf = "input"
+  # Use `nvim` as the editor for Git stuff
+  editor   = "nvim"
+  # Use `delta` for paging and diffing
+  pager    = "delta"
+
+[credential]
+  helper = "store"
+
+[init]
+  defaultBranch = "main"
+
+[pull]
+  rebase = false
+
+[push]
+  autoSetupRemote = true
+
+[rerere]
+  enabled = true
+
+# {{{ Aliases
+
+[alias]
+  aa      = "add -A"
+  ac      = "commit -a"
+  ap      = "add -p"
+  bib     = "bisect bad"
+  big     = "bisect good"
+  bis     = "bisect start"
+  cm      = "commit"
+  co      = "checkout"
+  conf    = "config --global"
+  empty   = "commit -a --allow-empty-message -m \"\""
+  graph   = "log --oneline --graph"
+  lo      = "log --oneline"
+  pop     = "stash pop"
+  s       = "status --short"
+  sm      = "submodule"
+  unstage = "restore --staged"
+
+# }}}
+
+# {{{ `nvim` tools
+
+[mergetool "nvimdiff"]
+  cmd           = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\" -c 'wincmd 3l' -c 'wincmd J' -c 'wincmd k' -c 'wincmd w' -c 'wincmd x'"
+  trustExitCode = false
+
+[merge]
+  tool = "nvimdiff"
+
+# }}}
+
+# {{{ `delta` tools
+
+[interactive]
+  diffFilter = "delta --color-only"
+
+[delta]
+  navigate     = true
+  light        = false
+  side-by-side = true
+
+[diff]
+  colorMoved = "default"
+
+# }}}
+
+# vim: foldmethod=marker
