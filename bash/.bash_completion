@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+# shellcheck source=./complete_alias
+. $HOME/.complete_alias
+
+complete -F _complete_alias gst
+complete -F _complete_alias gstt
+complete -F _complete_alias gup
+complete -F _complete_alias gpl
+complete -F _complete_alias gsync
+complete -F _complete_alias gdf
+complete -F _complete_alias gad
+complete -F _complete_alias gap
+complete -F _complete_alias gau
+complete -F _complete_alias gan
+complete -F _complete_alias gaa
+complete -F _complete_alias gcm
+complete -F _complete_alias glo
+complete -F _complete_alias glog
+complete -F _complete_alias gun
+complete -F _complete_alias gxp
+complete -F _complete_alias gxpy
+complete -F _complete_alias gcb
+complete -F _complete_alias gco
+complete -F _complete_alias gac
+complete -F _complete_alias gbr
+complete -F _complete_alias gsm
+complete -F _complete_alias gcz
+complete -F _complete_alias gcv
+complete -F _complete_alias ghlp
+
+complete -F _complete_alias dk
+complete -F _complete_alias dkc
+
+complete -F _complete_alias v

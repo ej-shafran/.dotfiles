@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+FORCE=0
+
+usage() {
+  echo ""
+  echo "Discard all changes in the current Git repo."
+  echo ""
+  echo "Usage: git explode [options]"
+  echo ""
+  echo "Options:"
+  echo -e "\t-h --help  Show this help message"
+  echo -e "\t-y  Discard changes without prompting"
+}
+
+while getopts 'hy' option ; do
+  case "$option" in
+    h) 
+      usage
+      exit 0
+      ;;
+    y) 
+      FORCE=1
+      ;;
+    *) 
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+if [ "$FORCE" -eq 1 ] || gum confirm "Discard all changes?"; then
+  git checkout -f && git clean -f .
+fi
