@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+loc="$HOME/Pictures/Screenshots/$(date).png"
+
+maim "$loc"
+notify-send "Saved screenshot" -i "$loc"

@@ -1,0 +1,33 @@
+#!/bin/sh
+
+CURBRIGHTNESS=
+ICON=
+
+if [ $# -ne 1 ]; then
+    echo "Need 1 argument (up, down)"
+    exit 1
+fi
+
+getnewbrightness() {
+    CURBRIGHTNESS="$(xbacklight -get)"
+    CURBRIGHTNESS="${CURBRIGHTNESS%.*}"
+
+    if [ "$CURBRIGHTNESS" -gt 75 ]; then
+        ICON="high"
+    elif [ "$CURBRIGHTNESS" -gt 35 ]; then
+        ICON="medium"
+    else
+        ICON="low"
+    fi
+}
+
+if [ "$1" = "up" ]; then
+    xbacklight -inc 5
+elif [ "$1" = "down" ]; then
+    xbacklight -dec 5
+fi
+
+getnewbrightness
+
+notify-send "Brightness changed" \
+    --hint="int:value:$CURBRIGHTNESS" -i "$HOME/.config/dunst/brightness-$ICON.png"
