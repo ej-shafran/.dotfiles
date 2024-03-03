@@ -1,0 +1,44 @@
+#!/bin/sh
+
+CURVOLUME=
+ICON=
+
+if [ $# -ne 1 ]; then
+    echo "Need 1 argument (up, down, mute)"
+    exit 1
+fi
+
+getvolume() {
+    AUDIO_INFO="$(pactl list sinks | grep -A16 -i 'state: running')"
+    if [ -z "$AUDIO_INFO" ]; then
+        AUDIO_INFO="$(pactl list sinks)"
+    fi
+
+    CURVOLUME="$(echo "$AUDIO_INFO" | grep -i 'volume' | head -1 | awk '{print $5}' | sed -e 's/%//')"
+
+    if [ "$CURVOLUME" -gt 75 ]; then
+        ICON="high"
+    elif [ "$CURVOLUME" -gt 35 ]; then
+        ICON="medium"
+    else
+        ICON="low"
+    fi
+
+    if pactl list sinks  | grep Mute | awk '{print $2}' | grep yes; then
+        ICON="muted"
+    fi
+}
+
+if [ "$1" = "up" ]; then
+    amixer -q -D pulse sset Master 3%+
+    getvolume
+elif [ "$1" = "down" ]; then
+    amixer -q -D pulse sset Master 3%-
+    getvolume
+elif [ "$1" = "mute" ]; then
+    amixer -q -D pulse sset Master toggle
+    getvolume
+fi
+
+notify-send "Volume changed" \
+    --hint="int:value:$CURVOLUME" -i "$HOME/.config/dunst/volume-$ICON.png"

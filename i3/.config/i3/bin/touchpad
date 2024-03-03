@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+INPUT_ID="$(xinput list | grep 'Synaptics' | head -n1 | sed 's/.*id=\([0-9]\+\).*/\1/')"
+
+supports_synaptics() {
+    local capability="$1"
+
+    xinput list-props "$INPUT_ID" | grep "$capability" >/dev/null
+}
+
+CAPABILITY="Synaptics Finger"
+if supports_synaptics "$CAPABILITY"; then
+    xinput set-prop "$INPUT_ID" "$CAPABILITY" 25 25 25
+fi
+
+CAPABILITY="Synaptics Scrolling Distance"
+if supports_synaptics "$CAPABILITY"; then
+    xinput set-prop "$INPUT_ID" "$CAPABILITY" -223 -223
+fi

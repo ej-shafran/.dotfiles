@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+CURBATTERY=
+BATTERY_INFO="$(upower -i "$(upower -e | grep BAT0 | head -n1)")"
+STATUS="$(echo "$BATTERY_INFO" | grep -E "state" | sed 's/\s*state:\s*\(.*\)$/\1/')"
+CURBATTERY="$(echo "$BATTERY_INFO" | grep -E "percentage" | sed 's/\s*percentage:\s*\(.*\)%$/\1/')"
+CURBATTERY=$(( "$CURBATTERY" ))
+
+ICON=
+COLOR=
+CODE=0
+
+if [ "$CURBATTERY" -lt 10 ]; then
+  if [ "$STATUS" != "charging" ]; then
+    notify-send "Low battery" "Connect to a charger" --urgency critical
+    ICON=󰂎
+    CODE=33
+  else
+    ICON=󰢟
+  fi
+
+  COLOR="#f7768e"
+elif [ "$CURBATTERY" -lt 35 ]; then
+  if [ "$STATUS" != "charging" ]; then
+    ICON=󰁻
+  else
+    ICON=󰂆
+  fi
+  COLOR="#f7768e"
+elif [ "$CURBATTERY" -lt 60 ]; then
+  if [ "$STATUS" != "charging" ]; then
+    ICON=󰁾
+  else
+    ICON=󰢝
+  fi
+  COLOR="#e0af68"
+else
+  if [ "$STATUS" != "charging" ]; then
+    ICON=󰂂
+  else
+    ICON=󰂋
+  fi
+  COLOR="#73daca"
+fi
+
+echo "$ICON $CURBATTERY%"
+echo
+echo "$COLOR"
+
+exit $CODE

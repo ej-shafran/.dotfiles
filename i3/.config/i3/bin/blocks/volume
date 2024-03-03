@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+CURVOLUME=
+IS_MUTED=
+ICON=
+
+getvolume() {
+    AUDIO_INFO="$(pactl list sinks | grep -A16 -i 'state: running')"
+
+    if [ -z "$AUDIO_INFO" ]; then
+      AUDIO_INFO="$(pactl list sinks)"
+    fi
+
+    CURVOLUME="$(echo "$AUDIO_INFO" | grep -i 'volume' | head -1 | awk '{print $5}' | sed -e 's/%//')"
+    IS_MUTED="$(echo "$AUDIO_INFO" | grep -i 'mute' | head -1 | sed 's/\s*mute:\s*\(.*\)/\1/i')"
+}
+
+case $BLOCK_BUTTON in
+  3) "$HOME/.config/i3/bin/volume" mute;;
+  4) "$HOME/.config/i3/bin/3/bin/volume" up;;
+  5) "$HOME/.config/i3/bin/3/bin/volume" down;;
+esac
+
+getvolume
+
+if [ "$CURVOLUME" -lt 35 ]; then
+  ICON=󰕿
+elif [ "$CURVOLUME" -lt 76 ]; then
+  ICON=󰖀
+else
+  ICON=󰕾
+fi
+
+if [ "$IS_MUTED" = "yes" ]; then
+  CURVOLUME="MUTE"
+  ICON=󰝟
+else
+  CURVOLUME="$CURVOLUME%"
+fi
+
+echo "$ICON $CURVOLUME"
