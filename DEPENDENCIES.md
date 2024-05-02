@@ -360,6 +360,10 @@ apt-get install cmake
 
 ## `node`
 
+### Also includes
+
+- `npm`
+
 ### Verify
 
 ```bash
@@ -441,4 +445,142 @@ tar -xzvf delta.tar.gz -C delta --strip 1
 rm delta.tar.gz
 mkdir -p $HOME/.local/bin
 install delta/delta $HOME/.local/bin
+```
+
+## `cargo`
+
+### Also includes
+
+- `rustup` - via rustup
+- `rustc` - via rustup
+
+### Verify
+
+```bash
+cargo -v
+```
+
+### Guide
+
+See [here](https://www.rust-lang.org/tools/install)
+
+### Depends on
+
+- [`curl`](#curl) - via rustup
+
+### Via `rustup`
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+## `bat`
+
+### Verify
+
+```bash
+bat --version
+```
+
+### Guide
+
+See [here](https://github.com/sharkdp/bat)
+
+### Depends on
+
+- [`cargo`](#cargo) - via cargo
+
+### Via `cargo`
+
+```bash
+cargo install bat
+```
+
+## `eza`
+
+### Verify
+
+```bash
+eza -v
+```
+
+### Guide
+
+See [here](https://eza.rocks/)
+
+### Depends on
+
+- [`cargo`](#cargo) - via cargo
+
+### Via `cargo`
+
+```bash
+cargo install eza
+```
+
+## `rg`
+
+### Verify
+
+```bash
+rg --version
+```
+
+### Guide
+
+See [here](https://github.com/BurntSushi/ripgrep)
+
+### Depends on
+
+- [`cargo`](#cargo) - via cargo
+
+### Via `cargo`
+
+```bash
+cargo install ripgrep
+```
+
+## `tldr`
+
+### Verify
+
+```bash
+tldr -v
+```
+
+### Guide
+
+See [here](https://tldr.sh/#installation)
+
+### Depends on
+
+- [`node`](#node) - via npm
+
+### Via `npm`
+
+```bash
+npm i -g tldr
+```
+
+## `fzf`
+
+### Verify
+
+```bash
+fzf -v
+```
+
+### Guide
+
+See [here]()
+
+### Depends on
+
+- [`git`](#git) - from source
+
+### From source
+
+```bash
+git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+~/.fzf/install
 ```
