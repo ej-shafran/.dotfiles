@@ -1,0 +1,71 @@
+#!/usr/bin/env zsh
+
+# {{{ Prefixed printing functions
+
+prinfo() {
+  printf "\r  [ \033[00;34mINFO\033[0m ] %s\n" "$1"
+}
+
+prquery() {
+  printf "\r  [ \033[0;33m?\033[0m ] %s\n" "$1"
+}
+
+prsuccess() {
+  printf "\r\033[2K  [ \033[00;32mOK\033[0m ] %s\n" "$1"
+}
+
+prfail() {
+  printf "\r\033[2K  [ \033[0;31mFAIL\033[0m ] %s\n" "$1"
+}
+
+# }}}
+
+# {{{ Basic, useful tools
+
+# Make a directory, then `cd` into it.
+mkcd() {
+  mkdir "$1"
+  cd "$1" || exit
+}
+
+# }}}
+
+# {{{ MySQL functions
+
+# Create a database
+sql-create() {
+  database="$1"
+
+  mysql -uroot \
+    -e "CREATE DATABASE $database;"
+
+  prinfo "Created database: $database"
+}
+
+# Drop and recreate a database
+sql-reset() {
+  database="$1"
+
+  mysql -uroot \
+    -e "DROP DATABASE $database; CREATE DATABASE $database;"
+  prinfo "Dropped and created database: $database"
+}
+
+# }}}
+
+# {{{ PNPM functions
+
+# Run `dev` in a directory
+dev() {
+  dir="$1"
+
+  if [[ -z "$dir" ]]; then
+    pnpm dev
+  else
+    pnpm --dir "$dir" dev
+  fi
+}
+
+# }}}
+
+# vim: foldmethod=marker

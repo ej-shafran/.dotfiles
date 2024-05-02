@@ -1,0 +1,142 @@
+#!/usr/bin/env zsh
+
+# {{{ Tool aliases
+
+# {{{ Git
+
+alias gst="git status --short"
+alias gstt="git status"
+alias gup="git push"
+alias gpl="git remote prune origin && git pull"
+alias gsync="git remote prune origin && git pull && git push"
+alias gdf="git diff"
+alias gad="git add"
+alias gap="git add -p"
+alias gau="git add -u"
+alias gan='git add "$(git ls-files -o --exclude-standard)"'
+alias gaa="git add -A"
+alias gcm="git commit"
+alias glo="git log --oneline"
+alias glog="git log"
+alias gun="git restore --staged"
+alias gxp="git explode"
+alias gxpy="git explode -y"
+alias gcb="git choose-branch"
+alias gco="git checkout"
+alias gac="git commit -a"
+alias gbr="git branch"
+alias gsm="git submodule"
+alias gcz="git cz"
+alias gcv="git convencm"
+alias ghlp="git help"
+
+# }}}
+
+# {{{ MySQL
+
+alias sql-local='mycli -p -hlocalhost -uroot'
+alias sql-dump='mysqldump -p -hlocalhost -uroot'
+alias sql-run='mysql -p -hlocalhost -uroot'
+
+# }}}
+
+# {{{ NPM
+
+alias m='npm run'
+alias mx="npx"
+alias mi="npm i"
+alias mci="npm ci"
+alias mrm="npm rm"
+
+# }}}
+
+# {{{ Other tools
+
+# MongoDB
+alias mongosh="mongosh --quiet"
+
+# Node
+alias noder="node ~/.repl.cjs"
+
+# PNPM
+alias pm="pnpm"
+alias in="pnpm --dir"
+
+# TurboRepo
+alias tb="turbo"
+
+# Python
+alias py="python3"
+alias pip="python3 -m pip"
+
+# Docker
+alias dk="docker"
+alias dkc="docker compose"
+
+# Neovim
+alias v="nvim ."
+alias ovim="/usr/bin/vim"
+alias vim="nvim"
+
+# `fzf` - fuzzy file finder
+alias fzf='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
+
+# `dt` - a duct tape for the CLI
+alias dtsh="rlwrap dt"
+
+# }}}
+
+# }}}
+
+# {{{ Optional tools
+
+# `thefuck` - correct mistakes in CLI
+if command -v thefuck >/dev/null; then
+  eval "$(thefuck --alias)"
+fi
+
+# `zoxide` - a better `cd`
+if command -v zoxide >/dev/null; then
+  eval "$(zoxide init zsh --cmd cd)"
+fi
+
+# `bat` - a better `cat`
+if command -v bat >/dev/null; then
+  alias cat="bat"
+fi
+
+# `eza` - a better `ls`
+if command -v eza >/dev/null; then
+  alias ls="eza"
+fi
+
+# }}}
+
+# {{{ Comfort remaps
+
+# Nicer `ls` commands
+alias ll='ls -alH'
+alias la='ls -a'
+alias l='ls -F'
+
+# Make file executable
+alias xc="chmod +x"
+
+# HTTP server in the current directory, using python
+alias serve="python3 -m http.server"
+
+# Resource zsh configuration
+alias rc="source ~/.zshrc"
+
+# Enabling colors for dir, vdir, grep, fgrep, egrep
+if [ -x /usr/bin/dircolors ]; then
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# }}}
+
+# vim: foldmethod=marker
