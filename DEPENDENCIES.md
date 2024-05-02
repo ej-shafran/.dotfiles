@@ -584,3 +584,25 @@ See [here](https://github.com/junegunn/fzf#installation)
 git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
 ~/.fzf/install
 ```
+
+## `zoxide`
+
+### Verify
+
+```bash
+zoxide -V
+```
+
+### Guide
+
+See [here](https://github.com/ajeetdsouza/zoxide?tab=readme-ov-file#installation)
+
+### Depends on
+
+- [`cargo`](#cargo) - via cargo
+
+### Via `cargo`
+
+```bash
+cargo install zoxide --locked
+```
