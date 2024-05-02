@@ -606,3 +606,25 @@ See [here](https://github.com/ajeetdsouza/zoxide?tab=readme-ov-file#installation
 ```bash
 cargo install zoxide --locked
 ```
+
+## `pnpm`
+
+### Verify
+
+```bash
+pnpm -v
+```
+
+### Guide
+
+See [here](https://pnpm.io/installation)
+
+### Depends on
+
+- [`node`](#node) - via npm
+
+### Via `npm`
+
+```bash
+npm i -g pnpm
+```
