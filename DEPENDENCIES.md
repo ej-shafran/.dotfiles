@@ -567,12 +567,12 @@ npm i -g tldr
 ### Verify
 
 ```bash
-fzf -v
+fzf --version
 ```
 
 ### Guide
 
-See [here]()
+See [here](https://github.com/junegunn/fzf#installation)
 
 ### Depends on
 
