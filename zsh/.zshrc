@@ -121,7 +121,7 @@ export PATH="$PATH:$DENO_INSTALL/bin"
 export PATH="$PATH:$HOME/.zig"
 
 # Golang
-export PATH="$PATH:$HOME/.local/go/bin"
+export PATH="$PATH:/usr/local/go/bin"
 export PATH="$PATH:$HOME/go/bin"
 
 # PNPM
@@ -129,6 +129,15 @@ export PATH="$PATH:$PNPM_HOME"
 
 # Bun
 export PATH="$PATH:$HOME/.bun"
+
+# Java
+export PATH="$PATH:/usr/local/opt/openjdk/bin"
+
+# fnm
+if command -v fnm >/dev/null; then
+  export PATH="$HOME/Library/Application Support/fnm:$PATH"
+  eval "`fnm env`"
+fi
 
 # }}}
 
@@ -162,3 +171,4 @@ sourceif "$HOME/.zsh_utils.local"
 # }}}
 
 # vim: foldmethod=marker
+
