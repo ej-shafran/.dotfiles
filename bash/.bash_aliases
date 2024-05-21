@@ -74,7 +74,6 @@ alias dk="docker"
 alias dkc="docker compose"
 
 # Neovim
-alias v="nvim ."
 alias ovim="/usr/bin/vim"
 alias vim="nvim"
 
