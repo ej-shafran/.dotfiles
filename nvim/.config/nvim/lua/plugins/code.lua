@@ -291,6 +291,14 @@ return {
                     { name = "cmdline" },
                 }),
             })
+
+            cmp.setup.filetype("org", {
+                sources = {
+                    { name = "orgmode" },
+                    { name = "buffer" },
+                    { name = "path" },
+                },
+            })
         end,
     },
     -- }}}

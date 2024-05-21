@@ -231,6 +231,14 @@ wk.register({
 })
 -- }}}
 
+-- {{{ Orgmode
+wk.register({
+    ["<leader>m"] = {
+        name = "orgmode",
+    },
+})
+-- }}}
+
 -- {{{ Open
 wk.register({
     ["<leader>o"] = {
