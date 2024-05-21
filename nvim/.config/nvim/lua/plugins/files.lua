@@ -17,6 +17,7 @@ return {
                 ["<C-p>"] = false,
                 ["<C-r>"] = "actions.refresh",
                 ["g="] = "actions.preview",
+                ["&"] = "actions.open_cmdline",
             },
         },
     },
