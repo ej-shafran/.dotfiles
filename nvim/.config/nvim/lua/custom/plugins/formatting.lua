@@ -22,8 +22,5 @@ return {
         kotlin = { "ktlint" },
       },
     },
-    init = function()
-      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
-    end,
   },
 }
