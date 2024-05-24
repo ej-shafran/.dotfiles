@@ -34,6 +34,9 @@ end
 if utils.has_go then
   servers.gopls = {}
 end
+if utils.has_zig then
+  servers.zls = {}
+end
 
 local capabilities = nil
 if pcall(require, "cmp_nvim_lsp") then

@@ -13,6 +13,9 @@ if utils.has_go then
   table.insert(parsers, "gomod")
   table.insert(parsers, "gosum")
 end
+if utils.has_zig then
+  table.insert(parsers, "zig")
+end
 
 local textobjects = {
   select = {
