@@ -3,11 +3,13 @@
   path = "~/.gitconfig.local"
 
 [core]
-  autocrlf = "input"
+  autocrlf   = "input"
   # Use `nvim` as the editor for Git stuff
-  editor   = "nvim"
+  editor     = "nvim"
   # Use `delta` for paging and diffing
-  pager    = "delta"
+  pager      = "delta"
+  # Do not ignore filename casing
+  ignorecase = false
 
 [credential]
   helper = "store"
