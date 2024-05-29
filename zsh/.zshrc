@@ -155,7 +155,7 @@ sourceif "$GHCUP_DIR/env"
 sourceif "$CARGO_DIR/env"
 
 if command -v starship >/dev/null; then
-  eval "$(starship init bash)"
+  eval "$(starship init zsh)"
 fi
 
 # }}}
