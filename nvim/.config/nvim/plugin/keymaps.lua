@@ -35,10 +35,10 @@ wk.register {
 }
 
 set("n", "<Esc>", "<Esc><cmd>noh<cr>")
-set("n", "<C-h>", "<C-w>h", { desc = "Move Window Left" })
-set("n", "<C-j>", "<C-w>j", { desc = "Move Window Down" })
-set("n", "<C-k>", "<C-w>k", { desc = "Move Window Up" })
-set("n", "<C-l>", "<C-w>l", { desc = "Move Window Right" })
+set("n", "<C-h>", "<cmd>KittyNavigateLeft <cr>", { desc = "Move Window Left" })
+set("n", "<C-j>", "<Cmd>KittyNavigateDown <cr>", { desc = "Move Window Down" })
+set("n", "<C-k>", "<Cmd>KittyNavigateUp   <cr>", { desc = "Move Window Up" })
+set("n", "<C-l>", "<Cmd>KittyNavigateRight<cr>", { desc = "Move Window Right" })
 set("n", "cx", xchange.operator, { desc = "Substitute" })
 
 set("i", "<C-n>", cmp.complete, { desc = "Autocomplete" })
