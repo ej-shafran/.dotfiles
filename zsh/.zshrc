@@ -62,6 +62,9 @@ export GHCUP_DIR="$HOME/.ghcup"
 # Cargo
 export CARGO_DIR="$HOME/.cargo"
 
+# Kitty
+export KITTY_INSTALL="/Applications/kitty.app/Contents/MacOS/"
+
 # You can add/override environment variables for tools
 # that you don't want to push to git in "$HOME/.zsh_tools.local"
 sourceif "$HOME/.zsh_tools.local"
@@ -110,7 +113,7 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.screenlayout"
 
 # Kitty
-export PATH="$PATH:$KITTY_INSTALL/bin"
+export PATH="$PATH:$KITTY_INSTALL"
 
 # Haskell binaries
 export PATH="$PATH:$CABAL_DIR/bin"
