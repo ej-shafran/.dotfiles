@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 sourceif() {
-  [[ -f "$1" ]] && source "$1"
+  [[ -f "$1" ]] && source "$1" || return 0
 }
 
 # {{{ Environment variables
