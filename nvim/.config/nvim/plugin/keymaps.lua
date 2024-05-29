@@ -265,24 +265,30 @@ set("n", "<leader>vt", builtin.colorscheme, { desc = "Browse Themes" })
 
 -- {{{ Window
 
-set("n", "<leader>ws", "<C-w>s", { desc = "Split window" })
-set("n", "<leader>wv", "<C-w>v", { desc = "Split window vertically" })
-set("n", "<leader>ww", "<C-w>w", { desc = "Switch windows" })
-set("n", "<leader>wq", "<C-w>q", { desc = "Quit a window" })
-set("n", "<leader>wo", "<C-w>o", { desc = "Close all other windows" })
-set("n", "<leader>wT", "<C-w>T", { desc = "Break out into a new tab" })
-set("n", "<leader>wx", "<C-w>x", { desc = "Swap current with next" })
-set("n", "<leader>w-", "<C-w>-", { desc = "Decrease height" })
-set("n", "<leader>w+", "<C-w>+", { desc = "Increase height" })
-set("n", "<leader>w<lt>", "<C-w><lt>", { desc = "Decrease width" })
-set("n", "<leader>w>", "<C-w>>", { desc = "Increase width" })
-set("n", "<leader>w|", "<C-w>|", { desc = "Max out the width" })
-set("n", "<leader>w_", "<C-w>_", { desc = "Max out the height" })
-set("n", "<leader>w,", "<C-w>=", { desc = "Equally high and wide" })
-set("n", "<leader>wh", "<C-w>h", { desc = "Go to the left window" })
-set("n", "<leader>wl", "<C-w>l", { desc = "Go to the right window" })
-set("n", "<leader>wk", "<C-w>k", { desc = "Go to the up window" })
-set("n", "<leader>wj", "<C-w>j", { desc = "Go to the down window" })
+set("n", "<leader>ws", "<C-w>s", { desc = "Split Window" })
+set("n", "<leader>wv", "<C-w>v", { desc = "Split Window Vertically" })
+set("n", "<leader>ww", "<C-w>w", { desc = "Switch Windows" })
+set("n", "<leader>wq", "<C-w>q", { desc = "Quit a Window" })
+set("n", "<leader>wo", "<C-w>o", { desc = "Close All Other Windows" })
+set("n", "<leader>wT", "<C-w>T", { desc = "Break Out Into a New Tab" })
+set("n", "<leader>wx", "<C-w>x", { desc = "Swap Current With Next" })
+set("n", "<leader>w-", "<C-w>-", { desc = "Decrease Height" })
+set("n", "<leader>w+", "<C-w>+", { desc = "Increase Height" })
+set("n", "<leader>w<lt>", "<C-w><lt>", { desc = "Decrease Width" })
+set("n", "<leader>w>", "<C-w>>", { desc = "Increase Width" })
+set("n", "<leader>w|", "<C-w>|", { desc = "Max Out the Width" })
+set("n", "<leader>w_", "<C-w>_", { desc = "Max Out the Height" })
+set("n", "<leader>w,", "<C-w>=", { desc = "Equally High and Wide" })
+
+-- }}}
+
+-- {{{ Tab
+
+set("n", "<leader><tab>n", "<cmd>tabnew<cr>", { desc = "New Tab" })
+set("n", "<leader><tab>q", "<cmd>tabclose<cr>", { desc = "Close Tab" })
+set("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close All Other Tabs" })
+set("n", "[<tab>", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
+set("n", "]<tab>", "<cmd>tabNext<cr>", { desc = "Next Tab" })
 
 -- }}}
 
