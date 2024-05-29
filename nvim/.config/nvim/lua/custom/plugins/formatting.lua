@@ -13,6 +13,7 @@ return {
         typescript = { { "prettierd", "prettier" } },
         javascript = { { "prettierd", "prettier" } },
         css = { { "prettierd", "prettier" } },
+        scss = { { "prettierd", "prettier" } },
         markdown = { { "prettierd", "prettier" } },
         json = { { "prettierd", "prettier" } },
         yaml = { { "prettierd", "prettier" } },

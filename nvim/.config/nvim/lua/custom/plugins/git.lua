@@ -16,7 +16,10 @@ return {
         cmd = { "DiffviewOpen" },
       },
     },
-    config = true,
+    opts = {
+      disable_hint = true,
+      console_timeout = 7000,
+    },
     cmd = "Neogit",
   },
 

@@ -32,4 +32,34 @@ ls.add_snippets("typescriptreact", {
       }
     )
   ),
+  s(
+    "state",
+    fmt("const [{}, set{}] = useState({});", {
+      i(1),
+      f(function(args)
+        local state = args[1][1] --[[@as string]]
+
+        if state:len() == 0 then
+          return ""
+        end
+
+        return state:sub(1, 1):upper() .. state:sub(2, -1)
+      end, { 1 }),
+      i(2),
+    })
+  ),
+  s(
+    "effect",
+    fmt(
+      [[
+      useEffect(() => {{
+        {}
+      }}, [{}]);
+      ]],
+      {
+        i(1),
+        i(2),
+      }
+    )
+  ),
 })
