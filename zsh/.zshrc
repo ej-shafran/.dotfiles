@@ -1,10 +1,18 @@
 #!/usr/bin/env zsh
 
 sourceif() {
-  [[ -f "$1" ]] && source "$1"
+  [[ -f "$1" ]] && source "$1" || return 0
 }
 
 # {{{ Environment variables
+
+if command -v nvim >/dev/null; then
+  export EDITOR="$(which nvim)"
+elif command -v vim >/dev/null; then
+  export EDITOR="$(which vim)"
+elif command -v vi >/dev/null; then
+  export EDITOR="$(which vi)"
+fi
 
 # {{{ Tool configuration
 
@@ -54,6 +62,9 @@ export GHCUP_DIR="$HOME/.ghcup"
 # Cargo
 export CARGO_DIR="$HOME/.cargo"
 
+# Kitty
+export KITTY_INSTALL="/Applications/kitty.app/Contents/MacOS/"
+
 # You can add/override environment variables for tools
 # that you don't want to push to git in "$HOME/.zsh_tools.local"
 sourceif "$HOME/.zsh_tools.local"
@@ -102,7 +113,7 @@ export PATH="$PATH:$HOME/.local/bin"
 export PATH="$PATH:$HOME/.screenlayout"
 
 # Kitty
-export PATH="$PATH:$KITTY_INSTALL/bin"
+export PATH="$PATH:$KITTY_INSTALL"
 
 # Haskell binaries
 export PATH="$PATH:$CABAL_DIR/bin"
