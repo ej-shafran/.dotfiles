@@ -6,14 +6,6 @@ sourceif() {
 
 # {{{ Environment variables
 
-if command -v nvim >/dev/null; then
-  export EDITOR="$(which nvim)"
-elif command -v vim >/dev/null; then
-  export EDITOR="$(which vim)"
-elif command -v vi >/dev/null; then
-  export EDITOR="$(which vi)"
-fi
-
 # {{{ Tool configuration
 
 # Colored `gcc` warnings and errors
@@ -178,6 +170,18 @@ sourceif "$HOME/.zsh_aliases.local"
 
 sourceif "$HOME/.zsh_utils"
 sourceif "$HOME/.zsh_utils.local"
+
+# }}}
+
+# {{{ Editor
+
+if command -v nvim >/dev/null; then
+  export EDITOR="$(which nvim)"
+elif command -v vim >/dev/null; then
+  export EDITOR="$(which vim)"
+elif command -v vi >/dev/null; then
+  export EDITOR="$(which vi)"
+fi
 
 # }}}
 

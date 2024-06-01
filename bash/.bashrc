@@ -16,15 +16,6 @@ sourceif() {
 
 # {{{ Environment variables
 
-if command -v nvim >/dev/null; then
-  export EDITOR="$(which nvim)"
-elif command -v vim >/dev/null; then
-  export EDITOR="$(which vim)"
-elif command -v vi >/dev/null; then
-  export EDITOR="$(which vi)"
-fi
-
-
 # {{{ Tool configuration
 
 # Colored `gcc` warnings and errors
@@ -221,6 +212,18 @@ sourceif "$HOME/.bash_aliases.local"
 
 sourceif "$HOME/.bash_utils"
 sourceif "$HOME/.bash_utils.local"
+
+# }}}
+
+# {{{ Editor
+
+if command -v nvim >/dev/null; then
+  export EDITOR="$(which nvim)"
+elif command -v vim >/dev/null; then
+  export EDITOR="$(which vim)"
+elif command -v vi >/dev/null; then
+  export EDITOR="$(which vi)"
+fi
 
 # }}}
 
