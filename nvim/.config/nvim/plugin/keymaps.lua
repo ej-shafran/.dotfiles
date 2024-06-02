@@ -208,6 +208,10 @@ set("n", "<leader>iO", "O<esc>", { desc = "New Line Up" })
 set("n", "<leader>o-", "<cmd>Oil<cr>", { desc = "Open File Explorer" })
 set("n", "<leader>ot", "<cmd>InspectTree<cr>", { desc = "Open Treesitter Tree" })
 set("n", "<leader>oq", "<cmd>EditQuery<cr>", { desc = "Open Treesitter Query Editor" })
+set("n", "<leader>od", function()
+  vim.cmd "tabnew"
+  vim.cmd "DBUI"
+end, { desc = "Database UI" })
 
 -- }}}
 
