@@ -7,6 +7,8 @@ local cmp = require "cmp"
 local conform = require "conform"
 local harpoon = require "harpoon"
 local gitsigns = require "gitsigns"
+local dap = require "dap"
+local dapui = require "dapui"
 
 local config_dir = vim.fn.stdpath "config"
 local set = vim.keymap.set
@@ -20,6 +22,7 @@ wk.register {
   ["<leader>"] = {
     b = { name = "buffer" },
     c = { name = "code" },
+    d = { name = "debug" },
     f = { name = "files" },
     g = { name = "git" },
     h = { name = "help" },
@@ -98,6 +101,27 @@ set({ "i", "s" }, "<C-h>", function()
 end, { silent = true })
 
 --- }}}
+
+-- {{{ Debug
+
+set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Toggle Breakpoint" })
+set("n", "<leader>dr", dap.run_to_cursor, { desc = "Run to Cursor" })
+set("n", "<leader>d?", function()
+  ---@diagnostic disable-next-line: missing-fields
+  dapui.eval(nil, { enter = true })
+end, { desc = "Eval Under Cursor" })
+set("n", "<leader>dc", dap.continue, { desc = "Continue" })
+set("n", "<leader>di", dap.step_into, { desc = "Step Into" })
+set("n", "<leader>do", dap.step_out, { desc = "Step Out" })
+set("n", "<leader>dn", dap.step_over, { desc = "Step Over" })
+set("n", "<leader>dp", dap.step_back, { desc = "Step Back" })
+set("n", "<leader>dR", dap.restart, { desc = "Restart" })
+set("n", "<leader>dq", function()
+  dap.close()
+  dapui.close()
+end, { desc = "Stop" })
+
+-- }}}
 
 -- {{{ Files
 
@@ -186,6 +210,10 @@ set("n", "<leader>iO", "O<esc>", { desc = "New Line Up" })
 set("n", "<leader>o-", "<cmd>Oil<cr>", { desc = "Open File Explorer" })
 set("n", "<leader>ot", "<cmd>InspectTree<cr>", { desc = "Open Treesitter Tree" })
 set("n", "<leader>oq", "<cmd>EditQuery<cr>", { desc = "Open Treesitter Query Editor" })
+set("n", "<leader>od", function()
+  vim.cmd "tabnew"
+  vim.cmd "DBUI"
+end, { desc = "Database UI" })
 
 -- }}}
 

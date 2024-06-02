@@ -5,7 +5,11 @@ return {
   {
     "neovim/nvim-lspconfig",
     dependencies = {
-      "folke/neodev.nvim",
+      {
+        "folke/lazydev.nvim",
+        ft = "lua"
+      },
+      { "Bilal2453/luvit-meta", lazy = true },
       "williamboman/mason-lspconfig.nvim",
       "williamboman/mason.nvim",
       "j-hui/fidget.nvim",

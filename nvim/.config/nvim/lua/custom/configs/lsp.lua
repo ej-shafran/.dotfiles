@@ -1,6 +1,12 @@
 local utils = require "custom.utils"
 
-require("neodev").setup {}
+
+require("lazydev").setup {
+  library = {
+    vim.env.LAZY .. "/luvit-meta/library",
+    vim.env.LAZY .. "/lazy.nvim"
+  },
+}
 
 local servers = {
   clangd = {},

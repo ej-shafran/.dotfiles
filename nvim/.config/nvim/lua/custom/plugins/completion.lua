@@ -21,7 +21,7 @@ return {
       "saadparwaiz1/cmp_luasnip",
     },
     config = function()
-      require "custom.configs.completion"
+      require "custom.configs.cmp"
     end,
   },
 }
