@@ -47,3 +47,10 @@ cmp.setup.filetype("org", {
     { name = "path" },
   },
 })
+
+cmp.setup.filetype({ "mysql", "sql" }, {
+  sources = {
+    { name = "vim-dadbod-completion" },
+    { name = "buffer" },
+  },
+})
