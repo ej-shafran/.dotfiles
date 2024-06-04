@@ -46,3 +46,6 @@ disabled = true
 
 [kotlin]
 disabled = true
+
+[swift]
+disabled = true
