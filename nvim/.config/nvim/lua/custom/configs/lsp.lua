@@ -1,10 +1,11 @@
 local utils = require "custom.utils"
 
+require("fidget").setup()
 
 require("lazydev").setup {
   library = {
-    vim.env.LAZY .. "/luvit-meta/library",
-    vim.env.LAZY .. "/lazy.nvim"
+    "luvit-meta/library",
+    "lazy.nvim"
   },
 }
 
@@ -32,9 +33,7 @@ if utils.has_python then
   }
 end
 if utils.has_js then
-  servers.tsserver = {
-    treesitter = { "typescript" },
-  }
+  servers.tsserver = {}
   servers.eslint = {}
 end
 if utils.has_go then

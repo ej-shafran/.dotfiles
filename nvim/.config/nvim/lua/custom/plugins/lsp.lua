@@ -7,7 +7,7 @@ return {
     dependencies = {
       {
         "folke/lazydev.nvim",
-        ft = "lua"
+        ft = "lua",
       },
       { "Bilal2453/luvit-meta", lazy = true },
       "williamboman/mason-lspconfig.nvim",
