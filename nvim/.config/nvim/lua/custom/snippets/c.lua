@@ -30,6 +30,36 @@ ls.add_snippets("c", {
       }
     )
   ),
+  s(
+    "ifdef",
+    fmt(
+      [[
+      #ifdef {}
+      {}
+      #endif // {}
+      ]],
+      {
+        i(1),
+        i(0),
+        extras.rep(1),
+      }
+    )
+  ),
+  s(
+    "ifndef",
+    fmt(
+      [[
+      #ifndef {}
+      {}
+      #endif // {}
+      ]],
+      {
+        i(1),
+        i(0),
+        extras.rep(1),
+      }
+    )
+  ),
   postfix(
     ".cpy!",
     fmt("{} memcpy({}, {}, {})", {
