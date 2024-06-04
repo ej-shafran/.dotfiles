@@ -21,4 +21,6 @@ return {
       },
     },
   },
+
+  "ej-shafran/tree-sitter-bi",
 }
