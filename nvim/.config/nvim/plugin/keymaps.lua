@@ -163,10 +163,12 @@ end, { desc = "Harpoon Next" })
 
 set("n", "<leader>gb", builtin.git_branches, { desc = "Choose Branch" })
 set("n", "<leader>gd", "<cmd>DiffviewOpen<cr>", { desc = "Diff/Merge View" })
-set("n", "<leader>gc", builtin.git_commits, { desc = "Choose Commit" })
+set("n", "<leader>gC", builtin.git_commits, { desc = "Choose Commit" })
+set("n", "<leader>gc", "<cmd>Neogit commit<cr>", { desc = "Create Commit" })
 set("n", "<leader>gf", "<cmd>Neogit kind=floating<cr>", { desc = "Neogit (Floating)" })
 set("n", "<leader>gg", "<cmd>Neogit<cr>", { desc = "Neogit" })
 set("n", "<leader>gh", "<cmd>Gitsigns preview_hunk<cr>", { desc = "Preview Hunk" })
+set("n", "<leader>ga", "<cmd>Gitsigns stage_hunk<cr>", { desc = "Preview Hunk" })
 set("n", "<leader>gs", builtin.git_status, { desc = "Browse Status" })
 set("n", "[c", function()
   if vim.wo.diff then
@@ -271,6 +273,7 @@ set("n", "<leader>ts", "<cmd>set spell!<cr>", { desc = "Spell Checking" })
 set("n", "<leader>tp", "<cmd>set paste!<cr>", { desc = "Paste Handling" })
 set("n", "<leader>tj", "<cmd>set scrollbind!<cr>", { desc = "Scroll Binding" })
 set("n", "<leader>tz", "<cmd>ZenMode<cr>", { desc = "Zen Mode" })
+set("n", "<leader>tC", "<cmd> set cursorcolumn!<cr>", { desc = "Column Highlighting" })
 
 -- }}}
 
