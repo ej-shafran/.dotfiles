@@ -1,5 +1,7 @@
 -- Dealing with language servers for coding
 
+local utils = require "custom.utils"
+
 ---@type LazySpec
 return {
   {
@@ -17,5 +19,12 @@ return {
     config = function()
       require "custom.configs.lsp"
     end,
+  },
+
+  {
+    "mrcjkb/haskell-tools.nvim",
+    version = "^3", -- Recommended
+    lazy = false, -- This plugin is already lazy
+    enabled = utils.has_haskell,
   },
 }

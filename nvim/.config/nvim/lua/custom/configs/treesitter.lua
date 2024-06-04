@@ -16,6 +16,9 @@ end
 if utils.has_zig then
   table.insert(parsers, "zig")
 end
+if utils.has_haskell then
+  table.insert(parsers, "haskell")
+end
 
 local textobjects = {
   select = {
