@@ -68,4 +68,15 @@ dev() {
 
 # }}}
 
+# {{{ Common requests
+
+githubraw() {
+  local repo="$1"
+  local path="$2"
+
+  curl -SLO "https://github.com/${repo}/raw/main/${path}"
+}
+
+# }}}
+
 # vim: foldmethod=marker
