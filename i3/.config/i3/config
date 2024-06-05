@@ -124,9 +124,9 @@ exec --no-startup-id $bin/touchpad
 # Screen layout
 exec --no-startup-id ~/.screenlayout/default
 # Background
-exec --no-startup-id feh ~/.config/i3/background.jpg --bg-fill --auto-zoom
+exec_always --no-startup-id feh ~/.config/i3/background.jpg --bg-fill --auto-zoom
 # Languages
-exec --no-startup-id "setxkbmap -layout us,il -option grp:win_space_toggle -model pc10"
+exec_always --no-startup-id setxkbmap -layout us,il -option grp:win_space_toggle -model pc10
 
 # }}}
 
