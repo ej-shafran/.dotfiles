@@ -16,6 +16,9 @@ return {
         cmd = { "DiffviewOpen" },
       },
     },
+    init = function()
+      vim.filetype.add { extension = { NeogitCommitMessage = "gitcommit" } }
+    end,
     opts = {
       disable_hint = true,
       console_timeout = 7000,
