@@ -6,8 +6,14 @@ local checkbox = require "orgcheckbox"
 checkbox.setup { lhs = "<leader>mC" }
 bullets.setup()
 orgmode.setup {
-  org_agenda_files = "~/org/**/*",
+  org_agenda_files = { "~/org/**/*", "~/org/*" },
   org_default_notes_file = "~/org/refile.org",
+  org_capture_templates = {
+    n = {
+      description = "Note",
+      template = "* %U %?\n",
+    },
+  },
   mappings = {
     prefix = "<leader>m",
   },
