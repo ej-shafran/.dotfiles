@@ -32,13 +32,24 @@ cmp.setup.cmdline({ "/", "?" }, {
   },
 })
 
-cmp.setup.cmdline(":", {
+cmp.setup.cmdline({ "@", ":" }, {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources {
     { name = "path" },
     { name = "cmdline" },
   },
+  ---@diagnostic disable-next-line: missing-fields
+  matching = { disallow_symbol_nonprefix_matching = false },
 })
+
+cmp.setup.filetype("gitcommit", {
+  sources = cmp.config.sources({
+    { name = "git" },
+  }, {
+    { name = "buffer" },
+  }),
+})
+require("cmp_git").setup()
 
 cmp.setup.filetype("org", {
   sources = {

@@ -19,6 +19,7 @@ return {
         end,
       },
       "saadparwaiz1/cmp_luasnip",
+      "petertriho/cmp-git",
     },
     config = function()
       require "custom.configs.cmp"
