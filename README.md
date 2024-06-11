@@ -10,41 +10,52 @@ From [the `stow` docs](https://www.gnu.org/software/stow/manual/stow.html#Termin
 
 Each of the directories in this repo acts as a `stow` package.
 
+## Dependencies
+
+You can install the system dependencies these dotfiles depend on using [Nix Flakes](https://nixos.wiki/wiki/Flakes). See [here]() to install the Nix package manager, and run the following command to enable Flakes:
+
+```bash
+echo 'experimental-features = nix-command flakes' >> /etc/nix/nix.conf
+```
+
+For simplicity, a script is included that will properly install the dependencies. Use:
+
+```bash
+./dependencies.sh
+```
+
+This simply runs the `nix profile install` command with `--impure` and the proper target within the Flake.
+
+To uninstall the dependencies, you can use:
+
+```bash
+./dependencies.sh remove
+```
+
 ## Installing packages
 
-To install specific packages, use
+To install specific packages, use:
 
 ```bash
 stow -v <packages...>
 ```
 
-To install all packages, use the `all.sh` script:
+For simplicity, a script is included that installs all packages. Use:
 
 ```bash
-./all.sh
+./packages.sh
 ```
 
-## Uninstall
+This simply loops over the directories and runs `stow -v` on each one.
 
-To uninstall specific packages, use
+To uninstall a specific package, use:
 
 ```bash
 stow -Dv <packages...>
 ```
 
-To uninstall all packages, use the `all.sh` script:
+Or, to uninstall all packages using the provided script:
 
 ```bash
-./all.sh -D
+./packages.sh remove
 ```
-
-## Dependencies
-
-The general dependencies needed for this entire repository are:
-
-- [`git`](./DEPENDENCIES.md#git)
-- [`curl`](./DEPENDENCIES.md#curl)
-- [`tar`](./DEPENDENCIES.md#tar)
-- [`stow`](./DEPENDENCIES.md#stow)
-
-Each package will also have a **Dependencies** section which sums up which dependencies it specifically needs.

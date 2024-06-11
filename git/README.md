@@ -1,9 +1,5 @@
 # git
 
-This package includes a `.gitconfig` file
+This package includes configuration for `git` in the form of a `.gitconfig` file.
 
-## Dependencies
-
-- [`git`](../DEPENDENCIES.md#git)
-- [`nvim`](../DEPENDENCIES.md#nvim)
-- [`delta`](../DEPENDENCIES.md#delta)
+[See more here](https://www.git-scm.com/).
