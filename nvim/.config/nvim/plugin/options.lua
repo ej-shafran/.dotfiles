@@ -43,3 +43,12 @@ opt.completeopt = "menuone,noselect" -- Show a menu when using completion, even 
 
 g.c_syntax_for_h = 1 -- Use C syntax for `.h` files, not C++
 g.markdown_folding = 1 -- Folding for Markdown
+
+vim.filetype.add {
+  extension = {
+    NeogitCommitMessage = "gitcommit"
+  },
+  filename = {
+    ["flake.lock"] = "json",
+  }
+}
