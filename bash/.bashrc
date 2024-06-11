@@ -121,7 +121,7 @@ fi
 # {{{ Global
 
 # Basic binary directories
-export PATH="/bin"
+export PATH="$PATH:/bin"
 export PATH="$PATH:/sbin"
 export PATH="$PATH:/usr/bin"
 export PATH="$PATH:/usr/sbin"
@@ -134,6 +134,9 @@ export PATH="$PATH:/snap/bin"
 # Games
 export PATH="$PATH:/usr/games"
 export PATH="$PATH:/usr/local/games"
+
+# Nix store
+export PATH="$PATH:/nix/var/nix/profiles/default/bin"
 
 # }}}
 
@@ -181,6 +184,10 @@ sourceif "$HOME/google-cloud-sdk/path.bash.inc"
 sourceif "$HOME/google-cloud-sdk/completion.bash.inc"
 
 # }}}
+
+# Cleanup all duplicate values in PATH
+PATH=$(echo "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}')
+export PATH
 
 # }}}
 
