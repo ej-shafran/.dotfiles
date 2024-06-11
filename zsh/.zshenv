@@ -118,6 +118,10 @@ fi
 # fzf
 export PATH="$PATH:$HOME/.fzf/bin"
 
+# Cleanup all duplicate values in PATH
+PATH=$(echo "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}')
+export PATH
+
 # }}}
 
 # {{{ Editor

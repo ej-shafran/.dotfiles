@@ -10,6 +10,7 @@ esac
 # This way, we can enable certain tools only if they actually exist.
 sourceif() {
   if [ -f "$1" ]; then
+    # shellcheck disable=SC1090
     . "$1"
   fi
 }
@@ -225,12 +226,14 @@ sourceif "$HOME/.bash_utils.local"
 # {{{ Editor
 
 if command -v nvim >/dev/null; then
-  export EDITOR="$(which nvim)"
+  EDITOR="$(which nvim)"
 elif command -v vim >/dev/null; then
-  export EDITOR="$(which vim)"
+  EDITOR="$(which vim)"
 elif command -v vi >/dev/null; then
-  export EDITOR="$(which vi)"
+  EDITOR="$(which vi)"
 fi
+
+export EDITOR
 
 # }}}
 
