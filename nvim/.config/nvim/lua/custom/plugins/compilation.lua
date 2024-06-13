@@ -32,6 +32,11 @@ return {
           row = 2,
           col = 3,
         },
+        crztest = {
+          regex = "\\s\\+FAIL: \\(.\\+\\):\\(\\d\\+\\): ",
+          filename = 1,
+          row = 2,
+        },
       },
     },
   },
