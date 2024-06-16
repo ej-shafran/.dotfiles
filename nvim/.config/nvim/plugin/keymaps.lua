@@ -202,6 +202,9 @@ set("n", "<leader>ia", "a <esc>", { desc = "Space After" })
 set("n", "<leader>ii", "i <esc>", { desc = "Space Before" })
 set("n", "<leader>io", "o<esc>", { desc = "New Line Down" })
 set("n", "<leader>iO", "O<esc>", { desc = "New Line Up" })
+set("n", "<leader>i<tab>", function()
+  return "<cmd>" .. vim.v.count .. "RightAlign<cr>"
+end, { expr = true, desc = "Right Align" })
 
 -- }}}
 
