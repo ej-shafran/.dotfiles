@@ -52,7 +52,8 @@ cmp.setup.filetype("gitcommit", {
 require("cmp_git").setup()
 
 cmp.setup.filetype("org", {
-  sources = {
+  sources = cmp.config.sources {
+    { name = "luasnip" },
     { name = "orgmode" },
     { name = "buffer" },
     { name = "path" },
@@ -60,7 +61,7 @@ cmp.setup.filetype("org", {
 })
 
 cmp.setup.filetype({ "mysql", "sql" }, {
-  sources = {
+  sources = cmp.config.sources {
     { name = "vim-dadbod-completion" },
     { name = "buffer" },
   },
