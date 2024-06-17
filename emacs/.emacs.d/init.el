@@ -43,10 +43,10 @@
 ;; Load `use-package`
 (eval-when-compile
   (require 'use-package))
+(setq use-package-always-ensure t)
 
 ;; Evil Mode (Vim keybindings)
 (use-package evil
-  :ensure t
   :init
   (setq evil-want-keybinding nil)
   :config
@@ -55,7 +55,6 @@
   (load-user-file "keybindings.el"))
 ;; Evil Mode for other parts of Emacs
 (use-package evil-collection
-  :ensure t
   :config
   (evil-collection-init))
 

@@ -1,6 +1,5 @@
 ;; Company (autocomplete)
 (use-package company
-  :ensure t
   :config
   (global-company-mode)
   (evil-define-key 'insert 'global (kbd "C-n") 'company-complete)
@@ -13,6 +12,5 @@
 
 ;; Ivy (better command completion)
 (use-package ivy
-  :ensure t
   :config
   (ivy-mode))
