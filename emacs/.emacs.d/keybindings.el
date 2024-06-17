@@ -179,7 +179,7 @@
   (kbd "<leader>tc") (todo "Code context")
   (kbd "<leader>tl") 'display-line-numbers-mode
   (kbd "<leader>ts") 'flyspell-mode
-  (kbd "<leader>tz") (todo "Zen mode")
+  (kbd "<leader>tz") 'zen-mode
   (kbd "<leader>tC") (todo "Cursorcolumn")
   (kbd "<leader>tt") 'eshell
   )
