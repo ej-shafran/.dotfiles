@@ -10,6 +10,11 @@
   (kbd "C-k") 'evil-window-up
   (kbd "C-j") 'evil-window-down
   (kbd "C-h") 'evil-window-left
+
+  (kbd "gcc") (lambda (lines)
+		(interactive "p")
+		(comment-line lines)
+		(evil-previous-line))
   )
 
 (evil-define-key 'visual 'global
@@ -54,7 +59,7 @@
   (kbd "<leader>ff") 'find-file
   (kbd "<leader>fg") 'project-find-file
   (kbd "<leader>fr") 'recentf-open-files
-  ;; TODO: harpoon alternative
+  (kbd "<leader>fl") (todo "Harpoon alternative")
   )
 
 ;; Git
@@ -63,11 +68,12 @@
   (kbd "<leader>gb") 'magit-branch
   (kbd "<leader>gd") 'magit-diff
   (kbd "<leader>gC") 'magit-commit
-  ;; TODO: floating window for Magit
+  (kbd "<leader>gf") (todo "Floating window for Magit")
   (kbd "<leader>gg") 'magit-status
-  ;; TODO: preview hunk
-  ;; TODO: stage current hunk
-  ;; TODO: jump to next/previous hunk
+  (kbd "<leader>gh") 'blamer-show-commit-info
+  (kbd "<leader>ga") 'git-gutter:stage-hunk
+  (kbd "[c") 'git-gutter:previous-hunk
+  (kbd "]c") 'git-gutter:next-hunk
   )
 
 ;; Help
@@ -169,12 +175,12 @@
 ;; Toggle
 
 (evil-define-key 'normal 'global
-  ;; TODO: git blame
-  ;; TODO: Code context
+  (kbd "<leader>tb") 'blamer-mode
+  (kbd "<leader>tc") (todo "Code context")
   (kbd "<leader>tl") 'display-line-numbers-mode
   (kbd "<leader>ts") 'flyspell-mode
-  ;; TODO: zen mode
-  ;; TODO: cursorcolumn
+  (kbd "<leader>tz") (todo "Zen mode")
+  (kbd "<leader>tC") (todo "Cursorcolumn")
   (kbd "<leader>tt") 'eshell
   )
 

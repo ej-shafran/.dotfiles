@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(which-key ivy company cmake-mode use-package magit gnu-elpa-keyring-update evil-collection)))
+   '(blamer cmake-mode which-key use-package magit ivy gnu-elpa-keyring-update git-gutter-fringe evil-collection company)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
