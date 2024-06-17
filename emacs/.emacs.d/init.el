@@ -62,4 +62,4 @@
 (mapc 'load (file-expand-wildcards (concat config-dir "plugins/*")))
 
 ;; Load additional configuration options and settings
-(load-user-file "options.lua")
+(load-user-file "options.el")
