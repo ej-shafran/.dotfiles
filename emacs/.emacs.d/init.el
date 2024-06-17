@@ -53,7 +53,9 @@
   (evil-set-leader nil (kbd "SPC"))
   (evil-define-key 'normal 'global (kbd "<leader>gg") 'magit)
   (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
-  (evil-define-key 'normal 'global (kbd "<leader>qq") 'save-buffers-kill-emacs))
+  (evil-define-key 'normal 'global (kbd "<leader>qq") 'save-buffers-kill-emacs)
+  (evil-define-key 'normal 'global (kbd "<leader>cc") 'compile)
+  (evil-define-key 'normal 'global (kbd "<leader>cC") 'recompile))
 ;; Evil Mode for other parts of Emacs
 (use-package evil-collection
   :ensure t
