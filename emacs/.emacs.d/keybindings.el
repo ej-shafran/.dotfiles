@@ -1,5 +1,10 @@
 ;; Keybindings
 
+(defmacro todo (message)
+  `(lambda ()
+    (interactive)
+    (error "TODO: %s" ,message)))
+
 (evil-define-key 'normal 'global
   (kbd "C-l") 'evil-window-right
   (kbd "C-k") 'evil-window-up
@@ -16,7 +21,7 @@
 (evil-define-key 'normal 'global
   (kbd "<leader>bb") 'ivy-switch-buffer
   (kbd "<leader>bl") 'evil-switch-to-windows-last-buffer
-  ;; TODO: kill all other buffer
+  (kbd "<leader>bo") (todo "Kill other buffers")
   (kbd "<leader>bq") 'kill-buffer
   (kbd "]b") (lambda () (next-buffer 1))
   (kbd "[b") (lambda () (next-buffer -1))
@@ -26,12 +31,17 @@
 
 (evil-define-key 'normal 'global
   (kbd "<leader>cc") 'compile
-  ;; TODO: compile without opening buffer
+  (kbd "<leader>ch") (todo "Compile without opening buffer")
   (kbd "<leader>cC") 'recompile
-  ;; TODO: format code
-  ;; TODO: quickfix alternative
-  ;; TODO: code actions
-  ;; TODO: diagnostics
+  (kbd "<leader>cf") (todo "Format code")
+  (kbd "<leader>cq") (todo "Quickfix alternative")
+  (kbd "<leader>ca") (todo "Code actions")
+  (kbd "<leader>ce") (todo "Diagnostics")
+  (kbd "<leader>cD") (todo "LSP")
+  (kbd "<leader>cx") 'eval-last-sexp
+  (kbd "<leader>cX") 'eval-buffer
+  (kbd "[e") 'previous-error
+  (kbd "]e") 'next-error
   )
 
 ;; Debug
