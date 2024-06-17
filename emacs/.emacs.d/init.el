@@ -52,7 +52,8 @@
   (evil-mode 1)
   (evil-set-leader nil (kbd "SPC"))
   (evil-define-key 'normal 'global (kbd "<leader>gg") 'magit)
-  (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file))
+  (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
+  (evil-define-key 'normal 'global (kbd "<leader>qq") 'save-buffers-kill-emacs))
 ;; Evil Mode for other parts of Emacs
 (use-package evil-collection
   :ensure t
@@ -71,7 +72,7 @@
   :config
   (global-company-mode)
   (evil-define-key 'insert 'global (kbd "C-n") 'company-complete)
-  (evil-define-key 'insert company-active-map (kbd "C-y") 'company-complete-selection)
+  (evil-define-key 'insert 'company-mode (kbd "C-y") 'company-complete-selection)
   ;; Disable some default keybindings
   (define-key company-active-map (kbd "RET") nil)
   (define-key company-active-map (kbd "<return>") nil)
