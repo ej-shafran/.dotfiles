@@ -276,7 +276,8 @@ set("n", "<leader>ts", "<cmd>set spell!<cr>", { desc = "Spell Checking" })
 set("n", "<leader>tp", "<cmd>set paste!<cr>", { desc = "Paste Handling" })
 set("n", "<leader>tj", "<cmd>set scrollbind!<cr>", { desc = "Scroll Binding" })
 set("n", "<leader>tz", "<cmd>ZenMode<cr>", { desc = "Zen Mode" })
-set("n", "<leader>tC", "<cmd> set cursorcolumn!<cr>", { desc = "Column Highlighting" })
+set("n", "<leader>tC", "<cmd>set cursorcolumn!<cr>", { desc = "Column Highlighting" })
+set("n", "<leader>tt", "<cmd>tab term<cr>", { desc = "Terminal" })
 
 -- }}}
 
