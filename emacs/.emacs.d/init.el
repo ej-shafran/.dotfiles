@@ -51,44 +51,15 @@
   :config
   (evil-mode 1)
   (evil-set-leader nil (kbd "SPC"))
-  (evil-define-key 'normal 'global (kbd "<leader>gg") 'magit)
-  (evil-define-key 'normal 'global (kbd "<leader>ff") 'find-file)
-  (evil-define-key 'normal 'global (kbd "<leader>qq") 'save-buffers-kill-emacs)
-  (evil-define-key 'normal 'global (kbd "<leader>cc") 'compile)
-  (evil-define-key 'normal 'global (kbd "<leader>cC") 'recompile))
+  (load-user-file "keybindings.el"))
 ;; Evil Mode for other parts of Emacs
 (use-package evil-collection
   :ensure t
   :config
   (evil-collection-init))
 
-;; Magit (Git client)
-(use-package magit
-  :ensure t
-  :config
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
+;; Load all plugins (from `plugins` directory)
+(mapc 'load (file-expand-wildcards (concat config-dir "plugins/*")))
 
-;; Company (autocomplete)
-(use-package company
-  :ensure t
-  :config
-  (global-company-mode)
-  (evil-define-key 'insert 'global (kbd "C-n") 'company-complete)
-  (evil-define-key 'insert 'company-mode (kbd "C-y") 'company-complete-selection)
-  ;; Disable some default keybindings
-  (define-key company-active-map (kbd "RET") nil)
-  (define-key company-active-map (kbd "<return>") nil)
-  (define-key company-active-map (kbd "TAB") nil)
-  (define-key company-active-map (kbd "<tab>") nil))
-
-;; Ivy (better command completion)
-(use-package ivy
-  :ensure t
-  :config
-  (ivy-mode))
-
-;; Which-Key (help with keymaps)
-(use-package which-key
-  :ensure t
-  :config
-  (which-key-mode))
+;; Load additional configuration options and settings
+(load-user-file "options.lua")
