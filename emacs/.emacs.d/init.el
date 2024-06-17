@@ -1,16 +1,16 @@
 ;; Constant for the configuration directory
-(defconst user-init-dir
+(defconst config-dir
   (cond ((boundp 'user-emacs-directory)
          user-emacs-directory)
-        ((boundp 'user-init-directory)
-         user-init-directory)
+        ((boundp 'config-directory)
+         config-directory)
         (t "~/.emacs.d/")))
 
 ;; Function that loads a configuration file
 (defun load-user-file (file)
   (interactive "f")
   "Load a file in current user's configuration directory"
-  (load-file (expand-file-name file user-init-dir)))
+  (load-file (expand-file-name file config-dir)))
 
 ;; UI settings
 (setq inhibit-startup-screen t)
@@ -20,9 +20,9 @@
 (setq display-line-numbers-type 'relative)
 
 ;; Use other file for `customize` settings
-(setq custom-file (expand-file-name "custom.el" user-init-dir))
+(setq custom-file (expand-file-name "custom.el" config-dir))
 ;; Load themes directory
-(add-to-list 'custom-theme-load-path (expand-file-name "themes" user-init-dir))
+(add-to-list 'custom-theme-load-path (expand-file-name "themes" config-dir))
 ;; Use Tokyo Night theme
 (load-theme 'tokyo t)
 
