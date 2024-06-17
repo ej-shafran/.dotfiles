@@ -58,8 +58,8 @@
   :config
   (evil-collection-init))
 
-;; Load all plugins (from `plugins` directory)
-(mapc 'load (file-expand-wildcards (concat config-dir "plugins/*")))
+;; Load all packages (from `packages` directory)
+(mapc 'load (file-expand-wildcards (concat config-dir "packages/*")))
 
 ;; Load additional configuration options and settings
 (load-user-file "options.el")
