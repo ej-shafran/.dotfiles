@@ -17,6 +17,12 @@ local function with(cb, opts)
     cb(opts)
   end
 end
+local function with_count(cmd, default)
+  return function()
+    local count = vim.v.count == 0 and default or vim.v.count
+    return "<cmd>" .. count .. cmd .. "<cr>"
+  end
+end
 
 wk.register {
   ["<leader>"] = {
@@ -49,6 +55,7 @@ set("i", "<C-n>", cmp.complete, { desc = "Autocomplete" })
 set("x", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
 set("x", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 set("x", "X", xchange.visual, { desc = "Substitute" })
+set("x", "C", "<Plug>(abolish-coerce)")
 
 set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit Terminal Mode" })
 
@@ -67,9 +74,9 @@ set("n", "]b", "<cmd>bn<cr>", { desc = "Next Buffer" })
 
 -- {{{ Code
 
-set("n", "<leader>cc", "<cmd>belowright vertical Compile<cr>", { desc = "Compile" })
+set("n", "<leader>cc", "<cmd>tab Compile<cr>", { desc = "Compile" })
 set("n", "<leader>ch", "<cmd>hide Compile<cr>", { desc = "Compile Without Opening Buffer" })
-set("n", "<leader>cC", "<cmd>belowright vertical Recompile<cr>", { desc = "Recompile" })
+set("n", "<leader>cC", "<cmd>tab Recompile<cr>", { desc = "Recompile" })
 set("n", "<leader>cq", "<cmd>QuickfixErrors<cr>", { desc = "Load Compilation Errors To Quickfix" })
 set("n", "<leader>cH", "<cmd>hide Recompile<cr>", { desc = "Recompile Without Opening Buffer" })
 set("n", "<leader>cf", with(conform.format, { async = true, lsp_fallback = true }), { desc = "Format" })
@@ -87,8 +94,8 @@ set("n", "K", vim.lsp.buf.hover, { desc = "Hover Documentation" })
 set("n", "gd", builtin.lsp_definitions, { desc = "Goto Definition" })
 set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous Diagnostic" })
 set("n", "]d", vim.diagnostic.goto_next, { desc = "Next Diagnostic" })
-set("n", "[e", "<cmd>PrevError<cr>", { desc = "Previous Error" })
-set("n", "]e", "<cmd>NextError<cr>", { desc = "Next Error" })
+set("n", "[e", with_count("PrevError", 1), { expr = true, desc = "Previous Error" })
+set("n", "]e", with_count("NextError", 1), { expr = true, desc = "Next Error" })
 set("n", "]]e", "<cmd>CurrentError<cr>", { desc = "Current Error" })
 set("n", "[q", "<cmd>cp<cr>", { desc = "Previous Quickfix" })
 set("n", "]q", "<cmd>cn<cr>", { desc = "Next Quickfix" })
@@ -202,9 +209,7 @@ set("n", "<leader>ia", "a <esc>", { desc = "Space After" })
 set("n", "<leader>ii", "i <esc>", { desc = "Space Before" })
 set("n", "<leader>io", "o<esc>", { desc = "New Line Down" })
 set("n", "<leader>iO", "O<esc>", { desc = "New Line Up" })
-set("n", "<leader>i<tab>", function()
-  return "<cmd>" .. vim.v.count .. "RightAlign<cr>"
-end, { expr = true, desc = "Right Align" })
+set("n", "<leader>i<tab>", with_count("RightAlign", 80), { expr = true, desc = "Right Align" })
 
 -- }}}
 
@@ -225,6 +230,7 @@ end, { desc = "Database UI" })
 set("n", "<leader>pp", "<cmd>Lazy<cr>", { desc = "Open Plugin Manager" })
 set("n", "<leader>ps", "<cmd>Lazy sync<cr>", { desc = "Sync Plugins" })
 set("n", "<leader>pr", "<cmd>LazyReloadPlugin<cr>", { desc = "Reload Plugin" })
+set("n", "<leader>pt", "<cmd>PlenaryBustedFile %<cr>", { desc = "Test Current File" })
 
 -- }}}
 

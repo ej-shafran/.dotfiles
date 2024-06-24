@@ -10,34 +10,39 @@ return {
     },
     event = "VeryLazy",
     cmd = { "Compile", "Recompile" },
-    opts = {
-      same_window_errors = true,
-      default_command = "",
-      error_regexp_table = {
-        nodejs = {
-          regex = "^\\s\\+at .\\+ (\\(\\/.\\+\\):\\([1-9][0-9]*\\):\\([1-9][0-9]*\\))$",
-          filename = 1,
-          row = 2,
-          col = 3,
+    config = function()
+      require("compile-mode").setup {
+        compilation_environment = {
+          TESTING = "testing",
         },
-        typescript = {
-          regex = "^\\(.\\+\\)(\\([1-9][0-9]*\\),\\([1-9][0-9]*\\)): error TS[1-9][0-9]*:",
-          filename = 1,
-          row = 2,
-          col = 3,
+        same_window_errors = true,
+        default_command = "",
+        error_regexp_table = {
+          nodejs = {
+            regex = "^\\s\\+at .\\+ (\\(\\/.\\+\\):\\([1-9][0-9]*\\):\\([1-9][0-9]*\\))$",
+            filename = 1,
+            row = 2,
+            col = 3,
+          },
+          typescript = {
+            regex = "^\\(.\\+\\)(\\([1-9][0-9]*\\),\\([1-9][0-9]*\\)): error TS[1-9][0-9]*:",
+            filename = 1,
+            row = 2,
+            col = 3,
+          },
+          gradlew = {
+            regex = "^e:\\s\\+file://\\(.\\+\\):\\(\\d\\+\\):\\(\\d\\+\\) ",
+            filename = 1,
+            row = 2,
+            col = 3,
+          },
+          crztest = {
+            regex = "\\v^\\s+FAIL: (.+):(\\d+): ",
+            filename = 1,
+            row = 2,
+          },
         },
-        gradlew = {
-          regex = "^e:\\s\\+file://\\(.\\+\\):\\(\\d\\+\\):\\(\\d\\+\\) ",
-          filename = 1,
-          row = 2,
-          col = 3,
-        },
-        crztest = {
-          regex = "\\s\\+FAIL: \\(.\\+\\):\\(\\d\\+\\): ",
-          filename = 1,
-          row = 2,
-        },
-      },
-    },
+      }
+    end,
   },
 }
