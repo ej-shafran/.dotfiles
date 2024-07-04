@@ -12,10 +12,8 @@ return {
     cmd = { "Compile", "Recompile" },
     config = function()
       require("compile-mode").setup {
-        compilation_environment = {
-          TESTING = "testing",
-        },
         same_window_errors = true,
+        baleia_setup = true,
         default_command = "",
         error_regexp_table = {
           nodejs = {
@@ -36,10 +34,14 @@ return {
             row = 2,
             col = 3,
           },
-          crztest = {
-            regex = "\\v^\\s+FAIL: (.+):(\\d+): ",
+          certain = {
+            regex = "\\v^\\s+FAILED: (.+):(\\d+): ",
             filename = 1,
             row = 2,
+          },
+          ls_lint = {
+            regex = "\\v^\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2} (.+) failed for rules: .+$",
+            filename = 1,
           },
         },
       }

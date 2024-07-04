@@ -9,6 +9,7 @@ local harpoon = require "harpoon"
 local gitsigns = require "gitsigns"
 local dap = require "dap"
 local dapui = require "dapui"
+local dapvtext = require "nvim-dap-virtual-text"
 
 local config_dir = vim.fn.stdpath "config"
 local set = vim.keymap.set
@@ -117,7 +118,10 @@ set("n", "<leader>d?", function()
   ---@diagnostic disable-next-line: missing-fields
   dapui.eval(nil, { enter = true })
 end, { desc = "Eval Under Cursor" })
-set("n", "<leader>dc", dap.continue, { desc = "Continue" })
+set("n", "<leader>dc", function()
+  dap.continue()
+  dapvtext.enable()
+end, { desc = "Continue" })
 set("n", "<leader>di", dap.step_into, { desc = "Step Into" })
 set("n", "<leader>do", dap.step_out, { desc = "Step Out" })
 set("n", "<leader>dn", dap.step_over, { desc = "Step Over" })
@@ -126,6 +130,7 @@ set("n", "<leader>dR", dap.restart, { desc = "Restart" })
 set("n", "<leader>dq", function()
   dap.close()
   dapui.close()
+  dapvtext.disable()
 end, { desc = "Stop" })
 
 -- }}}
