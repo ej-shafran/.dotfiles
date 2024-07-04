@@ -1,64 +1,68 @@
-;; Constant for the configuration directory
+;; Constant for the path to the configuration directory
 (defconst config-dir
   (cond ((boundp 'user-emacs-directory)
-         user-emacs-directory)
-        ((boundp 'config-directory)
-         config-directory)
-        (t "~/.emacs.d/")))
+	 user-emacs-directory)
+	((boundp 'config-directory)
+	 config-directory)
+	(t "~/.emacs.d/")))
 
-;; Function that loads a configuration file
-(defun load-user-file (file)
-  (interactive "f")
-  "Load a file in current user's configuration directory"
-  (load-file (expand-file-name file config-dir)))
-
-;; UI settings
-(setq inhibit-startup-screen t)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(global-display-line-numbers-mode 1)
-(setq display-line-numbers-type 'relative)
-
-;; Use other file for `customize` settings
+;; Change `custom' file
 (setq custom-file (expand-file-name "custom.el" config-dir))
-;; Load themes directory
-(add-to-list 'custom-theme-load-path (expand-file-name "themes" config-dir))
-;; Use Tokyo Night theme
-(load-theme 'tokyo t)
 
-;; Packages
+;; Turn off menu bar
+(menu-bar-mode -1)
+;; Turn off tool bar
+(tool-bar-mode -1)
+;; Turn off startup screen
+(setq inhibit-startup-screen t)
+;; Turn on relative line numbers
+(setq display-line-numbers-type 'relative)
+(global-display-line-numbers-mode 1)
+
+;; Setup packages
 (require 'package)
 (add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/") t)
+	     '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
-
-;; Modify used certificates
 (eval-after-load 'gnutls
   '(add-to-list 'gnutls-trustfiles "/etc/ssl/cert.pem"))
-;; Add `use-package`
+(unless (package-installed-p 'gnu-elpa-keyring-update)
+  (setq package-check-signature nil)
+  (package-refresh-contents)
+  (package-install 'gnu-elpa-keyring-update)
+  (gnu-elpa-keyring-update)
+  (setq package-check-signature 'allow-unsigned))
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-;; Load `use-package`
+(eval-and-compile
+  (setq use-package-always-ensure t
+        use-package-expand-minimally t))
 (eval-when-compile
   (require 'use-package))
-(setq use-package-always-ensure t)
 
-;; Evil Mode (Vim keybindings)
-(use-package evil
-  :init
-  (setq evil-want-keybinding nil)
+;; Autocomplete for buffers
+(use-package company
   :config
-  (evil-mode 1)
-  (evil-set-leader nil (kbd "SPC"))
-  (load-user-file "keybindings.el"))
-;; Evil Mode for other parts of Emacs
-(use-package evil-collection
+  (global-company-mode))
+
+;; Autocomplete for minibuffers, better search, etc.
+(use-package counsel
   :config
-  (evil-collection-init))
+  (setq ivy-use-virtual-buffers t)
+  (setq enable-recursive-minibuffers t)
+  (ivy-mode)
+  (global-set-key (kbd "C-s") 'swiper)
+  (global-set-key (kbd "C-c C-r") 'ivy-resume)
+  (global-set-key (kbd "<f6>") 'ivy-resume)
+  (global-set-key (kbd "M-x") 'counsel-M-x)
+  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
 
-;; Load all packages (from `packages` directory)
-(mapc 'load (file-expand-wildcards (concat config-dir "packages/*")))
+;; Magit (Git client)
+(use-package magit
+  :config
+  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 
-;; Load additional configuration options and settings
-(load-user-file "options.el")
+;; Theme
+(use-package gruber-darker-theme)
