@@ -65,4 +65,10 @@
   (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1))
 
 ;; Theme
-(use-package gruber-darker-theme)
+(use-package gruber-darker-theme
+  :config
+  (setq custom-safe-themes t)
+  (load-theme 'gruber-darker))
+
+;; Other keymaps
+(global-set-key (kbd "C-x c") 'compile)
