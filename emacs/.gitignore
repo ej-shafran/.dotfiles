@@ -3,3 +3,7 @@ elpa/
 melpa/
 transient/
 eshell/
+auto-save-list/
+eshell/
+recentf
+.lsp-session-*

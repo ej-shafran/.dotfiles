@@ -69,7 +69,10 @@
   :hook (prog-mode . git-gutter-mode)
   :config
   (setq git-gutter:update-interval 0.02)
-  )
+  (global-set-key (kbd "C-c g n") 'git-gutter:next-hunk)
+  (global-set-key (kbd "C-c g p") 'git-gutter:previous-hunk)
+  (global-set-key (kbd "C-c g s") 'git-gutter:stage-hunk)
+  (global-set-key (kbd "C-c g r") 'git-gutter:revert-hunk))
 (use-package git-gutter-fringe
   :config
   (define-fringe-bitmap 'git-gutter-fr:added [224] nil nil '(center repeated))
@@ -79,6 +82,35 @@
 ;; Git blame on lines
 (use-package blamer)
 
+;; Clang-format
+(use-package clang-format
+  :config
+  (require 'cc-mode)
+  (define-key c-mode-base-map (kbd "C-c f") 'clang-format-buffer))
+
+;; Language server protocol
+(use-package lsp-mode
+  :init
+  (setq lsp-keymap-prefix "C-l")
+  :config
+  (setq lsp-enable-symbol-highlighting nil)
+  (setq lsp-headerline-breadcrumb-enable nil)
+  (global-set-key (kbd "M-g f") 'flymake-goto-next-error)
+  (global-set-key (kbd "M-g b") 'flymake-goto-prev-error)
+  :hook (
+	 (c-mode . lsp)
+	 )
+  :commands lsp)
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+
+;; Multiple cursor
+(use-package multiple-cursors
+  :config
+  (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
+  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
+  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this))
+
 ;; Theme
 (use-package gruber-darker-theme
   :config
@@ -87,3 +119,4 @@
 
 ;; Other keymaps
 (global-set-key (kbd "C-x c") 'compile)
+(put 'upcase-region 'disabled nil)
