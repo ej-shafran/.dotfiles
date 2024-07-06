@@ -88,6 +88,12 @@
   (require 'cc-mode)
   (define-key c-mode-base-map (kbd "C-c f") 'clang-format-buffer))
 
+;; Color sequences in compilation
+(require 'ansi-color)
+(defun colorize-compilation-buffer ()
+  (ansi-color-apply-on-region compilation-filter-start (point-max)))
+(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
 ;; Language server protocol
 (use-package lsp-mode
   :init
