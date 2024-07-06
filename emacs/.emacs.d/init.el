@@ -94,6 +94,10 @@
   (ansi-color-apply-on-region compilation-filter-start (point-max)))
 (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
 
+;; Languages
+(use-package lua-mode)
+(use-package typescript-mode)
+
 ;; Language server protocol
 (use-package lsp-mode
   :init
@@ -105,6 +109,8 @@
   (global-set-key (kbd "M-g b") 'flymake-goto-prev-error)
   :hook (
 	 (c-mode . lsp)
+	 (lua-mode . lsp)
+	 (typescript-mode . lsp)
 	 )
   :commands lsp)
 (use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
