@@ -13,13 +13,6 @@ return {
     end,
   },
 
-  -- Starter screen
-  {
-    "echasnovski/mini.starter",
-    version = "*",
-    opts = {},
-  },
-
   -- Status line
   {
     "echasnovski/mini.statusline",
