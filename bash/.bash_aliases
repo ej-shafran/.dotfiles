@@ -83,6 +83,9 @@ alias fzf='fzf --preview "bat --color=always --style=numbers --line-range=:500 {
 # `dt` - a duct tape for the CLI
 alias dtsh="rlwrap dt"
 
+# MIT license
+alias mit_license="curl https://api.github.com/licenses/mit -s | jq '.body' -r"
+
 # }}}
 
 # }}}
