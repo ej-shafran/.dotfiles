@@ -12,6 +12,9 @@
 	kill-region
 	lsp-signature-toggle-full-docs
 	mark-sexp
+	markdown-beginning-of-line
+	markdown-end-of-line
+	markdown-outdent-or-delete
 	))
 
 (setq mc/cmds-to-run-once
