@@ -1,5 +1,6 @@
 local utils = require "custom.utils"
 
+local ask_to_save = require("compile-mode.utils").ask_to_save
 local wk = require "which-key"
 local builtin = require "telescope.builtin"
 local xchange = require "substitute.exchange"
@@ -20,7 +21,8 @@ local function with(cb, opts)
 end
 local function with_count(cmd, default)
   return function()
-    local count = vim.v.count == 0 and default or vim.v.count
+    local default_count = type(default) == "function" and default() or default
+    local count = vim.v.count == 0 and default_count or vim.v.count
     return "<cmd>" .. count .. cmd .. "<cr>"
   end
 end
@@ -52,6 +54,7 @@ set("n", "<C-l>", "<Cmd>KittyNavigateRight<cr>", { desc = "Move Window Right" })
 set("n", "cx", xchange.operator, { desc = "Substitute" })
 
 set("i", "<C-n>", cmp.complete, { desc = "Autocomplete" })
+set("i", "<C-/>", "<C-o>u")
 
 set("x", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
 set("x", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
@@ -59,6 +62,15 @@ set("x", "X", xchange.visual, { desc = "Substitute" })
 set("x", "C", "<Plug>(abolish-coerce)")
 
 set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit Terminal Mode" })
+
+set("c", "<Esc>b", "<S-Left>")
+set("c", "<Esc>f", "<S-Right>")
+
+set("!", "<C-b>", "<Left>")
+set("!", "<C-f>", "<Right>")
+set("!", "<C-a>", "<Home>")
+set("!", "<C-e>", "<End>")
+set("!", "<C-d>", "<Delete>")
 
 -- {{{ Buffer
 
@@ -214,7 +226,11 @@ set("n", "<leader>ia", "a <esc>", { desc = "Space After" })
 set("n", "<leader>ii", "i <esc>", { desc = "Space Before" })
 set("n", "<leader>io", "o<esc>", { desc = "New Line Down" })
 set("n", "<leader>iO", "O<esc>", { desc = "New Line Up" })
-set("n", "<leader>i<tab>", with_count("RightAlign", 80), { expr = true, desc = "Right Align" })
+
+local right_align = with_count("RightAlign", function()
+  return vim.o.textwidth
+end)
+set("n", "<leader>i<tab>", right_align, { expr = true, desc = "Right Align" })
 
 -- }}}
 
@@ -235,7 +251,10 @@ end, { desc = "Database UI" })
 set("n", "<leader>pp", "<cmd>Lazy<cr>", { desc = "Open Plugin Manager" })
 set("n", "<leader>ps", "<cmd>Lazy sync<cr>", { desc = "Sync Plugins" })
 set("n", "<leader>pr", "<cmd>LazyReloadPlugin<cr>", { desc = "Reload Plugin" })
-set("n", "<leader>pt", "<cmd>PlenaryBustedFile %<cr>", { desc = "Test Current File" })
+set("n", "<leader>pt", function()
+  ask_to_save {}
+  vim.cmd "PlenaryBustedFile %"
+end, { desc = "Test Current File" })
 
 -- }}}
 
@@ -289,6 +308,7 @@ set("n", "<leader>tj", "<cmd>set scrollbind!<cr>", { desc = "Scroll Binding" })
 set("n", "<leader>tz", "<cmd>ZenMode<cr>", { desc = "Zen Mode" })
 set("n", "<leader>tC", "<cmd>set cursorcolumn!<cr>", { desc = "Column Highlighting" })
 set("n", "<leader>tt", "<cmd>tab term<cr>", { desc = "Terminal" })
+set("n", "<leader>tw", "<cmd>set wrap!<cr>", { desc = "Line Wrapping" })
 
 -- }}}
 
