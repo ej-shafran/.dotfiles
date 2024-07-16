@@ -28,4 +28,10 @@ return {
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = { signs = false },
   },
+
+  -- Icons
+  {
+    "nvim-tree/nvim-web-devicons",
+    opts = {},
+  },
 }

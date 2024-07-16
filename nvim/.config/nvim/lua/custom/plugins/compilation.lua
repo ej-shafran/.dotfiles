@@ -43,6 +43,13 @@ return {
             regex = "\\v^\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2} (.+) failed for rules: .+$",
             filename = 1,
           },
+          sass = {
+            regex = "\\s\\+\\(.\\+\\) \\(\\d\\+\\):\\(\\d\\+\\)  .*$",
+            filename = 1,
+            row = 2,
+            col = 3,
+            type = 1,
+          },
         },
       }
     end,

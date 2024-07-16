@@ -27,25 +27,6 @@ local function with_count(cmd, default)
   end
 end
 
-wk.register {
-  ["<leader>"] = {
-    b = { name = "buffer" },
-    c = { name = "code" },
-    d = { name = "debug" },
-    f = { name = "files" },
-    g = { name = "git" },
-    h = { name = "help" },
-    i = { name = "input" },
-    m = { name = "orgmode" },
-    o = { name = "open" },
-    p = { name = "plugin" },
-    q = { name = "quit" },
-    t = { name = "toggle" },
-    v = { name = "vim" },
-    w = { name = "window" },
-  },
-}
-
 set("n", "<Esc>", "<Esc><cmd>noh<cr>")
 set("n", "<C-h>", "<cmd>KittyNavigateLeft <cr>", { desc = "Move Window Left" })
 set("n", "<C-j>", "<Cmd>KittyNavigateDown <cr>", { desc = "Move Window Down" })
@@ -255,6 +236,7 @@ set("n", "<leader>pt", function()
   ask_to_save {}
   vim.cmd "PlenaryBustedFile %"
 end, { desc = "Test Current File" })
+set("n", "<leader>ph", "<cmd>checkhealth<cr>", { desc = "Health Checks" })
 
 -- }}}
 
@@ -267,7 +249,7 @@ set("n", "<leader>qQ", "<cmd>qa!<cr>", { desc = "Quit Forcefully" })
 
 -- {{{ Search
 
-set("n", "<leader>sb", builtin.current_buffer_fuzzy_find, { desc = "Search Buffer" })
+set("n", "<leader>sb", builtin.current_buffer_fuzzy_find, { desc = "Current Buffer" })
 set("n", "<leader>sc", function()
   builtin.live_grep {
     cwd = vim.fn.stdpath "config",
@@ -275,25 +257,25 @@ set("n", "<leader>sc", function()
       return { "--hidden" }
     end,
   }
-end, { desc = "Search Config Directory" })
-set("n", "<leader>sd", builtin.live_grep, { desc = "Search Current Directory" })
+end, { desc = "Config Directory" })
+set("n", "<leader>sd", builtin.live_grep, { desc = "Current Directory" })
 set("n", "<leader>sh", function()
   builtin.live_grep {
     additional_args = function()
       return { "--hidden" }
     end,
   }
-end, { desc = "Search Hidden Files" })
-set("n", "<leader>sr", builtin.resume, { desc = "Resume Last Search" })
-set("n", "<leader>ss", builtin.grep_string, { desc = "Search Workspace For Text At Cursor" })
+end, { desc = "Hidden Files" })
+set("n", "<leader>sr", builtin.resume, { desc = "Resume Last" })
+set("n", "<leader>ss", builtin.grep_string, { desc = "Text At Cursor" })
 set("n", "<leader>sS", function()
   builtin.grep_string {
     additional_args = function()
       return { "--hidden" }
     end,
   }
-end, { desc = "Search Text At Cursor (Hidden)" })
-set("n", "<leader>sH", builtin.search_history, { desc = "Rerun Search From History" })
+end, { desc = "Text At Cursor (Hidden)" })
+set("n", "<leader>sH", builtin.search_history, { desc = "Rerun From History" })
 
 -- }}}
 
