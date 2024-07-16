@@ -34,6 +34,9 @@ if [[ -x /usr/bin/lesspipe ]]; then
   eval "$(SHELL=/bin/sh lesspipe)"
 fi
 
+# Load completion
+autoload -Uz compinit && compinit
+
 # }}}
 
 # {{{ Shell prompt
@@ -55,4 +58,3 @@ sourceif "$HOME/.zsh_utils.local"
 # }}}
 
 # vim: foldmethod=marker
-
