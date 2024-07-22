@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+if [ "$1" == "squash" ]
+then
+	kind="squash and merge"
+elif [ "$1" == "merge" ]
+then
+	kind="merge"
+else
+	echo "pass 'merge' or 'squash' for what should be done with successful PRs" >&2
+	exit 1
+fi
+
+_err() {
+	printf '[ \033[31;1mERR\033[0m ] %s\n' "$*" >&2
+}
+
+_warn() {
+	printf '[ \033[33;1mWARN\033[0m ] %s\n' "$*" >&2
+}
+
+_log() {
+	printf '[ \033[32;1mLOG\033[0m ] %s\n' "$*" >&2
+}
+
+_jq() {
+	base64 --decode | jq -r "$1"
+}
+
+prs="$(gh pr list --json 'number,statusCheckRollup,author,labels' --jq '[.[] | select(.author.login == "app/dependabot")]')"
+
+for row in $(echo "$prs" | jq -r '.[] | @base64')
+do
+	number="$(echo "$row" | _jq '.number')"
+
+	_log "processing pull request $number..."
+
+	status="$(echo "$row" | _jq '.statusCheckRollup | last | .conclusion')"
+	case "$status" in
+		"FAILURE")
+			_err "pull request $number failed status checks"
+			_err "run \`gh pr view --web $number\` to view web browser"
+			;;
+		"IN_PROGRESS")
+			_warn "pull request $number is still in progres"
+			_warn "run \`gh pr view --web $number\` to view web browser"
+			;;
+		"SUCCESS")
+			_log "pull request $number passed status checks;"
+			_log "merging..."
+			gh pr review --approve "$number"
+			gh pr comment  --body "@dependabot $kind" "$number"
+			;;
+		*)
+			_err "unexpected error; got status '$status'"
+			exit 1
+			;;
+	esac
+
+	_log "done with pull request $number"
+	printf \\n
+done
