@@ -336,7 +336,7 @@ set("n", "<leader><tab>n", "<cmd>tabnew<cr>", { desc = "New Tab" })
 set("n", "<leader><tab>q", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 set("n", "<leader><tab>o", "<cmd>tabonly<cr>", { desc = "Close All Other Tabs" })
 set("n", "[<tab>", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
-set("n", "]<tab>", "<cmd>tabNext<cr>", { desc = "Next Tab" })
+set("n", "]<tab>", "<cmd>tabnext<cr>", { desc = "Next Tab" })
 
 -- }}}
 
