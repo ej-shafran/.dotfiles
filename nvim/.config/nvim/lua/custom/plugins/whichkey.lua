@@ -13,8 +13,9 @@ return {
       local wk = require "which-key"
 
       wk.setup {
+        modes = { c = false },
         disable = {
-          filetypes = { "vim" },
+          filetypes = { "vim", "NeogitPopup" },
         },
       }
 
