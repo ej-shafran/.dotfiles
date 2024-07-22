@@ -125,7 +125,7 @@ alias xc="chmod +x"
 alias serve="python3 -m http.server"
 
 # Resource zsh configuration
-alias rc="source ~/.zshrc"
+alias rc="source ~/.zshrc && source ~/.zshenv"
 
 # Enabling colors for dir, vdir, grep, fgrep, egrep
 if [ -x /usr/bin/dircolors ]; then

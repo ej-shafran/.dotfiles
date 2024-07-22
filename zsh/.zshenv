@@ -11,6 +11,9 @@ export _TEST="true"
 # Android SDK
 export ANDROID_HOME="$HOME/AndroidSDK"
 
+# Java Home
+export JAVA_HOME="$(/usr/libexec/java_home)"
+
 # PNPM
 export PNPM_HOME="$HOME/.local/share/pnpm"
 
