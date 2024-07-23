@@ -14,7 +14,7 @@ return {
 
       wk.setup {
         disable = {
-          filetypes = { "vim" },
+          filetypes = { "vim", "NeogitPopup" },
         },
       }
 
