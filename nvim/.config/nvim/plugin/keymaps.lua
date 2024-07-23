@@ -33,6 +33,7 @@ set("n", "<C-j>", "<Cmd>KittyNavigateDown <cr>", { desc = "Move Window Down" })
 set("n", "<C-k>", "<Cmd>KittyNavigateUp   <cr>", { desc = "Move Window Up" })
 set("n", "<C-l>", "<Cmd>KittyNavigateRight<cr>", { desc = "Move Window Right" })
 set("n", "cx", xchange.operator, { desc = "Substitute" })
+set("n", "-", "<cmd>Oil<cr>", { desc = "Open File Explorer" })
 
 set("i", "<C-n>", cmp.complete, { desc = "Autocomplete" })
 set("i", "<C-/>", "<C-o>u")
@@ -46,6 +47,7 @@ set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit Terminal Mode" })
 
 set("c", "<Esc>b", "<S-Left>")
 set("c", "<Esc>f", "<S-Right>")
+set("c", "<C-q>", "<C-f>")
 
 set("!", "<C-b>", "<Left>")
 set("!", "<C-f>", "<Right>")
