@@ -9,10 +9,10 @@ SUDOERS_FILE="/etc/sudoers.d/kanata"
 PLIST_FILE="/Library/LaunchDaemons/com.jtroo.kanata.plist"
 
 # Create a sudoers file entry for kanata
-echo "$(whoami) ALL=(ALL) NOPASSWD: $KANATA_PATH" | tee "$SUDOERS_FILE" > /dev/null
+echo "$(whoami) ALL=(ALL) NOPASSWD: $KANATA_PATH" | sudo tee "$SUDOERS_FILE" > /dev/null
 
 # Create a plist file for the LaunchDaemon
-cat <<EOF | tee "$PLIST_FILE" > /dev/null
+cat <<EOF | sudo tee "$PLIST_FILE" > /dev/null
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -44,4 +44,4 @@ cat <<EOF | tee "$PLIST_FILE" > /dev/null
 EOF
 
 # Load the daemon
-launchctl load -w "$PLIST_FILE"
+sudo launchctl load -w "$PLIST_FILE"

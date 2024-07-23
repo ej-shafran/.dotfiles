@@ -19,6 +19,7 @@
         starship
         stow
         which
+        kanata
         (neovim.overrideAttrs (oldAttrs: {
             version = "0.10.0";
             src = fetchFromGitHub {
