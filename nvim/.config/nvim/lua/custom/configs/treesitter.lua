@@ -30,6 +30,8 @@ local textobjects = {
       ["if"] = { query = "@function.inner", desc = "function" },
       ["ac"] = { query = "@class.outer", desc = "class" },
       ["ic"] = { query = "@class.inner", desc = "class" },
+      ["aP"] = { query = "@parameter.outer", desc = "arg" },
+      ["iP"] = { query = "@parameter.inner", desc = "arg" },
     },
   },
 }

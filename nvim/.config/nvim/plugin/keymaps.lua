@@ -1,7 +1,6 @@
 local utils = require "custom.utils"
 
 local ask_to_save = require("compile-mode.utils").ask_to_save
-local wk = require "which-key"
 local builtin = require "telescope.builtin"
 local xchange = require "substitute.exchange"
 local cmp = require "cmp"
