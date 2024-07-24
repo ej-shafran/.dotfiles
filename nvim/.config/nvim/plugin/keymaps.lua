@@ -69,9 +69,9 @@ set("n", "]b", "<cmd>bn<cr>", { desc = "Next Buffer" })
 
 -- {{{ Code
 
-set("n", "<leader>cc", "<cmd>tab Compile<cr>", { desc = "Compile" })
+set("n", "<leader>cc", "<cmd>Compile<cr>", { desc = "Compile" })
 set("n", "<leader>ch", "<cmd>hide Compile<cr>", { desc = "Compile Without Opening Buffer" })
-set("n", "<leader>cC", "<cmd>tab Recompile<cr>", { desc = "Recompile" })
+set("n", "<leader>cC", "<cmd>Recompile<cr>", { desc = "Recompile" })
 set("n", "<leader>cq", "<cmd>QuickfixErrors<cr>", { desc = "Load Compilation Errors To Quickfix" })
 set("n", "<leader>cH", "<cmd>hide Recompile<cr>", { desc = "Recompile Without Opening Buffer" })
 set("n", "<leader>cf", with(conform.format, { async = true, lsp_fallback = true }), { desc = "Format" })

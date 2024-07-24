@@ -11,7 +11,10 @@ return {
     event = "VeryLazy",
     cmd = { "Compile", "Recompile" },
     config = function()
-      require("compile-mode").setup {
+      ---@module "compile-mode"
+
+      ---@type CompileModeOpts
+      vim.g.compile_mode = {
         same_window_errors = true,
         baleia_setup = true,
         default_command = "",
