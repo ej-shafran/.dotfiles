@@ -29,6 +29,11 @@ alias gsm="git submodule"
 alias gcz="git cz"
 alias gcv="git convencm"
 alias ghlp="git help"
+alias gwt="git worktree"
+alias gbs="git bisect start"
+alias gbsr="git bisect reset"
+alias gbg="git bisect good"
+alias gbb="git bisect bad"
 
 # }}}
 
