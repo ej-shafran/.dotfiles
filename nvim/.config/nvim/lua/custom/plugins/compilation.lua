@@ -12,11 +12,10 @@ return {
     event = "VeryLazy",
     cmd = { "Compile", "Recompile" },
     config = function()
-      ---@module "compile-mode"
+      local compile_mode = require "compile-mode"
 
       ---@type CompileModeOpts
       vim.g.compile_mode = {
-        same_window_errors = true,
         baleia_setup = true,
         default_command = "",
         error_regexp_table = {
@@ -38,11 +37,6 @@ return {
             row = 2,
             col = 3,
           },
-          certain = {
-            regex = "\\v^\\s+FAILED: (.+):(\\d+): ",
-            filename = 1,
-            row = 2,
-          },
           ls_lint = {
             regex = "\\v^\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2} (.+) failed for rules: .+$",
             filename = 1,
@@ -52,7 +46,7 @@ return {
             filename = 1,
             row = 2,
             col = 3,
-            type = 1,
+            type = compile_mode.level.WARNING,
           },
         },
       }
