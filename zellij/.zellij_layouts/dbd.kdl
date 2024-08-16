@@ -1,0 +1,47 @@
+layout {
+    tab_template name="tab-with-bars" {
+        pane size=1 borderless=true {
+            plugin location="tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="status-bar"
+        }
+    }
+
+    tab-with-bars name="Editor" {
+        pane name="Neovim" {
+            cwd "$HOME/projects/day-by-day"
+            command "nvim"
+        }
+    }
+
+    tab-with-bars name="Server/Clients" cwd="$HOME/projects/day-by-day" {
+        pane stacked=true {
+            pane name="Internal Packages" {
+                command "turbo"
+                args "dev" "--filter" "'@internal/*'"
+            }
+            pane name="Server" {
+                cwd "server"
+                command "pnpm"
+                args "dev"
+            }
+            pane name="Client (Staff)" {
+                cwd "client"
+                command "pnpm"
+                args "dev"
+            }
+            pane name="Client (Patient)" {
+                cwd "client-patient"
+                command "pnpm"
+                args "dev"
+            }
+            pane name="Client (Department Board)" {
+                cwd "client-department"
+                command "pnpm"
+                args "dev"
+            }
+        }
+    }
+}
