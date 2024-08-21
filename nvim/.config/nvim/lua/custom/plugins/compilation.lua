@@ -16,6 +16,9 @@ return {
 
       ---@type CompileModeOpts
       vim.g.compile_mode = {
+        environment = {
+          FORCE_COLOR = "1",
+        },
         baleia_setup = true,
         default_command = "",
         error_regexp_table = {
@@ -53,7 +56,7 @@ return {
             filename = 1,
             row = 2,
             col = 3,
-          }
+          },
         },
       }
     end,
