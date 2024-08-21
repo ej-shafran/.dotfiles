@@ -48,6 +48,12 @@ return {
             col = 3,
             type = compile_mode.level.WARNING,
           },
+          kotlin = {
+            regex = "^\\%(e\\|w\\): file://\\(.*\\):\\(\\d\\+\\):\\(\\d\\+\\) ",
+            filename = 1,
+            row = 2,
+            col = 3,
+          }
         },
       }
     end,

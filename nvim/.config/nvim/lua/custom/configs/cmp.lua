@@ -12,8 +12,8 @@ cmp.setup {
     {
       name = "buffer",
       option = {
-        get_bufnrs = vim.api.nvim_list_bufs
-      }
+        get_bufnrs = vim.api.nvim_list_bufs,
+      },
     },
     { name = "path" },
   },
@@ -35,16 +35,6 @@ cmp.setup.cmdline({ "/", "?" }, {
   sources = cmp.config.sources {
     { name = "buffer" },
   },
-})
-
-cmp.setup.cmdline({ "@", ":" }, {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources {
-    { name = "path" },
-    { name = "cmdline" },
-  },
-  ---@diagnostic disable-next-line: missing-fields
-  matching = { disallow_symbol_nonprefix_matching = false },
 })
 
 cmp.setup.filetype("gitcommit", {
