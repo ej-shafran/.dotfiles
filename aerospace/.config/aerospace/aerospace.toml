@@ -16,8 +16,10 @@ alt-shift-k = 'move up'
 alt-shift-l = 'move right'
 
 alt-f = 'fullscreen'
+alt-shift-f = 'layout floating tiling'
 
 alt-p = 'move-workspace-to-monitor next'
+alt-shift-p = 'move-workspace-to-monitor prev'
 
 alt-s = 'layout v_accordion' # 'layout stacking' in i3
 alt-t = 'layout h_accordion' # 'layout tabbed' in i3
@@ -75,7 +77,14 @@ run = ["move-node-to-workspace 1"]
 
 [[on-window-detected]]
 if.app-id = "company.thebrowser.Browser"
+check-further-callbacks = true
+if.window-title-regex-substring = '^[^Space|Little]'
 run = ["move-node-to-workspace 2"]
+
+[[on-window-detected]]
+if.app-id = 'company.thebrowser.Browser'
+check-further-callbacks = true
+run = ["layout floating"]
 
 [[on-window-detected]]
 if.app-id = "org.gnu.Emacs"
