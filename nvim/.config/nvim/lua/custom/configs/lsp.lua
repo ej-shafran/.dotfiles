@@ -1,11 +1,11 @@
 local utils = require "custom.utils"
 
-require("fidget").setup()
+require("fidget").setup {}
 
 require("lazydev").setup {
   library = {
     "luvit-meta/library",
-    "lazy.nvim"
+    "lazy.nvim",
   },
 }
 
