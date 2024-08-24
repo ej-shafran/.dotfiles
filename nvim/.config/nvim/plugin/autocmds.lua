@@ -20,13 +20,6 @@ autocmd({ "BufWinEnter" }, {
   end,
 })
 
--- Go back to original window when compiling
-autocmd("FileType", {
-  group = augroup("compile-mode", { clear = true }),
-  pattern = "compilation",
-  command = "wincmd w",
-})
-
 -- Set local settings for terminal buffers
 autocmd("TermOpen", {
   group = augroup("custom-term-open", {}),
