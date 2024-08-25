@@ -28,6 +28,7 @@ local function with_count(cmd, default)
   end
 end
 
+-- Misc (Normal mode)
 set("n", "<Esc>", "<Esc><cmd>noh<cr>")
 set("n", "<C-h>", "<cmd>KittyNavigateLeft <cr>", { desc = "Move Window Left" })
 set("n", "<C-j>", "<Cmd>KittyNavigateDown <cr>", { desc = "Move Window Down" })
@@ -40,7 +41,7 @@ set("n", "ql", with(cmdbuf.split_open, vim.o.cmdwinheight, { type = "lua/cmd" })
 set("n", "q/", with(cmdbuf.split_open, vim.o.cmdwinheight, { type = "vim/search/forward" }))
 set("n", "q?", with(cmdbuf.split_open, vim.o.cmdwinheight, { type = "vim/search/backward" }))
 
-set("i", "<C-n>", cmp.complete, { desc = "Autocomplete" })
+set("i", "<C-f>", "<Right>")
 set("i", "<C-/>", "<C-o>u")
 
 set("x", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
@@ -52,7 +53,7 @@ set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit Terminal Mode" })
 
 set("c", "<Esc>b", "<S-Left>")
 set("c", "<Esc>f", "<S-Right>")
-set("c", "<C-q>", function()
+set("c", "<C-f>", function()
   local cmdtype = vim.fn.getcmdtype()
 
   -- Right now the `cmdbuf` plugin doesn't seem to support `input()`
@@ -78,8 +79,8 @@ set("c", "<C-q>", function()
   vim.api.nvim_feedkeys(vim.keycode "<C-c>", "n", true)
 end)
 
+set("!", "<C-n>", cmp.complete)
 set("!", "<C-b>", "<Left>")
-set("!", "<C-f>", "<Right>")
 set("!", "<C-a>", "<Home>")
 set("!", "<C-e>", "<End>")
 set("!", "<C-d>", "<Delete>")
@@ -119,6 +120,7 @@ set("n", "K", vim.lsp.buf.hover, { desc = "Hover Documentation" })
 set("n", "gd", builtin.lsp_definitions, { desc = "Goto Definition" })
 set("n", "[d", vim.diagnostic.goto_prev, { desc = "Previous Diagnostic" })
 set("n", "]d", vim.diagnostic.goto_next, { desc = "Next Diagnostic" })
+set("n", "]]d", vim.diagnostic.open_float, { desc = "Open Diagnostic Float" })
 set("n", "[e", with_count("PrevError", 1), { expr = true, desc = "Previous Error" })
 set("n", "]e", with_count("NextError", 1), { expr = true, desc = "Next Error" })
 set("n", "]]e", "<cmd>CurrentError<cr>", { desc = "Current Error" })
@@ -212,14 +214,14 @@ set("n", "[c", function()
   end
   vim.schedule(gitsigns.prev_hunk)
   return "<Ignore>"
-end, { desc = "Previous Hunk" })
+end, { expr = true, desc = "Previous Hunk" })
 set("n", "]c", function()
   if vim.wo.diff then
     return "]c"
   end
   vim.schedule(gitsigns.next_hunk)
   return "<Ignore>"
-end, { desc = "Next Hunk" })
+end, { expr = true, desc = "Next Hunk" })
 
 -- }}}
 
