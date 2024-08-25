@@ -13,7 +13,7 @@ autocmd("TextYankPost", {
 })
 
 -- Don't fold automatically when markdown buffer is loaded
-autocmd({ "BufWinEnter" }, {
+autocmd("BufWinEnter", {
   pattern = { "*.md" },
   callback = function()
     vim.wo.foldenable = false
