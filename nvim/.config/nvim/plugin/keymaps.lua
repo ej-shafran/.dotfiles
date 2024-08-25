@@ -11,6 +11,7 @@ local dap = require "dap"
 local dapui = require "dapui"
 local dapvtext = require "nvim-dap-virtual-text"
 local cmdbuf = require "cmdbuf"
+local todo_comments = require "todo-comments"
 
 local config_dir = vim.fn.stdpath "config"
 local set = vim.keymap.set
@@ -113,6 +114,7 @@ set("n", "<leader>cd", builtin.lsp_definitions, { desc = "Find Definition" })
 set("n", "<leader>ci", builtin.lsp_implementations, { desc = "Find Implementation" })
 set("n", "<leader>cj", builtin.lsp_document_symbols, { desc = "Jump To Symbol" })
 set("n", "<leader>cr", vim.lsp.buf.rename, { desc = "LSP Rename" })
+set("n", "<leader>ct", "<cmd>TodoTelescope<cr>", { desc = "Jump to TODO" })
 set("n", "<leader>cx", "<cmd>.lua<cr>", { desc = "Execute Line" })
 set("n", "<leader>cD", builtin.lsp_references, { desc = "Jump To References" })
 set("n", "<leader>cX", "<cmd>so<cr>", { desc = "Execute Buffer" })
@@ -126,6 +128,8 @@ set("n", "]e", with_count("NextError", 1), { expr = true, desc = "Next Error" })
 set("n", "]]e", "<cmd>CurrentError<cr>", { desc = "Current Error" })
 set("n", "[q", "<cmd>cp<cr>", { desc = "Previous Quickfix" })
 set("n", "]q", "<cmd>cn<cr>", { desc = "Next Quickfix" })
+set("n", "[t", todo_comments.jump_prev, { desc = "Previous TODO" })
+set("n", "]t", todo_comments.jump_next, { desc = "Next TODO" })
 
 set({ "i", "s" }, "<C-l>", function()
   return vim.snippet.active { direction = 1 } and vim.snippet.jump(1)
