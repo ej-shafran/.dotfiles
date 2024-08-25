@@ -209,9 +209,16 @@ set("n", "<leader>gC", builtin.git_commits, { desc = "Choose Commit" })
 set("n", "<leader>gc", "<cmd>Neogit commit<cr>", { desc = "Create Commit" })
 set("n", "<leader>gf", "<cmd>Neogit kind=floating<cr>", { desc = "Neogit (Floating)" })
 set("n", "<leader>gg", "<cmd>Neogit<cr>", { desc = "Neogit" })
-set("n", "<leader>gh", "<cmd>Gitsigns preview_hunk<cr>", { desc = "Preview Hunk" })
+set("n", "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", { desc = "Preview Hunk" })
 set("n", "<leader>ga", "<cmd>Gitsigns stage_hunk<cr>", { desc = "Preview Hunk" })
 set("n", "<leader>gs", builtin.git_status, { desc = "Browse Status" })
+set("n", "<leader>ghr", "<cmd>DiffviewOpen origin/HEAD...HEAD --imply-local<cr>", { desc = "Review Pull Request" })
+set(
+  "n",
+  "<leader>ghh",
+  "<cmd>DiffviewFileHistory --range=origin/HEAD...HEAD --right-only --no-merges<cr>",
+  { desc = "Review Pull Request (Commits)" }
+)
 set("n", "[c", function()
   if vim.wo.diff then
     return "[c"
