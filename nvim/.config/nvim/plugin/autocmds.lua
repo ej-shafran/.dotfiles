@@ -34,7 +34,7 @@ autocmd("TermOpen", {
 autocmd("User", {
   group = augroup("custom-command-window", {}),
   pattern = { "CmdbufNew" },
-  callback = function()
-    require "custom.configs.cmdbuf"
+  callback = function(args)
+    require("custom.configs.cmdbuf").setup(args.bufnr)
   end,
 })
