@@ -35,6 +35,6 @@ autocmd("User", {
   group = augroup("custom-command-window", {}),
   pattern = { "CmdbufNew" },
   callback = function(args)
-    require("custom.configs.cmdbuf").setup(args.bufnr)
+    require("custom.configs.cmdbuf").setup(args.buf)
   end,
 })
