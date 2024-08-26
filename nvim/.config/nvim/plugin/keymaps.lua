@@ -59,6 +59,7 @@ set("c", "<C-f>", function()
 
   -- Right now the `cmdbuf` plugin doesn't seem to support `input()`
   if cmdtype == "" or cmdtype == "@" then
+    vim.api.nvim_feedkeys(vim.keycode "<C-f>", "n", true)
     return
   end
 
