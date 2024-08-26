@@ -32,5 +32,5 @@ local abolishes = {
 }
 
 for _, abolish in ipairs(abolishes) do
-  vim.cmd("Abolish " .. abolish[1] .. " " .. abolish[2])
+  vim.cmd.Abolish { args = abolish }
 end
