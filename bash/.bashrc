@@ -115,6 +115,11 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# Terraform completion
+if command -v terraform >/dev/null; then
+  complete -C "$(which terraform)" terraform
+fi
+
 # }}}
 
 # {{{ Set system PATH
