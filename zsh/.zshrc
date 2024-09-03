@@ -37,6 +37,12 @@ fi
 # Load completion
 autoload -Uz compinit && compinit
 
+# Terraform completion
+if command -v terraform >/dev/null; then
+  autoload -U +X bashcompinit && bashcompinit
+  complete -o nospace -C "$(which terraform)" terraform
+fi
+
 # }}}
 
 # {{{ Shell prompt
