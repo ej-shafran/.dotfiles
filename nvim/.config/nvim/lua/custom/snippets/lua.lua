@@ -38,4 +38,16 @@ ls.add_snippets("lua", {
       }
     )
   ),
+  s(
+    "meta",
+    fmt(
+      [[
+      ---@meta _
+      error('Cannot require meta file')
+
+      {}
+      ]],
+      i(0)
+    )
+  ),
 })

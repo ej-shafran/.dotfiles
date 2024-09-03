@@ -1,4 +1,6 @@
-require("telescope").setup {
+local telescope = require "telescope"
+
+telescope.setup {
   extensions = {
     wrap_results = true,
 
@@ -9,5 +11,6 @@ require("telescope").setup {
   },
 }
 
-pcall(require("telescope").load_extension, "fzf")
-pcall(require("telescope").load_extension, "ui-select")
+pcall(telescope.load_extension, "fzf")
+pcall(telescope.load_extension, "ui-select")
+telescope.load_extension "import"

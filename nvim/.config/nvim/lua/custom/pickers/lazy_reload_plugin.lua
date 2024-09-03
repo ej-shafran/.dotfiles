@@ -53,7 +53,7 @@ function M.run(opts)
         actions.select_default:replace(function()
           actions.close(buffer)
           local selection = action_state.get_selected_entry()
-          vim.cmd.Lazy { args = { "reload", selection.value.name } }
+          vim.cmd("Lazy reload " .. selection.value.name)
         end)
         return true
       end,
