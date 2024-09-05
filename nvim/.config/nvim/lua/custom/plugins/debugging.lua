@@ -1,3 +1,5 @@
+-- Debugging inside Neovim
+
 ---@type LazySpec
 return {
   {

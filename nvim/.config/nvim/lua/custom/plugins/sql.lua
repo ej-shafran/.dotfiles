@@ -1,3 +1,5 @@
+-- Database management inside Neovim
+
 ---@type LazySpec
 return {
   "tpope/vim-dadbod",
