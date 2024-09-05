@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+usage() {
+	printf '\n'
+	printf 'Delete all branches which have no remote version.\n'
+	printf '\n'
+	printf 'Usage: git bclean [options]\n'
+	printf '\n'
+	printf 'Options:\n'
+	printf '\t-h --help  Show this help message\n'
+}
+
+while getopts 'h' option; do
+	case "$option" in
+		h)
+			usage
+			exit 0
+			;;
+		*)
+			usage
+			exit 1
+			;;
+	esac
+done
+
+LOCAL_BRANCHES=$(git branch --list --format '%(refname:short)')
+REMOTE_BRANCHES=$(git branch --list --remotes --format '%(refname:short)')
+
+bclean() {
+	local branch="$1"
+
+	local found=0
+	for remote in $REMOTE_BRANCHES; do
+		if [ "${remote/origin\//}" = "$branch" ]; then
+			found=1
+			break
+		fi
+	done
+
+	[ "$found" -eq 0 ] && git branch -D "$branch" || echo "Not deleting branch $branch..."
+}
+
+for branch in $LOCAL_BRANCHES; do
+	bclean "$branch"
+done
