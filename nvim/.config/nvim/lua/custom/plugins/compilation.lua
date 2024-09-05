@@ -34,6 +34,12 @@ return {
             row = 2,
             col = 3,
           },
+          typescript_new = {
+            regex = "^\\(.\\+\\):\\([1-9][0-9]*\\):\\([1-9][0-9]*\\) - error TS[1-9][0-9]*:",
+            filename = 1,
+            row = 2,
+            col = 3,
+          },
           gradlew = {
             regex = "^e:\\s\\+file://\\(.\\+\\):\\(\\d\\+\\):\\(\\d\\+\\) ",
             filename = 1,
