@@ -27,13 +27,15 @@ _jq() {
 	base64 --decode | jq -r "$1"
 }
 
-prs="$(gh pr list --json 'number,statusCheckRollup,author,labels' --jq '[.[] | select(.author.login == "app/dependabot")]')"
+prs="$(gh pr list --json 'title,number,statusCheckRollup,author,labels' --jq '[.[] | select(.author.login == "app/dependabot")]')"
 
 for row in $(echo "$prs" | jq -r '.[] | @base64')
 do
 	number="$(echo "$row" | _jq '.number')"
+	title="$(echo "$row" | _jq '.title')"
 
 	_log "processing pull request $number..."
+	_log "($title)"
 
 	status="$(echo "$row" | _jq '.statusCheckRollup | last | .conclusion')"
 	case "$status" in
@@ -42,7 +44,11 @@ do
 			_err "run \`gh pr view --web $number\` to view web browser"
 			;;
 		"IN_PROGRESS")
-			_warn "pull request $number is still in progres"
+			_warn "pull request $number is still in progress"
+			_warn "run \`gh pr view --web $number\` to view web browser"
+			;;
+		"")
+			_warn "pull request $number is still in progress"
 			_warn "run \`gh pr view --web $number\` to view web browser"
 			;;
 		"SUCCESS")
