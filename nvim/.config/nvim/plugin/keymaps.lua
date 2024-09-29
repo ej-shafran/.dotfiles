@@ -12,6 +12,7 @@ local dapui = require "dapui"
 local dapvtext = require "nvim-dap-virtual-text"
 local cmdbuf = require "cmdbuf"
 local todo_comments = require "todo-comments"
+local oil = require "oil"
 
 local config_dir = vim.fn.stdpath "config"
 local set = vim.keymap.set
@@ -190,6 +191,12 @@ set("n", "<leader>ff", builtin.find_files, { desc = "Find Files" })
 set("n", "<leader>fh", with(builtin.find_files, { hidden = true }), { desc = "Find Hidden Files" })
 set("n", "<leader>fi", with(builtin.find_files, { hidden = true, no_ignore = true }), { desc = "Find Ignored Files" })
 set("n", "<leader>fc", with(builtin.find_files, { hidden = true, cwd = config_dir }), { desc = "Find Config Files" })
+set("n", "<leader>fo", function()
+  builtin.find_files { cwd = oil.get_current_dir() }
+end, { desc = "Find In Oil Directory" })
+set("n", "<leader>fO", function()
+  builtin.find_files { cwd = oil.get_current_dir(), hidden = true }
+end, { desc = "Find Hidden In Oil Directory" })
 set("n", "<leader>fg", builtin.git_files, { desc = "Find Git Files" })
 set("n", "<leader>fr", builtin.oldfiles, { desc = "Recent Files" })
 set("n", "<leader>fl", function()
@@ -323,6 +330,17 @@ set("n", "<leader>sS", function()
   }
 end, { desc = "Text At Cursor (Hidden)" })
 set("n", "<leader>sH", builtin.search_history, { desc = "Rerun From History" })
+set("n", "<leader>so", function()
+  builtin.live_grep { cwd = oil.get_current_dir() }
+end, { desc = "Oil Directory" })
+set("n", "<leader>so", function()
+  builtin.live_grep {
+    cwd = oil.get_current_dir(),
+    additional_args = function()
+      return { "--hidden" }
+    end,
+  }
+end, { desc = "Oil Directory (Hidden)" })
 
 -- }}}
 
