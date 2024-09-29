@@ -34,6 +34,9 @@ alias gbs="git bisect start"
 alias gbsr="git bisect reset"
 alias gbg="git bisect good"
 alias gbb="git bisect bad"
+alias gft="git fetch --prune --all"
+alias grb="git rebase"
+alias grbi="git rebase -i"
 
 # }}}
 
@@ -65,7 +68,8 @@ alias noder="node ~/.repl.cjs"
 
 # PNPM
 alias pm="pnpm"
-alias in="pnpm --dir"
+alias pmc="pnpm -C"
+alias pmi="pnpm install"
 
 # TurboRepo
 alias tb="turbo"
@@ -77,10 +81,6 @@ alias pip="python3 -m pip"
 # Docker
 alias dk="docker"
 alias dkc="docker compose"
-
-# Neovim
-alias ovim="/usr/bin/vim"
-alias vim="nvim"
 
 # `fzf` - fuzzy file finder
 alias fzf='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'

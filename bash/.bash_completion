@@ -28,6 +28,14 @@ complete -F _complete_alias gsm
 complete -F _complete_alias gcz
 complete -F _complete_alias gcv
 complete -F _complete_alias ghlp
+complete -F _complete_alias gwt
+complete -F _complete_alias gbs
+complete -F _complete_alias gbsr
+complete -F _complete_alias gbg
+complete -F _complete_alias gbb
+complete -F _complete_alias gft
+complete -F _complete_alias grb
+complete -F _complete_alias grbi
 
 complete -F _complete_alias dk
 complete -F _complete_alias dkc
