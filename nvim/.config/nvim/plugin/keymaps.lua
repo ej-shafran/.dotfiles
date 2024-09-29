@@ -356,6 +356,8 @@ set("n", "<leader>tz", "<cmd>ZenMode<cr>", { desc = "Zen Mode" })
 set("n", "<leader>tC", "<cmd>set cursorcolumn!<cr>", { desc = "Column Highlighting" })
 set("n", "<leader>tt", "<cmd>tab term<cr>", { desc = "Terminal" })
 set("n", "<leader>tw", "<cmd>set wrap!<cr>", { desc = "Line Wrapping" })
+set("n", "<leader>tf", "<cmd>AutoformatToggle<cr>", { desc = "Format On Save (Buffer)" })
+set("n", "<leader>tF", "<cmd>AutoformatToggle!<cr>", { desc = "Format On Save (Global)" })
 
 -- }}}
 
