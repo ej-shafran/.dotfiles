@@ -10,7 +10,6 @@ local gitsigns = require "gitsigns"
 local dap = require "dap"
 local dapui = require "dapui"
 local dapvtext = require "nvim-dap-virtual-text"
-local cmdbuf = require "cmdbuf"
 local todo_comments = require "todo-comments"
 local oil = require "oil"
 
@@ -38,10 +37,6 @@ set("n", "<C-k>", "<Cmd>KittyNavigateUp   <cr>", { desc = "Move Window Up" })
 set("n", "<C-l>", "<Cmd>KittyNavigateRight<cr>", { desc = "Move Window Right" })
 set("n", "cx", xchange.operator, { desc = "Substitute" })
 set("n", "-", "<cmd>Oil<cr>", { desc = "Open File Explorer" })
-set("n", "q:", with(cmdbuf.split_open, vim.o.cmdwinheight))
-set("n", "ql", with(cmdbuf.split_open, vim.o.cmdwinheight, { type = "lua/cmd" }))
-set("n", "q/", with(cmdbuf.split_open, vim.o.cmdwinheight, { type = "vim/search/forward" }))
-set("n", "q?", with(cmdbuf.split_open, vim.o.cmdwinheight, { type = "vim/search/backward" }))
 
 set("i", "<C-f>", "<Right>")
 set("i", "<C-/>", "<C-o>u")
@@ -55,32 +50,6 @@ set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit Terminal Mode" })
 
 set("c", "<Esc>b", "<S-Left>")
 set("c", "<Esc>f", "<S-Right>")
-set("c", "<C-f>", function()
-  local cmdtype = vim.fn.getcmdtype()
-
-  -- Right now the `cmdbuf` plugin doesn't seem to support `input()`
-  if cmdtype == "" or cmdtype == "@" then
-    vim.api.nvim_feedkeys(vim.keycode "<C-f>", "n", true)
-    return
-  end
-
-  ---@type CmdbufHandlerType
-  local cmdbuftype = "vim/cmd"
-  if cmdtype == "@" then
-    cmdbuftype = "vim/input"
-  elseif cmdtype == "/" then
-    cmdbuftype = "vim/search/forward"
-  elseif cmdtype == "?" then
-    cmdbuftype = "vim/search/backward"
-  end
-
-  cmdbuf.split_open(vim.o.cmdwinheight, {
-    line = vim.fn.getcmdline(),
-    column = vim.fn.getcmdpos(),
-    type = cmdbuftype,
-  })
-  vim.api.nvim_feedkeys(vim.keycode "<C-c>", "n", true)
-end)
 
 set("!", "<C-n>", cmp.complete)
 set("!", "<C-b>", "<Left>")

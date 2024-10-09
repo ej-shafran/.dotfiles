@@ -29,12 +29,3 @@ autocmd("TermOpen", {
     vim.opt_local.scrolloff = 0
   end,
 })
-
--- Custom command window settings
-autocmd("User", {
-  group = augroup("custom-command-window", {}),
-  pattern = { "CmdbufNew" },
-  callback = function(args)
-    require("custom.configs.cmdbuf").setup(args.buf)
-  end,
-})
