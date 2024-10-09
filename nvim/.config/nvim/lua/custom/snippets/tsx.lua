@@ -6,6 +6,18 @@ local i = ls.insert_node
 local f = ls.function_node
 local fmt = require("luasnip.extras.fmt").fmt
 
+---@param str string
+---@return string
+local function to_pascal_case(str)
+  return str:sub(1, 1):upper() .. str:sub(2, -1)
+end
+
+---@param str string
+---@return string
+local function to_camel_case(str)
+  return str:sub(1, 1):lower() .. str:sub(2, -1)
+end
+
 ls.add_snippets("typescriptreact", {
   s(
     "component",
@@ -43,7 +55,7 @@ ls.add_snippets("typescriptreact", {
           return ""
         end
 
-        return state:sub(1, 1):upper() .. state:sub(2, -1)
+        return to_pascal_case(state)
       end, { 1 }),
       i(2),
     })
@@ -59,6 +71,40 @@ ls.add_snippets("typescriptreact", {
       {
         i(1),
         i(2),
+      }
+    )
+  ),
+  s(
+    "context",
+    fmt(
+      [[
+      import {{ createContextHook }} from "@hilma/tools";
+      import {{ createContext }} from "react";
+
+      export interface {}Context {{
+        {}
+      }}
+
+      export const {camel}Context = createContext<{Pascal}Context | null>(null);
+      {camel}Context.displayName = "{Pascal}";
+      export const use{Pascal} = createContextHook({camel}Context);
+      ]],
+      {
+        i(1),
+        i(0),
+        Pascal = f(function(args)
+          local state = args[1][1] --[[@as string]]
+          return state
+        end, { 1 }),
+        camel = f(function(args)
+          local state = args[1][1] --[[@as string]]
+
+          if state:len() == 0 then
+            return ""
+          end
+
+          return to_camel_case(state)
+        end, { 1 }),
       }
     )
   ),

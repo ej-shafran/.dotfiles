@@ -25,6 +25,7 @@ return {
         scss = { "prettierd", "prettier" },
         markdown = { "prettierd", "prettier" },
         json = { "prettierd", "prettier" },
+        jsonc = { "prettierd", "prettier" },
         yaml = { "prettierd", "prettier" },
         typescriptreact = { "prettierd", "prettier" },
         go = { "gofmt" },
