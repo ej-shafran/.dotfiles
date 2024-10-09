@@ -33,7 +33,7 @@ if utils.has_python then
   }
 end
 if utils.has_js then
-  servers.tsserver = {}
+  servers.ts_ls = {}
   servers.eslint = {}
 end
 if utils.has_go then
