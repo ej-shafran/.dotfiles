@@ -35,9 +35,6 @@ symbol = "🧊 "
 
 # DISABLED
 
-[cmd_duration]
-disabled = true
-
 [aws]
 disabled = true
 
