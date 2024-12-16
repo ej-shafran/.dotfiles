@@ -28,6 +28,17 @@ mkcd() {
   cd "$1" || exit
 }
 
+ext() {
+  local old_extension
+  old_extension="$(basename "$1")"
+  old_extension="${old_extension##*.}"
+
+  local new_extension
+  new_extension="${2#.}"
+
+  rename "s/\\.${old_extension}$/.${new_extension}/" "$1"
+}
+
 # }}}
 
 # {{{ MySQL functions
