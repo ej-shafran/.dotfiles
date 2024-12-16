@@ -38,6 +38,7 @@ alias gft="git fetch --prune --all"
 alias grb="git rebase"
 alias grbi="git rebase -i -r"
 alias gmr="git merge"
+alias glast="git commit --amend -C@"
 
 # }}}
 
