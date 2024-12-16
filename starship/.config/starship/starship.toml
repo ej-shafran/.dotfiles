@@ -33,10 +33,10 @@ symbol = "[⬢](bold green) "
 [pulumi]
 symbol = "🧊 "
 
-# DISABLED
-
 [aws]
-disabled = true
+force_display = true
+
+# DISABLED
 
 [gcloud]
 disabled = true
