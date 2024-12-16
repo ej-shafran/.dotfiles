@@ -25,7 +25,7 @@
     width = (300, 700)
 
     # dynamic height
-    height = (150, 700)
+    height = (50, 700)
 
     # Position the notification in the top right corner
     origin = top-right
