@@ -1,3 +1,5 @@
+# vim: filetype=config
+
 [global]
     ### Display ###
 
@@ -19,19 +21,17 @@
 
     ### Geometry ###
 
-    # dynamic width from 0 to 300
-    # width = (0, 300)
-    # constant width of 300
-    width = 500
+    # dynamic width
+    width = (300, 700)
 
-    # The maximum height of a single notification, excluding the frame.
-    height = 300
+    # dynamic height
+    height = (150, 700)
 
     # Position the notification in the top right corner
     origin = top-right
 
     # Offset from the origin
-    offset = 10x50
+    offset = (10, 50)
 
     # Scale factor. It is auto-detected if value is 0.
     scale = 0
@@ -172,9 +172,8 @@
     # Set to -1 to disable.
     show_age_threshold = 60
 
-    # Split notifications into multiple lines if they don't fit into
-    # geometry.
-    word_wrap = no
+    # Split notifications into multiple lines if they don't fit.
+    word_wrap = yes
 
     # When word_wrap is set to no, specify where to make an ellipsis in long lines.
     # Possible values are "start", "middle" and "end".
@@ -209,7 +208,7 @@
     max_icon_size = 32
 
     # Paths to default icons.
-    icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
+    icon_path = ~/.config/dunst/:/usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/
 
     ### History ###
 
@@ -308,7 +307,7 @@ context = ctrl+shift+period
     foreground = "#2e3440"
     frame_color = "#2e3440"
     highlight = "#2e3440"
-    icon = ~/.config/dunst/low.png
+    icon = low
     timeout = 10
 
 [urgency_normal]
@@ -316,7 +315,7 @@ context = ctrl+shift+period
     foreground = "#a9b1d6"
     frame_color = "#a9b1d6"
     highlight = "#a9b1d6"
-    icon = ~/.config/dunst/normal.png
+    icon = normal
     timeout = 10
 
 [urgency_critical]
@@ -324,5 +323,5 @@ context = ctrl+shift+period
     foreground = "#f7768e"
     frame_color = "#f7768e"
     highlight = "#f7768e"
-    icon = ~/.config/dunst/critical.png
+    icon = critical
     timeout = 0
