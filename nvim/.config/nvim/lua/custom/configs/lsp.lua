@@ -11,6 +11,7 @@ require("lazydev").setup {
 
 local servers = {
   clangd = {},
+  jsonls = {},
   lua_ls = {
     settings = {
       Lua = {
