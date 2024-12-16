@@ -36,7 +36,8 @@ alias gbg="git bisect good"
 alias gbb="git bisect bad"
 alias gft="git fetch --prune --all"
 alias grb="git rebase"
-alias grbi="git rebase -i"
+alias grbi="git rebase -i -r"
+alias gmr="git merge"
 
 # }}}
 

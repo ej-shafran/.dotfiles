@@ -36,6 +36,7 @@ complete -F _complete_alias gbb
 complete -F _complete_alias gft
 complete -F _complete_alias grb
 complete -F _complete_alias grbi
+complete -F _complete_alias gmr
 
 complete -F _complete_alias dk
 complete -F _complete_alias dkc
