@@ -4,7 +4,7 @@ local parsers = { "lua", "c", "markdown" }
 if utils.has_python then
   table.insert(parsers, "python")
 end
-if utils.has_js then
+if utils.has_nodejs then
   table.insert(parsers, "typescript")
   table.insert(parsers, "tsx")
 end
@@ -35,7 +35,7 @@ local textobjects = {
     },
   },
 }
-if utils.has_js then
+if utils.has_nodejs then
   textobjects.select.keymaps["aa"] = { query = "@jsx_attr", desc = "JSX attribute" }
 end
 

@@ -33,7 +33,7 @@ if utils.has_python then
     },
   }
 end
-if utils.has_js then
+if utils.has_nodejs then
   servers.ts_ls = {}
   servers.eslint = {}
 end

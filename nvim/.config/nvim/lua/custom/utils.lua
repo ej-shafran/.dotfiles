@@ -1,10 +1,10 @@
 local M = {}
 
 M.has_python = vim.fn.executable "python3" ~= 0 or vim.fn.executable "python" ~= 0
-M.has_js = vim.fn.executable "node" ~= 0
+M.has_nodejs = vim.fn.executable "node" ~= 0
 M.has_go = vim.fn.executable "go" ~= 0
 M.has_zig = vim.fn.executable "zig" ~= 0
-M.has_haskell = vim.fn.executable("ghc") ~= 0
+M.has_haskell = vim.fn.executable "ghc" ~= 0
 
 function M.kill_other_buffers()
   local buffer = vim.api.nvim_get_current_buf()
