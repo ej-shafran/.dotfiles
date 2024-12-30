@@ -1,10 +1,26 @@
 local utils = require "custom.utils"
 
-local parsers = { "lua", "c", "markdown" }
+local parsers = {
+  "bash",
+  "c",
+  "cmake",
+  "cpp",
+  "gitcommit",
+  "json",
+  "jsonc",
+  "lua",
+  "make",
+  "markdown",
+  "markdown_inline",
+  "yaml",
+}
 if utils.has_python then
   table.insert(parsers, "python")
 end
 if utils.has_nodejs then
+  table.insert(parsers, "css")
+  table.insert(parsers, "html")
+  table.insert(parsers, "javascript")
   table.insert(parsers, "typescript")
   table.insert(parsers, "tsx")
 end
@@ -18,6 +34,9 @@ if utils.has_zig then
 end
 if utils.has_haskell then
   table.insert(parsers, "haskell")
+end
+if utils.has_terraform then
+  table.insert(parsers, "terraform")
 end
 
 local textobjects = {

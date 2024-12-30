@@ -10,8 +10,11 @@ require("lazydev").setup {
 }
 
 local servers = {
+  bashls = {},
   clangd = {},
+  cmake = {},
   jsonls = {},
+  yamlls = {},
   lua_ls = {
     settings = {
       Lua = {
@@ -34,6 +37,8 @@ if utils.has_python then
   }
 end
 if utils.has_nodejs then
+  servers.html = {}
+  servers.cssls = {}
   servers.ts_ls = {}
   servers.eslint = {}
 end
@@ -42,6 +47,9 @@ if utils.has_go then
 end
 if utils.has_zig then
   servers.zls = {}
+end
+if utils.has_terraform then
+  servers.terraformls = {}
 end
 
 local capabilities = nil

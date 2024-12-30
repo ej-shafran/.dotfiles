@@ -5,6 +5,7 @@ M.has_nodejs = vim.fn.executable "node" ~= 0
 M.has_go = vim.fn.executable "go" ~= 0
 M.has_zig = vim.fn.executable "zig" ~= 0
 M.has_haskell = vim.fn.executable "ghc" ~= 0
+M.has_terraform = vim.fn.executable "terraform" ~= 0
 
 function M.kill_other_buffers()
   local buffer = vim.api.nvim_get_current_buf()
