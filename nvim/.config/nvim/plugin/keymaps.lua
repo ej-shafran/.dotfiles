@@ -152,7 +152,7 @@ end
 set("n", "<leader>f1", harpoon_file_callback(1), { desc = "Harpoon 1st" })
 set("n", "<leader>f2", harpoon_file_callback(2), { desc = "Harpoon 2nd" })
 set("n", "<leader>f3", harpoon_file_callback(3), { desc = "Harpoon 3rd" })
-for i = 4, 10, 1 do
+for i = 4, 9, 1 do
   set("n", "<leader>f" .. i, harpoon_file_callback(i), { desc = "Harpoon " .. i .. "th" })
 end
 set("n", "<leader>fa", function()
