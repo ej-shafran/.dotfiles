@@ -102,7 +102,9 @@ set("n", "[e", with_count("PrevError", 1), { expr = true, desc = "Previous Error
 set("n", "]e", with_count("NextError", 1), { expr = true, desc = "Next Error" })
 set("n", "]]e", "<cmd>CurrentError<cr>", { desc = "Current Error" })
 set("n", "[q", "<cmd>cp<cr>", { desc = "Previous Quickfix" })
+set("n", "[Q", "<cmd>cNfile<cr>", { desc = "Previous Quickfix File" })
 set("n", "]q", "<cmd>cn<cr>", { desc = "Next Quickfix" })
+set("n", "]Q", "<cmd>cnfile<cr>", { desc = "Next Quickfix File" })
 set("n", "[t", todo_comments.jump_prev, { desc = "Previous TODO" })
 set("n", "]t", todo_comments.jump_next, { desc = "Next TODO" })
 
