@@ -81,6 +81,7 @@ set("n", "<leader>cf", with(conform.format, { async = true, lsp_fallback = true 
 set("n", "<leader>ce", builtin.diagnostics, { desc = "List Errors" })
 set("n", "<leader>cq", builtin.quickfix, { desc = "Browse Quickfix List" })
 set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
+set("v", "?", vim.lsp.buf.code_action, { desc = "Code Action" })
 set("n", "<leader>ci", "<cmd>Telescope import<cr>", { desc = "Add Import" })
 set("n", "<leader>cd", builtin.lsp_definitions, { desc = "Find Definition" })
 set("n", "<leader>cI", builtin.lsp_implementations, { desc = "Find Implementation" })
