@@ -35,7 +35,9 @@ set $bin ~/.config/i3/bin
 # {{{ Configuration
 
 # Assign certain applications to workspaces
+# NOTE: the order matters, where earlier = higher priority
 assign [class="kitty"] workspace number 1 $tag1
+assign [title="WhatsApp Web"] workspace number 4 $tag4
 assign [class="Google-chrome"] workspace number 2 $tag2
 assign [class="zen-beta"] workspace number 2 $tag2
 assign [class="Emacs"] workspace number 3 $tag3
