@@ -19,6 +19,7 @@ if utils.has_python then
 end
 if utils.has_nodejs then
   table.insert(parsers, "css")
+  table.insert(parsers, "scss")
   table.insert(parsers, "html")
   table.insert(parsers, "javascript")
   table.insert(parsers, "typescript")
