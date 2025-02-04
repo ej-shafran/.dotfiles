@@ -2,6 +2,9 @@ local dap = require "dap"
 local dapui = require "dapui"
 local virtual_text = require "nvim-dap-virtual-text"
 
+local has_lldb_dap = vim.fn.executable "lldb-dap" ~= 0
+local has_gdb = vim.fn.executable "gdb" ~= 0
+
 dapui.setup()
 virtual_text.setup {}
 
@@ -19,8 +22,10 @@ dap.adapters.gdb = {
   args = { "--quiet", "--interpreter=dap" },
 }
 
-dap.configurations.c = {
-  {
+dap.configurations.c = {}
+
+if has_gdb then
+  table.insert(dap.configurations.c, {
     name = "Run executable (GDB)",
     type = "gdb",
     request = "launch",
@@ -28,8 +33,8 @@ dap.configurations.c = {
       return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
     end,
     cwd = "${workspaceFolder}",
-  },
-  {
+  })
+  table.insert(dap.configurations.c, {
     name = "Run executable with arguments (GDB)",
     type = "gdb",
     request = "launch",
@@ -40,14 +45,17 @@ dap.configurations.c = {
       return vim.split(vim.fn.input "Arguments: ", " +")
     end,
     cwd = "${workspaceFolder}",
-  },
-  {
+  })
+  table.insert(dap.configurations.c, {
     name = "Attach to process (GDB)",
     type = "gdb",
     request = "attach",
     pid = require("dap.utils").pick_process,
-  },
-  {
+  })
+end
+
+if has_lldb_dap then
+  table.insert(dap.configurations.c, {
     name = "Run executable (LLDB)",
     type = "lldb",
     request = "launch",
@@ -55,8 +63,8 @@ dap.configurations.c = {
       return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
     end,
     cwd = "${workspaceFolder}",
-  },
-  {
+  })
+  table.insert(dap.configurations.c, {
     name = "Run executable with arguments (LLDB)",
     type = "lldb",
     request = "launch",
@@ -67,14 +75,15 @@ dap.configurations.c = {
       return vim.split(vim.fn.input "Arguments: ", " +")
     end,
     cwd = "${workspaceFolder}",
-  },
-  {
+  })
+  table.insert(dap.configurations.c, {
     name = "Attach to process (LLDB)",
     type = "lldb",
     request = "attach",
     pid = require("dap.utils").pick_process,
-  },
-}
+  })
+end
+
 dap.configurations.zig = dap.configurations.c
 
 dap.listeners.before.attach.dapui_config = function()
