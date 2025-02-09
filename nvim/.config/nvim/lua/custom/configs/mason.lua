@@ -9,6 +9,12 @@ require("lazydev").setup {
   },
 }
 
+-- DAP adapters
+local adapters = {
+  "js",
+}
+
+-- LSP servers
 local servers = {
   bashls = {},
   clangd = {},
@@ -58,6 +64,10 @@ if pcall(require, "cmp_nvim_lsp") then
 end
 
 require("mason").setup {}
+require("mason-nvim-dap").setup {
+  ensure_installed = adapters,
+  automatic_installation = true,
+}
 require("mason-lspconfig").setup {
   ensure_installed = vim.tbl_keys(servers),
   handlers = {

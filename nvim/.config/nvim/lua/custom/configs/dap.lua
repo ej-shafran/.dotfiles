@@ -8,6 +8,53 @@ local has_gdb = vim.fn.executable "gdb" ~= 0
 dapui.setup()
 virtual_text.setup {}
 
+-- JavaScript (using vscode-js-debug)
+dap.adapters["pwa-node"] = {
+  type = "server",
+  host = "localhost",
+  port = "${port}",
+  executable = {
+    command = "js-debug-adapter",
+    args = { "${port}" },
+  },
+}
+
+dap.configurations.javascript = {
+  {
+    name = "Run file (NodeJS)",
+    type = "pwa-node",
+    request = "launch",
+    program = "${file}",
+    cwd = "${workspaceFolder}",
+  },
+  {
+    name = "Attach to process (NodeJS)",
+    type = "pwa-node",
+    request = "attach",
+    processId = require("dap.utils").pick_process,
+    cwd = "${workspaceFolder}",
+  },
+  {
+    name = "Run script (NPM)",
+    type = "pwa-node",
+    request = "launch",
+    runtimeExecutable = "npm",
+    runtimeArgs = function()
+      return {
+        "run",
+        vim.fn.input "Script name: ",
+      }
+    end,
+    rootPath = "${workspaceFolder}",
+    cwd = "${workspaceFolder}",
+    console = "integratedTerminal",
+    internalConsoleOptions = "neverOpen",
+  },
+}
+dap.configurations.typescript = dap.configurations.javascript
+
+-- C (and the like) with LLDB and GDB
+
 dap.adapters.lldb = {
   id = "lldb",
   type = "executable",

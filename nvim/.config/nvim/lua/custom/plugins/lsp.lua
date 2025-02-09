@@ -17,7 +17,7 @@ return {
       "j-hui/fidget.nvim",
     },
     config = function()
-      require "custom.configs.lsp"
+      require "custom.configs.mason"
     end,
   },
 
