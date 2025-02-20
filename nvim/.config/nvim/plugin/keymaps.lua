@@ -196,6 +196,7 @@ set("n", "<leader>gg", "<cmd>Neogit<cr>", { desc = "Neogit" })
 set("n", "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", { desc = "Preview Hunk" })
 set("n", "<leader>ga", "<cmd>Gitsigns stage_hunk<cr>", { desc = "Preview Hunk" })
 set("n", "<leader>gs", builtin.git_status, { desc = "Browse Status" })
+set("n", "<leader>gm", "<cmd>Gitmoji<cr>", { desc = "Gitmoji Commit" })
 set("n", "<leader>ghr", "<cmd>DiffviewOpen origin/HEAD...HEAD --imply-local<cr>", { desc = "Review Pull Request" })
 set(
   "n",
