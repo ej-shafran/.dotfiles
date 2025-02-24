@@ -1,6 +1,6 @@
 -- Setup leader key
 vim.g.mapleader = " "
-vim.g.localmapleader = " "
+vim.g.maplocalleader = " "
 
 -- Setup lazy.nvim
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
