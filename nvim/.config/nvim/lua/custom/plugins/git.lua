@@ -35,4 +35,19 @@ return {
       },
     },
   },
+
+  -- Github code review/review
+  {
+    "pwntester/octo.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {
+      ssh_aliases = { gh = "github.com" },
+      mappings_disable_default = false,
+    },
+    lazy = false,
+  },
 }
