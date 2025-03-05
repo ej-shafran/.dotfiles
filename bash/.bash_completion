@@ -19,7 +19,6 @@ complete -F _complete_alias glo
 complete -F _complete_alias glog
 complete -F _complete_alias gun
 complete -F _complete_alias gxp
-complete -F _complete_alias gxpy
 complete -F _complete_alias gcb
 complete -F _complete_alias gco
 complete -F _complete_alias gac
@@ -38,6 +37,8 @@ complete -F _complete_alias grb
 complete -F _complete_alias grbi
 complete -F _complete_alias gmr
 complete -F _complete_alias glast
+complete -F _complete_alias gsw
+complete -F _complete_alias grs
 
 complete -F _complete_alias dk
 complete -F _complete_alias dkc

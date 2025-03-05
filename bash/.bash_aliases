@@ -20,8 +20,6 @@ alias glo="git log --oneline"
 alias glog="git log"
 alias gun="git restore --staged"
 alias gxp="git explode"
-alias gxpy="git explode -y"
-alias gcb="git choose-branch"
 alias gco="git checkout"
 alias gac="git commit -a"
 alias gbr="git branch"
@@ -39,6 +37,8 @@ alias grb="git rebase"
 alias grbi="git rebase -i -r"
 alias gmr="git merge"
 alias glast="git commit --amend -C@"
+alias gsw="git switch"
+alias grs="git restore"
 
 # }}}
 
