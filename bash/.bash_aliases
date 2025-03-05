@@ -119,13 +119,15 @@ if command -v eza >/dev/null; then
   alias ls="eza"
 fi
 
+# Copy and paste the results of a command
+if command -v xsel >/dev/null; then
+  command -v pbcopy >/dev/null || alias pbcopy='xsel --clipboard --input'
+  command -v pbpaste >/dev/null ||alias pbpaste='xsel --clipboard --output'
+fi
+
 # }}}
 
 # {{{ Comfort remaps
-
-# Copy and paste the results of a command
-alias pbcopy='xsel --clipboard --input'
-alias pbpaste='xsel --clipboard --output'
 
 # Nicer `ls` commands
 alias ll='ls -alH'
