@@ -42,6 +42,11 @@ export MYSQL_PS1='[\u@\h] \d> '
 # that you don't want to push to git in "$HOME/.bash_configs.local"
 sourceif "$HOME/.bash_configs.local"
 
+# Mark OpenShift as logged in for Starship
+if command -v oc >/dev/null; then
+  oc whoami 2>/dev/null >/dev/null && export OC_LOGGED_IN=true
+fi
+
 # }}}
 
 # {{{ Tool locations

@@ -36,6 +36,17 @@ symbol = "🧊 "
 [aws]
 force_display = true
 
+[kubernetes]
+disabled=false
+format = '[$symbol$user/$context( \($namespace\))]($style) in '	
+detect_env_vars = ["OC_LOGGED_IN"]
+
+[[kubernetes.contexts]]
+context_pattern = ".*/api-(?P<cluster>\\w+).*"
+context_alias = "$cluster"
+user_pattern = "(?P<username>.*)/.*"
+user_alias = "$username"
+
 # DISABLED
 
 [gcloud]
