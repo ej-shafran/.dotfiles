@@ -43,23 +43,12 @@ ext() {
 
 # {{{ MySQL functions
 
-# Create a database
-sql-create() {
-  database="$1"
-
-  mysql -uroot \
-    -e "CREATE DATABASE $database;"
-
-  prinfo "Created database: $database"
-}
-
 # Drop and recreate a database
-sql-reset() {
+sqlreset() {
   database="$1"
 
-  mysql -uroot \
-    -e "DROP DATABASE $database; CREATE DATABASE $database;"
-  prinfo "Dropped and created database: $database"
+  mysql -v \
+    -e "DROP DATABASE IF EXISTS $database; CREATE DATABASE $database;"
 }
 
 # }}}
