@@ -21,6 +21,7 @@ return {
         },
         baleia_setup = true,
         default_command = "",
+        input_word_completion = true,
         error_regexp_table = {
           nodejs = {
             regex = "^\\s\\+at .\\+ (\\(.\\+\\):\\([1-9][0-9]*\\):\\([1-9][0-9]*\\))$",
