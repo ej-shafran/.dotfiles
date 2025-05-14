@@ -19,6 +19,7 @@ return {
         environment = {
           FORCE_COLOR = "1",
         },
+        bang_expansion = true,
         baleia_setup = true,
         default_command = "",
         input_word_completion = true,
