@@ -27,8 +27,10 @@ if command -v kitty >/dev/null; then
   export TERMINAL="kitty"
 fi
 
-# Use `bat` as the pager for `man`
-if command -v bat >/dev/null; then
+# Set default man pager
+if command -v nvim >/dev/null; then
+  export MANPAGER="nvim +Man!"
+elif command -v bat >/dev/null; then
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 fi
 
