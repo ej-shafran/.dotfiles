@@ -9,8 +9,10 @@ sourceif() {
 # Colored `gcc` warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-# Use `bat` as the pager for `man`
-if command -v bat >/dev/null; then
+# Set default man pager
+if command -v nvim >/dev/null; then
+  export MANPAGER="nvim +Man!"
+elif command -v bat >/dev/null; then
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 fi
 
