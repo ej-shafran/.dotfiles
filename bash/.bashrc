@@ -214,6 +214,7 @@ sourceif "$NVM_DIR/bash_completion"
 
 # Fuzzy files
 sourceif "$HOME/.fzf.bash"
+sourceif "$HOME/.local/bin/fzf-git.sh"
 
 # Haskell manager
 sourceif "$GHCUP_DIR/env"
