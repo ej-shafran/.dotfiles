@@ -6,7 +6,7 @@ This package contains configuration for `kanata`, a keyboard remapper.
 
 ## Linux
 
-If you're on macOS, you can run the `linux.sh` script to make Kanata start up as a service (it will require your password).
+If you're on Linux, you can run the `linux.sh` script to make Kanata start up as a service (it will require your password).
 
 ## macOS
 
