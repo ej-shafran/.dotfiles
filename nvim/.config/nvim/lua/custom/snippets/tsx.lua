@@ -5,10 +5,12 @@ local s = ls.snippet
 local i = ls.insert_node
 local f = ls.function_node
 local fmt = require("luasnip.extras.fmt").fmt
+local rep = require("luasnip.extras").rep
 
 ---@param str string
 ---@return string
 local function to_pascal_case(str)
+  str = vim.fn.substitute(str, [[-\([a-z]\)]], [[\u\1]], "g")
   return str:sub(1, 1):upper() .. str:sub(2, -1)
 end
 
@@ -40,6 +42,35 @@ ls.add_snippets("typescriptreact", {
         i(0),
         comp = f(function()
           return vim.fn.expand "%:t:r"
+        end),
+      }
+    )
+  ),
+  s(
+    "html_component",
+    fmt(
+      [[
+      import clsx from "clsx";
+      import styles from "{}";
+
+      export declare namespace {comp} {{
+        export interface Props extends React.ComponentProps<"{}"> {{}}
+      }}
+
+      export function {comp}({{ className, ...rest }}: {comp}.Props) {{
+        return <{} className={{clsx(className, styles.{})}} {{...rest}} />;
+      }}
+
+      {comp}.displayName = "{}";
+      ]],
+      {
+        i(1),
+        i(2),
+        rep(2),
+        i(3),
+        i(4),
+        comp = f(function()
+          return to_pascal_case(vim.fn.expand "%:t:r")
         end),
       }
     )

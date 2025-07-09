@@ -69,6 +69,9 @@ require("mason-nvim-dap").setup {
   automatic_installation = true,
 }
 require("mason-lspconfig").setup {
+  automatic_enable = {
+    exclude = { "biome" },
+  },
   ensure_installed = vim.tbl_keys(servers),
   handlers = {
     function(servername)

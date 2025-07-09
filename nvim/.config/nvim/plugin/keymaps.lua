@@ -73,6 +73,15 @@ set("n", "]b", "<cmd>bn<cr>", { desc = "Next Buffer" })
 -- {{{ Code
 
 set("n", "<leader>cc", "<cmd>Compile<cr>", { desc = "Compile" })
+set("n", "<leader>cw", function()
+  local directory = vim.fn.input("Directory: ", vim.fn.getcwd() .. "/", "file")
+  if directory == "" then
+    return
+  end
+
+  vim.g.compilation_directory = directory
+  require("compile-mode").compile()
+end, { desc = "Compile" })
 set("n", "<leader>ch", "<cmd>hide Compile<cr>", { desc = "Compile Without Opening Buffer" })
 set("n", "<leader>cC", "<cmd>Recompile<cr>", { desc = "Recompile" })
 set("n", "<leader>cq", "<cmd>QuickfixErrors<cr>", { desc = "Load Compilation Errors To Quickfix" })
@@ -197,25 +206,21 @@ set("n", "<leader>gp", "<cmd>Gitsigns preview_hunk<cr>", { desc = "Preview Hunk"
 set("n", "<leader>ga", "<cmd>Gitsigns stage_hunk<cr>", { desc = "Preview Hunk" })
 set("n", "<leader>gs", builtin.git_status, { desc = "Browse Status" })
 set("n", "<leader>gm", "<cmd>Gitmoji<cr>", { desc = "Gitmoji Commit" })
-set("n", "<leader>ghr", "<cmd>DiffviewOpen origin/HEAD...HEAD --imply-local<cr>", { desc = "Review Pull Request" })
-set(
-  "n",
-  "<leader>ghh",
-  "<cmd>DiffviewFileHistory --range=origin/HEAD...HEAD --right-only --no-merges<cr>",
-  { desc = "Review Pull Request (Commits)" }
-)
+set("n", "<leader>gr", "<cmd>Octo review browse<cr>", { desc = "Review Pull Request" })
+set("n", "<leader>gv", "<cmd>Octo review browse<cr>", { desc = "Review Pull Request" })
+set("n", "<leader>gu", gitsigns.reset_hunk, { desc = "Reset Hunk" })
 set("n", "[c", function()
   if vim.wo.diff then
     return "[c"
   end
-  vim.schedule(gitsigns.prev_hunk)
+  vim.schedule(with(gitsigns.nav_hunk, "prev"))
   return "<Ignore>"
 end, { expr = true, desc = "Previous Hunk" })
 set("n", "]c", function()
   if vim.wo.diff then
     return "]c"
   end
-  vim.schedule(gitsigns.next_hunk)
+  vim.schedule(with(gitsigns.nav_hunk, "next"))
   return "<Ignore>"
 end, { expr = true, desc = "Next Hunk" })
 

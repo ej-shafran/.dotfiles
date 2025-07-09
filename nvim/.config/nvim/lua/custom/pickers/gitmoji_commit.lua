@@ -133,7 +133,7 @@ function M.run(opts)
           end
           local first = string.sub(message, 1, 1)
           assert(first ~= string.lower(first), "Use capital letters")
-          local result = vim.system({ "git", "commit", "-m", selection.value.key .. " " .. message }):wait()
+          local result = vim.system({ "git", "commit", "-m", selection.value.emoji .. " " .. message }):wait()
           assert(result.code == 0, result.stderr)
           print(result.stdout)
         end)
