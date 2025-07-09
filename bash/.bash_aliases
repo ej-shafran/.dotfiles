@@ -99,9 +99,9 @@ alias mit_license="curl https://api.github.com/licenses/mit -s | jq '.body' -r"
 
 # {{{ Optional tools
 
-# `thefuck` - correct mistakes in CLI
-if command -v thefuck >/dev/null; then
-  eval "$(thefuck --alias)"
+# `pay-respects` - correct mistakes in CLI
+if command -v pay-respects >/dev/null; then
+  eval "$(pay-respects bash --alias fuck)"
 fi
 
 # `zoxide` - a better `cd`
