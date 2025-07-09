@@ -32,7 +32,7 @@ choose() {
 }
 
 get_tsconfigs() {
-  curl -s 'https://github.com/tsconfig/bases/tree/main/bases' | jq .payload.tree.items[].name -r 
+  curl -sSL 'https://github.com/tsconfig/bases/tree/main/bases' -H 'Accept: application/json' | jq .payload.tree.items[].name -r 
 }
 
 if [ -f "$TARGET" ]; then
@@ -45,4 +45,4 @@ info "please select a \`tsconfig\` template:"
 choice=$(get_tsconfigs | choose)
 
 info "downloading \`$(main_styled "$choice")\` as \`$(main_styled "$TARGET")\`..."
-wget -q "https://raw.githubusercontent.com/tsconfig/bases/main/bases/$choice" -O "$TARGET"
+curl -sSL "https://raw.githubusercontent.com/tsconfig/bases/main/bases/$choice" -o "$TARGET"
