@@ -15,4 +15,14 @@ return {
       require "custom.configs.orgmode"
     end,
   },
+
+  {
+    "MeanderingProgrammer/render-markdown.nvim",
+    dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.icons" },
+    opts = {
+      sign = {
+        enabled = false,
+      },
+    },
+  },
 }
