@@ -83,6 +83,12 @@ local function telescope_find_files(hidden)
     }
   end
 end
+
+local function compile()
+  vim.g.compilation_directory = get_cwd()
+  require("compile-mode").compile()
+end
+
 -- }}}
 
 -- {{{ Keymaps
@@ -92,13 +98,14 @@ vim.keymap.set({ "n", "v", "x" }, "<leader>.", vim.lsp.buf.code_action)
 vim.keymap.set("n", "<leader>?", "<cmd>Telescope help_tags<cr>")
 vim.keymap.set("n", "<leader>`", "<cmd>Telescope resume<cr>")
 vim.keymap.set("n", "<leader>b", "<cmd>Telescope buffers<cr>")
-vim.keymap.set("n", "<leader>c", "<cmd>Compile<cr>")
+vim.keymap.set("n", "<leader>c", compile)
 vim.keymap.set("n", "<leader>C", "<cmd>Recompile<cr>")
-vim.keymap.set("n", "<leader>d", "<cmd>Telescope lsp_definitions<cr>")
+vim.keymap.set("n", "<leader>d", '"+d')
 vim.keymap.set("n", "<leader>f", telescope_find_files(false))
 vim.keymap.set("n", "<leader>F", telescope_find_files(true))
 vim.keymap.set("n", "<leader>g", "<cmd>Neogit<cr>")
 vim.keymap.set("n", "<leader>h", "<cmd>split<cr>")
+vim.keymap.set("n", "<leader>n", "<cmd>enew<cr>")
 vim.keymap.set("n", "<leader>s", telescope_search(false))
 vim.keymap.set("n", "<leader>S", telescope_search(true))
 vim.keymap.set("n", "<leader>v", "<cmd>vsplit<cr>")
@@ -112,6 +119,7 @@ vim.keymap.set("n", "<leader>tt", "<cmd>tab term<cr>")
 vim.keymap.set("n", "<leader>tw", "<cmd>set wrap!<cr>")
 vim.keymap.set("n", "<leader>tf", "<cmd>AutoformatToggle<cr>")
 vim.keymap.set("n", "<leader>tF", "<cmd>AutoformatToggle!<cr>")
+vim.keymap.set("n", "<leader>y", '"+y')
 vim.keymap.set("n", "<leader><tab>n", "<cmd>tabnew<cr>")
 vim.keymap.set("n", "<leader><tab>q", "<cmd>tabclose<cr>")
 vim.keymap.set("n", "<leader><tab>o", "<cmd>tabonly<cr>")
@@ -140,6 +148,7 @@ vim.keymap.set("n", "]c", function()
   end)
   return "<Ignore>"
 end)
+vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>")
 vim.keymap.set("n", "grr", "<cmd>Telescope lsp_references<cr>")
 
 -- }}}
