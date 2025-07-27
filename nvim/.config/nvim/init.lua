@@ -24,7 +24,7 @@ vim.opt.ignorecase = true -- Ignore casing
 vim.opt.smartcase = true -- ...unless there's an uppercase
 vim.opt.swapfile = false -- Disable swapfile
 vim.opt.winborder = "rounded" -- Nicer floating windows
-vim.opt.completeopt = { "noselect", "menuone" } -- Menu for autocompletion, always
+vim.opt.completeopt = { "noselect", "menuone", "fuzzy" } -- Menu for autocompletion, always
 vim.wo.signcolumn = "yes" -- Always keep sign column open
 vim.diagnostic.config { jump = { float = true } } -- Show floating diagnostics when jumping to erro
 vim.filetype.add {
@@ -119,7 +119,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client and client:supports_method "textDocument/completion" then
-      vim.lsp.completion.enable(true, client.id, ev.buf)
+      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
 
       vim.keymap.set({ "i", "s" }, "<C-n>", function()
         vim.lsp.completion.get()
