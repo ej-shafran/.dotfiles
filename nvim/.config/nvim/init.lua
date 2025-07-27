@@ -24,6 +24,7 @@ vim.opt.ignorecase = true -- Ignore casing
 vim.opt.smartcase = true -- ...unless there's an uppercase
 vim.opt.swapfile = false -- Disable swapfile
 vim.opt.winborder = "rounded" -- Nicer floating windows
+vim.opt.completeopt = { "noselect", "menuone" } -- Menu for autocompletion, always
 vim.wo.signcolumn = "yes" -- Always keep sign column open
 vim.diagnostic.config { jump = { float = true } } -- Show floating diagnostics when jumping to erro
 vim.filetype.add {
@@ -91,69 +92,6 @@ end
 
 -- }}}
 
--- {{{ Keymaps
-
-vim.keymap.set("n", "-", "<cmd>Oil<cr>")
-vim.keymap.set({ "n", "v", "x" }, "<leader>.", vim.lsp.buf.code_action)
-vim.keymap.set("n", "<leader>?", "<cmd>Telescope help_tags<cr>")
-vim.keymap.set("n", "<leader>`", "<cmd>Telescope resume<cr>")
-vim.keymap.set("n", "<leader>b", "<cmd>Telescope buffers<cr>")
-vim.keymap.set("n", "<leader>c", compile)
-vim.keymap.set("n", "<leader>C", "<cmd>Recompile<cr>")
-vim.keymap.set("n", "<leader>d", '"+d')
-vim.keymap.set("n", "<leader>f", telescope_find_files(false))
-vim.keymap.set("n", "<leader>F", telescope_find_files(true))
-vim.keymap.set("n", "<leader>g", "<cmd>Neogit<cr>")
-vim.keymap.set("n", "<leader>h", "<cmd>split<cr>")
-vim.keymap.set("n", "<leader>n", "<cmd>enew<cr>")
-vim.keymap.set("n", "<leader>s", telescope_search(false))
-vim.keymap.set("n", "<leader>S", telescope_search(true))
-vim.keymap.set("n", "<leader>v", "<cmd>vsplit<cr>")
-vim.keymap.set("n", "<leader>o", "<cmd>update<cr><cmd>source<cr>")
-vim.keymap.set("n", "<leader>w", "<cmd>write<cr>")
-vim.keymap.set("n", "<leader>p", vim.pack.update)
-vim.keymap.set("n", "<leader>q", "<cmd>quit<cr>")
-vim.keymap.set("n", "<leader>tb", "<cmd>Gitsigns toggle_current_line_blame<cr>")
-vim.keymap.set("n", "<leader>ts", "<cmd>set spell!<cr>")
-vim.keymap.set("n", "<leader>tt", "<cmd>tab term<cr>")
-vim.keymap.set("n", "<leader>tw", "<cmd>set wrap!<cr>")
-vim.keymap.set("n", "<leader>tf", "<cmd>AutoformatToggle<cr>")
-vim.keymap.set("n", "<leader>tF", "<cmd>AutoformatToggle!<cr>")
-vim.keymap.set("n", "<leader>y", '"+y')
-vim.keymap.set("n", "<leader><tab>n", "<cmd>tabnew<cr>")
-vim.keymap.set("n", "<leader><tab>q", "<cmd>tabclose<cr>")
-vim.keymap.set("n", "<leader><tab>o", "<cmd>tabonly<cr>")
-vim.keymap.set("n", "[<tab>", "<cmd>tabprevious<cr>")
-vim.keymap.set("n", "]<tab>", "<cmd>tabnext<cr>")
-
--- Override keymaps
-vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>")
-vim.keymap.set("n", "<Esc>", "<Esc><cmd>noh<cr>")
-vim.keymap.set("n", "[c", function()
-  if vim.wo.diff then
-    return "[c"
-  end
-  vim.schedule(function()
-    ---@diagnostic disable-next-line: param-type-mismatch
-    require("gitsigns").nav_hunk "prev"
-  end)
-  return "<Ignore>"
-end, { expr = true, desc = "Previous Hunk" })
-vim.keymap.set("n", "]c", function()
-  if vim.wo.diff then
-    return "]c"
-  end
-  vim.schedule(function()
-    ---@diagnostic disable-next-line: param-type-mismatch
-    require("gitsigns").nav_hunk "next"
-  end)
-  return "<Ignore>"
-end)
-vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>")
-vim.keymap.set("n", "grr", "<cmd>Telescope lsp_references<cr>")
-
--- }}}
-
 -- {{{ Autocommands
 
 -- Highlight yanks
@@ -195,6 +133,7 @@ vim.pack.add {
   { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" },
   { src = "https://github.com/stevearc/conform.nvim" },
   { src = "https://github.com/lewis6991/gitsigns.nvim" },
+  { src = "https://github.com/L3MON4D3/LuaSnip" },
 }
 
 -- Oil: file explorer
@@ -291,11 +230,127 @@ require("nvim-treesitter.configs").setup {
   },
 }
 
+-- LuaSnip: snippets
+local ls = require "luasnip"
+
+vim.snippet.expand = ls.lsp_expand
+
+---@diagnostic disable-next-line: duplicate-set-field
+vim.snippet.active = function(filter)
+  filter = filter or {}
+  filter.direction = filter.direction or 1
+
+  if filter.direction == 1 then
+    return ls.expand_or_jumpable()
+  else
+    return ls.jumpable(filter.direction)
+  end
+end
+
+---@diagnostic disable-next-line: duplicate-set-field
+vim.snippet.jump = function(direction)
+  if direction == 1 then
+    if ls.expandable() then
+      return ls.expand_or_jump()
+    else
+      return ls.jumpable(1) and ls.jump(1)
+    end
+  else
+    return ls.jumpable(-1) and ls.jump(-1)
+  end
+end
+
+vim.snippet.stop = ls.unlink_current
+
+ls.config.set_config {
+  keep_roots = true,
+  link_roots = true,
+  link_children = true,
+  exit_roots = false,
+  updateevents = { "TextChanged", "TextChangedI" },
+}
+
+for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("snippets/*.lua", true)) do
+  loadfile(ft_path)()
+end
+
 -- lazydev: Lua dev environment
 ---@diagnostic disable-next-line: missing-fields
 require("lazydev").setup {
   library = { "luvit-meta/library" },
 }
+
+-- }}}
+
+-- {{{ Keymaps
+
+vim.keymap.set("n", "-", "<cmd>Oil<cr>")
+vim.keymap.set({ "n", "v", "x" }, "<leader>.", vim.lsp.buf.code_action)
+vim.keymap.set("n", "<leader>?", "<cmd>Telescope help_tags<cr>")
+vim.keymap.set("n", "<leader>`", "<cmd>Telescope resume<cr>")
+vim.keymap.set("n", "<leader>b", "<cmd>Telescope buffers<cr>")
+vim.keymap.set("n", "<leader>c", compile)
+vim.keymap.set("n", "<leader>C", "<cmd>Recompile<cr>")
+vim.keymap.set("n", "<leader>d", '"+d')
+vim.keymap.set("n", "<leader>f", telescope_find_files(false))
+vim.keymap.set("n", "<leader>F", telescope_find_files(true))
+vim.keymap.set("n", "<leader>g", "<cmd>Neogit<cr>")
+vim.keymap.set("n", "<leader>h", "<cmd>split<cr>")
+vim.keymap.set("n", "<leader>n", "<cmd>enew<cr>")
+vim.keymap.set("n", "<leader>s", telescope_search(false))
+vim.keymap.set("n", "<leader>S", telescope_search(true))
+vim.keymap.set("n", "<leader>v", "<cmd>vsplit<cr>")
+vim.keymap.set("n", "<leader>o", "<cmd>update<cr><cmd>source<cr>")
+vim.keymap.set("n", "<leader>w", "<cmd>write<cr>")
+vim.keymap.set("n", "<leader>p", vim.pack.update)
+vim.keymap.set("n", "<leader>q", "<cmd>quit<cr>")
+vim.keymap.set("n", "<leader>r", "<cmd>Telescope oldfiles<cr>")
+vim.keymap.set("n", "<leader>tb", "<cmd>Gitsigns toggle_current_line_blame<cr>")
+vim.keymap.set("n", "<leader>ts", "<cmd>set spell!<cr>")
+vim.keymap.set("n", "<leader>tt", "<cmd>tab term<cr>")
+vim.keymap.set("n", "<leader>tw", "<cmd>set wrap!<cr>")
+vim.keymap.set("n", "<leader>tf", "<cmd>AutoformatToggle<cr>")
+vim.keymap.set("n", "<leader>tF", "<cmd>AutoformatToggle!<cr>")
+vim.keymap.set("n", "<leader>y", '"+y')
+vim.keymap.set("n", "<leader><tab>n", "<cmd>tabnew<cr>")
+vim.keymap.set("n", "<leader><tab>q", "<cmd>tabclose<cr>")
+vim.keymap.set("n", "<leader><tab>o", "<cmd>tabonly<cr>")
+vim.keymap.set("n", "[<tab>", "<cmd>tabprevious<cr>")
+vim.keymap.set("n", "]<tab>", "<cmd>tabnext<cr>")
+
+-- Snippet keymaps
+vim.keymap.set({ "i", "s" }, "<C-l>", function()
+  return vim.snippet.active { direction = 1 } and vim.snippet.jump(1)
+end, { silent = true })
+vim.keymap.set({ "i", "s" }, "<C-h>", function()
+  return vim.snippet.active { direction = -1 } and vim.snippet.jump(-1)
+end, { silent = true })
+
+-- Override keymaps
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>")
+vim.keymap.set("n", "<Esc>", "<Esc><cmd>noh<cr>")
+vim.keymap.set("n", "[c", function()
+  if vim.wo.diff then
+    return "[c"
+  end
+  vim.schedule(function()
+    ---@diagnostic disable-next-line: param-type-mismatch
+    require("gitsigns").nav_hunk "prev"
+  end)
+  return "<Ignore>"
+end, { expr = true, desc = "Previous Hunk" })
+vim.keymap.set("n", "]c", function()
+  if vim.wo.diff then
+    return "]c"
+  end
+  vim.schedule(function()
+    ---@diagnostic disable-next-line: param-type-mismatch
+    require("gitsigns").nav_hunk "next"
+  end)
+  return "<Ignore>"
+end)
+vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>")
+vim.keymap.set("n", "grr", "<cmd>Telescope lsp_references<cr>")
 
 -- }}}
 
@@ -316,11 +371,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client and client:supports_method "textDocument/completion" then
-      vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+      vim.lsp.completion.enable(true, client.id, ev.buf)
+      vim.keymap.set({ "i", "s" }, "<C-n>", function()
+        vim.lsp.completion.get()
+      end)
     end
   end,
 })
-vim.cmd "set completeopt+=noselect"
 
 -- }}}
 
