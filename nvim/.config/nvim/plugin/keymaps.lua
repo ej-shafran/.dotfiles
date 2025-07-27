@@ -338,6 +338,7 @@ set("n", "<leader>tt", "<cmd>tab term<cr>", { desc = "Terminal" })
 set("n", "<leader>tw", "<cmd>set wrap!<cr>", { desc = "Line Wrapping" })
 set("n", "<leader>tf", "<cmd>AutoformatToggle<cr>", { desc = "Format On Save (Buffer)" })
 set("n", "<leader>tF", "<cmd>AutoformatToggle!<cr>", { desc = "Format On Save (Global)" })
+set("n", "<leader>tm", "<cmd>RenderMarkdown toggle<cr>", { desc = "Toggle Markdown Rendering" })
 
 -- }}}
 

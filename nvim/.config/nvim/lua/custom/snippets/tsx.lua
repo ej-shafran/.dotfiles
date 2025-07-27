@@ -25,11 +25,13 @@ ls.add_snippets("typescriptreact", {
     "component",
     fmt(
       [[
-      interface {comp}Props {{
-        {}
+      export declare namespace {comp}{{
+        export interface Props {{
+          {}
+        }}
       }}
 
-      export function {comp}({{{}}}: {comp}Props) {{
+      export function {comp}({{{}}}: {comp}.Props) {{
         {}
 
         return {};
@@ -68,6 +70,60 @@ ls.add_snippets("typescriptreact", {
         i(2),
         rep(2),
         i(3),
+        i(4),
+        comp = f(function()
+          return to_pascal_case(vim.fn.expand "%:t:r")
+        end),
+      }
+    )
+  ),
+  s(
+    "base_ui_component",
+    fmt(
+      [[
+      import {{ {} as BaseUI{parent} }} from "@base-ui-components/react";
+
+      export declare namespace {comp} {{
+        export interface Props extends BaseUI{parent}.{}.Props {{}}
+      }}
+
+      export function {comp}(props: {comp}.Props) {{
+        return <BaseUI{parent}.{child} {{...props}} />;
+      }}
+      ]],
+      {
+        i(1),
+        parent = rep(1),
+        i(2),
+        child = rep(2),
+        comp = f(function()
+          return to_pascal_case(vim.fn.expand "%:t:r")
+        end),
+      }
+    )
+  ),
+  s(
+    "styled_base_ui_component",
+    fmt(
+      [[
+      import {{ {} as BaseUI{parent} }} from "@base-ui-components/react";
+      import clsx from "clsx";
+      import styles from "{}";
+
+      export declare namespace {comp} {{
+        export interface Props extends BaseUI{parent}.{}.Props {{}}
+      }}
+
+      export function {comp}({{ className, ...rest }}: {comp}.Props) {{
+        return <BaseUI{parent}.{child} className={{clsx(className, styles.{})}} {{...rest}} />;
+      }}
+      ]],
+      {
+        i(1),
+        parent = rep(1),
+        i(2),
+        i(3),
+        child = rep(3),
         i(4),
         comp = f(function()
           return to_pascal_case(vim.fn.expand "%:t:r")
