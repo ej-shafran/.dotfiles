@@ -115,6 +115,19 @@ vim.api.nvim_create_autocmd("TermOpen", {
   end,
 })
 
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(ev)
+    local client = vim.lsp.get_client_by_id(ev.data.client_id)
+    if client and client:supports_method "textDocument/completion" then
+      vim.lsp.completion.enable(true, client.id, ev.buf)
+
+      vim.keymap.set({ "i", "s" }, "<C-n>", function()
+        vim.lsp.completion.get()
+      end)
+    end
+  end,
+})
+
 -- }}}
 
 -- {{{ Plugins
@@ -123,6 +136,8 @@ vim.api.nvim_create_autocmd("TermOpen", {
 vim.pack.add {
   { src = "https://github.com/stevearc/oil.nvim" },
   { src = "https://github.com/neovim/nvim-lspconfig" },
+  { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
+  { src = "https://github.com/mason-org/mason.nvim" },
   { src = "https://github.com/nvim-lua/plenary.nvim" },
   { src = "https://github.com/nvim-telescope/telescope.nvim" },
   { src = "https://github.com/folke/lazydev.nvim" },
@@ -212,6 +227,35 @@ vim.g.compile_mode = {
 -- Treesitter: syntax highlights + text-objects
 ---@diagnostic disable-next-line: missing-fields
 require("nvim-treesitter.configs").setup {
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = {},
+  },
+  ensure_installed = {
+    "bash",
+    "c",
+    "gitcommit",
+    "json",
+    "jsonc",
+    "lua",
+    "make",
+    "markdown",
+    "markdown_inline",
+    "yaml",
+    "python",
+    "css",
+    "scss",
+    "html",
+    "javascript",
+    "typescript",
+    "tsx",
+    "go",
+    "gomod",
+    "gosum",
+    "zig",
+    "haskell",
+    "terraform",
+  },
   textobjects = {
     select = {
       enable = true,
@@ -227,6 +271,26 @@ require("nvim-treesitter.configs").setup {
         ["aa"] = { query = "@jsx_attr", desc = "JSX attribute" },
       },
     },
+  },
+}
+
+-- Mason + LSPConfig: install and enable lsp servers
+require("mason").setup {}
+require("mason-lspconfig").setup {
+  ensure_installed = {
+    "lua_ls",
+    "bashls",
+    "clangd",
+    "jsonls",
+    "yamlls",
+    "pylsp",
+    "ts_ls",
+    "html",
+    "cssls",
+    "eslint",
+    "gopls",
+    "zls",
+    "terraformls",
   },
 }
 
@@ -358,26 +422,6 @@ vim.keymap.set("n", "grr", "<cmd>Telescope lsp_references<cr>")
 
 vim.cmd "colorscheme tokyonight-night"
 vim.cmd "highlight clear Folded"
-
--- }}}
-
--- {{{ LSP
-
-vim.lsp.enable {
-  "lua_ls",
-  "ts_ls",
-}
-vim.api.nvim_create_autocmd("LspAttach", {
-  callback = function(ev)
-    local client = vim.lsp.get_client_by_id(ev.data.client_id)
-    if client and client:supports_method "textDocument/completion" then
-      vim.lsp.completion.enable(true, client.id, ev.buf)
-      vim.keymap.set({ "i", "s" }, "<C-n>", function()
-        vim.lsp.completion.get()
-      end)
-    end
-  end,
-})
 
 -- }}}
 
