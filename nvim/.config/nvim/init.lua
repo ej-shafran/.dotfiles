@@ -149,6 +149,7 @@ vim.pack.add {
   { src = "https://github.com/stevearc/conform.nvim" },
   { src = "https://github.com/lewis6991/gitsigns.nvim" },
   { src = "https://github.com/L3MON4D3/LuaSnip" },
+  { src = "https://github.com/ThePrimeagen/harpoon", version = "harpoon2" },
 }
 
 -- Oil: file explorer
@@ -171,6 +172,29 @@ require("oil").setup {
 
 -- Telescope: pickers and fuzzy searches
 require("telescope").setup {}
+
+-- Harpoon: jump between files
+local harpoon = require "harpoon"
+harpoon:setup()
+harpoon:extend {
+  UI_CREATE = function(cx)
+    local function set(keymap, cb)
+      vim.keymap.set("n", keymap, cb, { buffer = cx.bufnr })
+    end
+
+    set("<C-v>", function()
+      require("harpoon").ui:select_menu_item { vsplit = true }
+    end)
+    set("<C-x>", function()
+      require("harpoon").ui:select_menu_item { split = true }
+    end)
+    set("<C-t>", function()
+      require("harpoon").ui:select_menu_item { tabedit = true }
+    end)
+  end,
+}
+
+local hlist = harpoon:list()
 
 -- Neogit: Git client
 require("neogit").setup {
@@ -352,6 +376,14 @@ vim.keymap.set("n", "-", "<cmd>Oil<cr>")
 vim.keymap.set({ "n", "v", "x" }, "<leader>.", vim.lsp.buf.code_action)
 vim.keymap.set("n", "<leader>?", "<cmd>Telescope help_tags<cr>")
 vim.keymap.set("n", "<leader>`", "<cmd>Telescope resume<cr>")
+for i = 1, 9 do
+  vim.keymap.set("n", "<leader>" .. i, function()
+    hlist:select(i)
+  end)
+end
+vim.keymap.set("n", "<leader>a", function()
+  hlist:add()
+end)
 vim.keymap.set("n", "<leader>b", "<cmd>Telescope buffers<cr>")
 vim.keymap.set("n", "<leader>c", compile)
 vim.keymap.set("n", "<leader>C", "<cmd>Recompile<cr>")
@@ -360,6 +392,9 @@ vim.keymap.set("n", "<leader>f", telescope_find_files(false))
 vim.keymap.set("n", "<leader>F", telescope_find_files(true))
 vim.keymap.set("n", "<leader>g", "<cmd>Neogit<cr>")
 vim.keymap.set("n", "<leader>h", "<cmd>split<cr>")
+vim.keymap.set("n", "<leader>l", function()
+  harpoon.ui:toggle_quick_menu(hlist, {})
+end)
 vim.keymap.set("n", "<leader>n", "<cmd>enew<cr>")
 vim.keymap.set("n", "<leader>s", telescope_search(false))
 vim.keymap.set("n", "<leader>S", telescope_search(true))
@@ -381,6 +416,14 @@ vim.keymap.set("n", "<leader><tab>q", "<cmd>tabclose<cr>")
 vim.keymap.set("n", "<leader><tab>o", "<cmd>tabonly<cr>")
 vim.keymap.set("n", "[<tab>", "<cmd>tabprevious<cr>")
 vim.keymap.set("n", "]<tab>", "<cmd>tabnext<cr>")
+vim.keymap.set("n", "[h", function()
+  hlist:prev()
+end)
+vim.keymap.set("n", "]h", function()
+  hlist:next()
+end)
+vim.keymap.set("x", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+vim.keymap.set("x", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
 -- Snippet keymaps
 vim.keymap.set({ "i", "s" }, "<C-l>", function()
