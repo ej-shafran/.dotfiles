@@ -1,3 +1,10 @@
+-- Hi! Welcome to my Neovim config
+--
+-- This is a minimal configuration that requires Neovim 12, which is a nightly version at the time of writing this.
+-- I use `bob` to manage my Neovim versions: https://github.com/MordechaiHadad/bob
+--
+-- Enjoy :)
+
 -- {{{ Options
 
 vim.g.mapleader = " " -- Set map leader
