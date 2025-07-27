@@ -127,6 +127,7 @@ vim.keymap.set("n", "[<tab>", "<cmd>tabprevious<cr>")
 vim.keymap.set("n", "]<tab>", "<cmd>tabnext<cr>")
 
 -- Override keymaps
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>")
 vim.keymap.set("n", "<Esc>", "<Esc><cmd>noh<cr>")
 vim.keymap.set("n", "[c", function()
   if vim.wo.diff then
