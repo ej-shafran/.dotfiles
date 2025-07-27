@@ -1,1 +1,0 @@
-vim.o.foldenable = false

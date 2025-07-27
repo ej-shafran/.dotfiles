@@ -192,6 +192,9 @@ export PATH="$PATH:$PNPM_HOME"
 # Bun
 export PATH="$PATH:$HOME/.bun"
 
+# Bob NVIM manager
+export PATH="$PATH:$HOME/.local/share/bob/nvim-bin"
+
 # Update PATH for the Google Cloud SDK
 sourceif "$HOME/google-cloud-sdk/path.bash.inc"
 
