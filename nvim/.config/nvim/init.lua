@@ -245,7 +245,6 @@ require("conform").setup {
 vim.g.compile_mode = {
   default_command = "",
   bang_expansion = true,
-  input_word_completion = true,
 }
 
 -- Treesitter: syntax highlights + text-objects
