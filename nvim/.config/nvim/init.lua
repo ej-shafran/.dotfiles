@@ -150,6 +150,7 @@ vim.pack.add {
   { src = "https://github.com/lewis6991/gitsigns.nvim" },
   { src = "https://github.com/L3MON4D3/LuaSnip" },
   { src = "https://github.com/ThePrimeagen/harpoon", version = "harpoon2" },
+  { src = "https://github.com/tpope/vim-abolish" },
 }
 
 -- Oil: file explorer
@@ -423,6 +424,7 @@ vim.keymap.set("n", "]h", function()
 end)
 vim.keymap.set("x", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
 vim.keymap.set("x", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+vim.keymap.set("x", "C", "<Plug>(abolish-coerce)")
 
 -- Snippet keymaps
 vim.keymap.set({ "i", "s" }, "<C-l>", function()
