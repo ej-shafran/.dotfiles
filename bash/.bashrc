@@ -6,7 +6,7 @@ case $- in
       *) return;;
 esac
 
-# This function checks if a file exists, and sources it if it does.
+# Check if a file exists, and source it if it does.
 # This way, we can enable certain tools only if they actually exist.
 sourceif() {
   if [ -f "$1" ]; then
@@ -15,102 +15,63 @@ sourceif() {
   fi
 }
 
-# {{{ Environment variables
-
-# {{{ Tool configuration
-
-# Colored `gcc` warnings and errors
-export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-
-# Use kitty as the default terminal
-if command -v kitty >/dev/null; then
-  export TERMINAL="kitty"
-fi
-
-# Set default man pager
-if command -v nvim >/dev/null; then
-  export MANPAGER="nvim +Man!"
-elif command -v bat >/dev/null; then
-  export MANPAGER="sh -c 'col -bx | bat -l man -p'"
-fi
-
-# Starship config file
-export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
-
-# Setup MySQL prompt to show user, host and database
-export MYSQL_PS1='[\u@\h] \d> '
-
-# You can add/override environment variables for configuration
-# that you don't want to push to git in "$HOME/.bash_configs.local"
-sourceif "$HOME/.bash_configs.local"
-
-# Mark OpenShift as logged in for Starship
-if command -v oc >/dev/null; then
-  oc whoami 2>/dev/null >/dev/null && export OC_LOGGED_IN=true
-fi
-
-# }}}
-
 # {{{ Tool locations
 
-# Kitty
-export KITTY_INSTALL="$HOME/.local/kitty.app"
-
-# Android SDK
-export ANDROID_HOME="$HOME/AndroidSDK"
-
-# PNPM
 export PNPM_HOME="$HOME/.local/share/pnpm"
-
-# Bun
-export BUN_INSTALL="$HOME/.bun"
-
-# Deno
-export DENO_INSTALL="$HOME/.deno"
-
-# Node Version Manager
-export NVM_DIR="$HOME/.nvm"
-
-# Cabal
-export CABAL_DIR="$HOME/.cabal"
-
-# GHCUP
 export GHCUP_DIR="$HOME/.ghcup"
-
-# Cargo
 export CARGO_DIR="$HOME/.cargo"
-
+export NVM_DIR="$HOME/.nvm"
+export BOB_DIR="$HOME/.local/share/bob"
 # You can add/override environment variables for tools
 # that you don't want to push to git in "$HOME/.bash_tools.local"
 sourceif "$HOME/.bash_tools.local"
 
 # }}}
 
-# }}}
+# {{{ Set system path
 
-# {{{ History settings
+# Nix
+PATH="$PATH:/nix/var/nix/profiles/default/bin"
+# Local binaries
+PATH="$PATH:$HOME/.local/bin"
+PATH="$PATH:$HOME/.screenlayout"
+# Node modules
+PATH="$PATH:$HOME/node_modules/.bin"
+# Tools
+PATH="$PATH:$PNPM_HOME"
+PATH="$PATH:$BOB_DIR/nvim-bin"
+PATH="$PATH:$CARGO_DIR"
+# Snap
+PATH="$PATH:/snap/bin"
+# Games
+PATH="$PATH:/usr/games"
+PATH="$PATH:/usr/local/games"
+# Global binaries
+PATH="$PATH:/bin"
+PATH="$PATH:/sbin"
+PATH="$PATH:/usr/bin"
+PATH="$PATH:/usr/sbin"
+PATH="$PATH:/usr/local/bin"
+PATH="$PATH:/usr/local/sbin"
+# Google Cloud CLI
+sourceif "$HOME/google-cloud-sdk/path.bash.inc"
+sourceif "$HOME/google-cloud-sdk/completion.bash.inc"
+# Remove duplicates
+PATH=$(echo "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}')
+export PATH
+
+#  }}}
+
+# {{{ Shell settings
 
 # Don't put duplicate lines or lines starting with space into history
 HISTCONTROL=ignoreboth
 HISTSIZE=1000
 HISTFILESIZE=2000
-
 # Append to the history file instead of overwriting it
 shopt -s histappend
-
-# }}}
-
-# {{{ Miscellaneous settings
-
 # Update the values of LINES and COLUMNS
 shopt -s checkwinsize
-
-# Make `less` more friendly for non-text input
-# See |lesspipe(1)|
-if [ -x /usr/bin/lesspipe ]; then
-  eval "$(SHELL=/bin/sh lesspipe)"
-fi
-
 # Enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
@@ -124,134 +85,141 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# Terraform completion
-if command -v terraform >/dev/null; then
-  complete -C "$(which terraform)" terraform
-fi
-
 # }}}
 
-# {{{ Set system PATH
+# {{{ Environment variables
 
-# {{{ Global
-
-# Basic binary directories
-export PATH="$PATH:/bin"
-export PATH="$PATH:/sbin"
-export PATH="$PATH:/usr/bin"
-export PATH="$PATH:/usr/sbin"
-export PATH="$PATH:/usr/local/bin"
-export PATH="$PATH:/usr/local/sbin"
-
-# Snap binaries
-export PATH="$PATH:/snap/bin"
-
-# Games
-export PATH="$PATH:/usr/games"
-export PATH="$PATH:/usr/local/games"
-
-# Nix store
-export PATH="$PATH:/nix/var/nix/profiles/default/bin"
-
-# }}}
-
-# {{{ User
-
-# Personal binaries
-export PATH="$PATH:$HOME/.local/bin"
-
-# Screen layout related binaries
-export PATH="$PATH:$HOME/.screenlayout"
-
-# Kitty
-export PATH="$PATH:$KITTY_INSTALL/bin"
-
-# Haskell binaries
-export PATH="$PATH:$CABAL_DIR/bin"
-export PATH="$PATH:$GHCUP_DIR/bin"
-
-# Cargo
-export PATH="$PATH:$CARGO_DIR/bin"
-
-# Node
-export PATH="$PATH:$HOME/node_modules/.bin"
-
-# Deno
-export PATH="$PATH:$DENO_INSTALL/bin"
-
-# Zig
-export PATH="$PATH:$HOME/.zig"
-
-# Golang
-export PATH="$PATH:$HOME/.local/go/bin"
-export PATH="$PATH:$HOME/go/bin"
-
-# PNPM
-export PATH="$PATH:$PNPM_HOME"
-
-# Bun
-export PATH="$PATH:$HOME/.bun"
-
-# Bob NVIM manager
-export PATH="$PATH:$HOME/.local/share/bob/nvim-bin"
-
-# Update PATH for the Google Cloud SDK
-sourceif "$HOME/google-cloud-sdk/path.bash.inc"
-
-# Shell completion for Google Cloud SDK
-sourceif "$HOME/google-cloud-sdk/completion.bash.inc"
-
-# }}}
-
-# Cleanup all duplicate values in PATH
-PATH=$(echo "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}')
-export PATH
-
-# }}}
-
-# {{{ Source additional tool configurations
-
-# Node Version Manager
+export EDITOR=nvim
+export MANPAGER='nvim +Man!'
+export MYSQL_PS1='[\u@\h] \d> '
 sourceif "$NVM_DIR/nvm.sh"
 sourceif "$NVM_DIR/bash_completion"
-
-# Fuzzy files
 sourceif "$HOME/.fzf.bash"
 sourceif "$HOME/.local/bin/fzf-git.sh"
-
-# Haskell manager
 sourceif "$GHCUP_DIR/env"
-
-# Cargo
 sourceif "$CARGO_DIR/env"
-
+export STARSHIP_CONFIG="$HOME/.config/starship/starship.toml"
 if command -v starship >/dev/null; then
   eval "$(starship init bash)"
 fi
 
 # }}}
 
-# {{{ Load aliases and utils
+# {{{ Aliases
 
-sourceif "$HOME/.bash_aliases"
-sourceif "$HOME/.bash_aliases.local"
-
-sourceif "$HOME/.bash_utils"
-sourceif "$HOME/.bash_utils.local"
+# Git
+alias gst="git status --short"
+alias gstt="git status"
+alias gup="git push"
+alias gpl="git remote prune origin && git pull"
+alias gsync="git fetch --prune --all && git bclean"
+alias gdf="git diff"
+alias gad="git add"
+alias gap="git add -p"
+alias gau="git add -u"
+alias gan='git add "$(git ls-files -o --exclude-standard)"'
+alias gaa="git add -A"
+alias gcm="git commit"
+alias glo="git log --oneline"
+alias glog="git log"
+alias gun="git restore --staged"
+alias gxp="git explode"
+alias gco="git checkout"
+alias gac="git commit -a"
+alias gbr="git branch"
+alias gsm="git submodule"
+alias gcz="git cz"
+alias gcv="git convencm"
+alias ghlp="git help"
+alias gwt="git worktree"
+alias gbs="git bisect start"
+alias gbsr="git bisect reset"
+alias gbg="git bisect good"
+alias gbb="git bisect bad"
+alias gft="git fetch --prune --all"
+alias grb="git rebase"
+alias grbi="git rebase -i -r"
+alias gmr="git merge"
+alias glast="git commit --amend -C@"
+alias gsw="git switch"
+alias grs="git restore"
+# PNPM
+alias pm="pnpm"
+alias pmc="pnpm -C"
+alias pmi="pnpm install"
+# Turbo
+alias tb="turbo"
+# Python
+alias py="python3"
+alias pip="python3 -m pip"
+# Docker
+alias dk="docker"
+alias dkc="docker compose"
+# Fzf
+alias fzf='fzf --preview "bat --color=always --style=numbers --line-range=:500 {}"'
+# MIT License
+alias mit_license="curl https://api.github.com/licenses/mit -s | jq '.body' -r"
+# `pay-respects` - correct mistakes in CLI
+if command -v pay-respects >/dev/null; then
+  eval "$(pay-respects bash --alias fuck)"
+fi
+# `zoxide` - a better `cd`
+if command -v zoxide >/dev/null; then
+  eval "$(zoxide init bash --cmd cd)"
+fi
+# `bat` - a better `cat`
+if command -v bat >/dev/null; then
+  alias cat="bat"
+fi
+# `eza` - a better `ls`
+if command -v eza >/dev/null; then
+  alias ls="eza"
+fi
+# pbcopy + pbpaste for linux
+if command -v xsel >/dev/null; then
+  command -v pbcopy >/dev/null || alias pbcopy='xsel --clipboard --input'
+  command -v pbpaste >/dev/null || alias pbpaste='xsel --clipboard --output'
+fi
+# ls
+alias ll='ls -alH'
+alias la='ls -a'
+alias l='ls -F'
+# Allow colors
+if [ -x /usr/bin/dircolors ]; then
+    alias dir='dir --color=auto'
+    alias vdir='vdir --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+# An "alert" alias for long running commands, used like:
+# `sleep 10; alert`
+if command -v notify-send >/dev/null; then
+	alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+else
+	alias alert='title="$([ $? = 0 ] && echo terminal || echo error)"; osascript -e "display notification \"$(history|tail -n1|sed -r -e '\''s/^[ \t]*[0-9]+[ \t]*//;s/[ \t]*[;&|][ \t]*alert$//;'\'')\" with title \"$title\""'
+fi
+# Resource config
+alias rc="source ~/.bashrc"
 
 # }}}
 
-# {{{ Editor
+# {{{ Utils
 
-if command -v nvim >/dev/null; then
-  EDITOR="$(which nvim)"
-elif command -v vim >/dev/null; then
-  EDITOR="$(which vim)"
-elif command -v vi >/dev/null; then
-  EDITOR="$(which vi)"
-fi
+# Make a directory, then `cd` into it.
+mkcd() {
+  mkdir "$1"
+  cd "$1" || exit
+}
 
-export EDITOR
+# Download something from GitHub.
+githubraw() {
+  local repo="$1"
+  local path="$2"
+
+  curl -SLO "https://github.com/${repo}/raw/main/${path}"
+}
+
 
 # }}}
 
