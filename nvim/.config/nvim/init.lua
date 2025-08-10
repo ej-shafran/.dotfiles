@@ -47,6 +47,28 @@ vim.api.nvim_create_user_command("AutoformatToggle", function(args)
   end
 end, { bang = true })
 
+local function lcd_local_directory(file)
+  local scheme, path = require("oil.util").parse_url(file)
+  if scheme ~= nil and path ~= nil then
+    file = path
+  end
+
+  if vim.fn.isdirectory(file) == 1 then
+    return
+  end
+
+  local dir = vim.fn.fnamemodify(file, ":h")
+  if vim.fn.isdirectory(dir) == 0 then
+    return
+  end
+
+  vim.cmd.lcd(dir)
+end
+
+local function lcd_global_directory()
+  vim.cmd.lcd(vim.fn.getcwd(-1, -1))
+end
+
 -- Function to get CWD, either from actual CWD or from Oil directory
 local function get_cwd()
   local buffer = vim.api.nvim_get_current_buf()
@@ -55,7 +77,7 @@ local function get_cwd()
   if ft == "oil" then
     return require("oil").get_current_dir()
   else
-    return vim.fn.getcwd()
+    return vim.fn.getcwd(-1, -1)
   end
 end
 
@@ -142,6 +164,7 @@ vim.pack.add {
   { src = "https://github.com/nvim-telescope/telescope.nvim" },
   { src = "https://github.com/folke/lazydev.nvim" },
   { src = "https://github.com/NeogitOrg/neogit" },
+  { src = "https://github.com/sindrets/diffview.nvim" },
   { src = "https://github.com/folke/tokyonight.nvim" },
   { src = "https://github.com/ej-shafran/compile-mode.nvim" },
   { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
@@ -449,6 +472,14 @@ vim.keymap.set("n", "<leader>p", vim.pack.update)
 vim.keymap.set("n", "<leader>q", "<cmd>quit<cr>")
 vim.keymap.set("n", "<leader>r", "<cmd>Telescope oldfiles<cr>")
 vim.keymap.set("n", "<leader>tb", "<cmd>Gitsigns toggle_current_line_blame<cr>")
+vim.keymap.set("n", "<leader>td", function()
+  if vim.fn.getcwd() == vim.fn.getcwd(-1, -1) then
+    lcd_local_directory(vim.fn.expand "%")
+  else
+    lcd_global_directory()
+  end
+  print(vim.fn.getcwd())
+end)
 vim.keymap.set("n", "<leader>ts", "<cmd>set spell!<cr>")
 vim.keymap.set("n", "<leader>tt", "<cmd>tab term<cr>")
 vim.keymap.set("n", "<leader>tw", "<cmd>set wrap!<cr>")
@@ -466,6 +497,8 @@ end)
 vim.keymap.set("n", "]h", function()
   hlist:next()
 end)
+vim.keymap.set("n", "[e", "<cmd>PrevError<cr>")
+vim.keymap.set("n", "]e", "<cmd>NextError<cr>")
 vim.keymap.set("x", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
 vim.keymap.set("x", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 vim.keymap.set("x", "C", "<Plug>(abolish-coerce)")
