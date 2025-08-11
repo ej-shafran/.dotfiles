@@ -5,6 +5,10 @@
 --
 -- Enjoy :)
 
+if not vim.fn.has "nvim-0.12.0" then
+  error "This config requires version 0.12 or higher of Neovim :)"
+end
+
 -- {{{ Options
 
 vim.g.mapleader = " " -- Set map leader
@@ -36,56 +40,181 @@ vim.filetype.add {
 
 -- }}}
 
--- {{{ Helpers + Commands
+-- {{{ Plugins
 
--- Command to toggle autoformatting on and off in current buffer -  use `!` to toggle globally
-vim.api.nvim_create_user_command("AutoformatToggle", function(args)
-  if args.bang then
+-- Install plugins with native Neovim package manager (requires nvim 12+)
+vim.pack.add {
+  { src = "https://github.com/stevearc/oil.nvim" },
+  { src = "https://github.com/mason-org/mason.nvim" },
+  { src = "https://github.com/nvim-lua/plenary.nvim" },
+  { src = "https://github.com/nvim-telescope/telescope.nvim" },
+  { src = "https://github.com/NeogitOrg/neogit" },
+  { src = "https://github.com/sindrets/diffview.nvim" },
+  { src = "https://github.com/folke/tokyonight.nvim" },
+  { src = "https://github.com/ej-shafran/compile-mode.nvim" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" },
+  { src = "https://github.com/stevearc/conform.nvim" },
+  { src = "https://github.com/lewis6991/gitsigns.nvim" },
+  { src = "https://github.com/L3MON4D3/LuaSnip" },
+  { src = "https://github.com/ThePrimeagen/harpoon", version = "harpoon2" },
+  { src = "https://github.com/tpope/vim-abolish" },
+}
+
+-- Oil: file explorer
+require("oil").setup {
+  skip_confirm_for_simple_edits = true,
+  columns = { "permissions", "size", "mtime" },
+  keymaps = {
+    ["<C-r>"] = "actions.refresh",
+    ["g="] = "actions.preview",
+    ["&"] = "actions.open_cmdline",
+  },
+  view_options = { show_hidden = true },
+}
+
+-- Telescope: pickers and fuzzy searches
+require("telescope").setup {}
+
+-- Harpoon: jump between files
+require("harpoon"):setup()
+local hlist = require("harpoon"):list()
+
+-- Neogit: Git client
+require("neogit").setup { disable_hint = true, console_timeout = 7000 }
+
+-- Gitsigns: in-file Git integration
+require("gitsigns").setup {
+  attach_to_untracked = true,
+  current_line_blame_opts = { delay = 0 },
+}
+
+-- Conform: formatting
+require("conform").setup {
+  format_after_save = function(bufnr)
+    if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+      return
+    end
+
+    return { lsp_format = "fallback" }
+  end,
+  formatters_by_ft = {
+    lua = { "stylua" },
+    c = { "clang-format" },
+    typescript = { "prettierd", "prettier" },
+    javascript = { "prettierd", "prettier" },
+    css = { "prettierd", "prettier" },
+    scss = { "prettierd", "prettier" },
+    markdown = { "prettierd", "prettier" },
+    json = { "prettierd", "prettier" },
+    jsonc = { "prettierd", "prettier" },
+    yaml = { "prettierd", "prettier" },
+    typescriptreact = { "prettierd", "prettier" },
+    go = { "gofmt" },
+    python = { "black" },
+    kotlin = { "ktlint" },
+  },
+}
+
+---@module "compile-mode"
+---@type CompileModeOpts
+vim.g.compile_mode = {
+  default_command = "",
+  bang_expansion = true,
+  error_regexp_table = {
+    nodejs = {
+      regex = "^\\s\\+at .\\+ (\\(.\\+\\):\\([1-9][0-9]*\\):\\([1-9][0-9]*\\))$",
+      filename = 1,
+      row = 2,
+      col = 3,
+      priority = 2,
+    },
+    typescript = {
+      regex = "^\\(.\\+\\):\\([1-9][0-9]*\\)[,:]\\([1-9][0-9]*\\) - error TS[1-9][0-9]*:",
+      filename = 1,
+      row = 2,
+      col = 3,
+    },
+    kotlin = {
+      regex = "^\\%(e\\|w\\): file://\\(.*\\):\\(\\d\\+\\):\\(\\d\\+\\) ",
+      filename = 1,
+      row = 2,
+      col = 3,
+    },
+  },
+}
+
+-- Treesitter: syntax highlights + text-objects
+require("nvim-treesitter.configs").setup {
+  modules = {},
+  auto_install = true,
+  ensure_installed = {},
+  ignore_install = {},
+  sync_install = false,
+  highlight = { enable = true, additional_vim_regex_highlighting = {} },
+  textobjects = {
+    select = {
+      enable = true,
+      lookahead = true,
+      include_surrounding_whitespace = true,
+      keymaps = {
+        ["af"] = { query = "@function.outer", desc = "function" },
+        ["if"] = { query = "@function.inner", desc = "function" },
+        ["ac"] = { query = "@class.outer", desc = "class" },
+        ["ic"] = { query = "@class.inner", desc = "class" },
+        ["aP"] = { query = "@parameter.outer", desc = "arg" },
+        ["iP"] = { query = "@parameter.inner", desc = "arg" },
+        ["aa"] = { query = "@jsx_attr", desc = "JSX attribute" },
+      },
+    },
+  },
+}
+
+-- Mason: install lsp servers
+require("mason").setup {}
+
+-- LuaSnip: snippets
+require("luasnip").setup { enable_autosnippet = true, updateevents = { "TextChanged", "TextChangedI" } }
+require("luasnip.loaders.from_lua").load { paths = "./snippets/" }
+
+-- }}}
+
+-- {{{ Helpers
+
+local function autoformat_toggle(global)
+  if global then
     vim.g.disable_autoformat = not vim.g.disable_autoformat
   else
     vim.b.disable_autoformat = not vim.b.disable_autoformat
   end
-end, { bang = true })
-
-local function lcd_local_directory(file)
-  local scheme, path = require("oil.util").parse_url(file)
-  if scheme ~= nil and path ~= nil then
-    file = path
-  end
-
-  if vim.fn.isdirectory(file) == 1 then
-    return
-  end
-
-  local dir = vim.fn.fnamemodify(file, ":h")
-  if vim.fn.isdirectory(dir) == 0 then
-    return
-  end
-
-  vim.cmd.lcd(dir)
 end
 
-local function lcd_global_directory()
-  vim.cmd.lcd(vim.fn.getcwd(-1, -1))
-end
-
--- Function to get CWD, either from actual CWD or from Oil directory
-local function get_cwd()
+local function get_parent_dir()
   local buffer = vim.api.nvim_get_current_buf()
   local ft = vim.api.nvim_get_option_value("filetype", { buf = buffer })
 
   if ft == "oil" then
     return require("oil").get_current_dir()
   else
-    return vim.fn.getcwd(-1, -1)
+    return vim.fn.expand "%:h"
   end
 end
 
--- Telescope live_grep in current directory based on `get_cwd`
+local function get_current_dir()
+  local buffer = vim.api.nvim_get_current_buf()
+  local ft = vim.api.nvim_get_option_value("filetype", { buf = buffer })
+
+  if ft == "oil" then
+    return require("oil").get_current_dir()
+  else
+    return vim.fn.getcwd()
+  end
+end
+
 local function telescope_search(hidden)
   return function()
     require("telescope.builtin").live_grep {
-      cwd = get_cwd(),
+      cwd = get_current_dir(),
       additional_args = function()
         if hidden then
           return { "--hidden" }
@@ -97,20 +226,27 @@ local function telescope_search(hidden)
   end
 end
 
--- Telescope find_files in current directory based on `get_cwd`
 local function telescope_find_files(hidden)
   return function()
     require("telescope.builtin").find_files {
-      cwd = get_cwd(),
+      cwd = get_current_dir(),
       hidden = hidden,
     }
   end
 end
 
 local function compile()
-  vim.g.compilation_directory = get_cwd()
+  vim.g.compilation_directory = get_current_dir()
   require("compile-mode").compile()
 end
+
+-- }}}
+
+-- {{{ Commands
+
+vim.api.nvim_create_user_command("AutoformatToggle", function(args)
+  autoformat_toggle(args.bang)
+end, { bang = true })
 
 -- }}}
 
@@ -137,384 +273,113 @@ vim.api.nvim_create_autocmd("TermOpen", {
   end,
 })
 
+-- Autocomplete using LSP
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)
     local client = vim.lsp.get_client_by_id(ev.data.client_id)
     if client and client:supports_method "textDocument/completion" then
       vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
 
-      vim.keymap.set({ "i", "s" }, "<C-n>", function()
-        vim.lsp.completion.get()
-      end)
+      vim.keymap.set({ "i", "s" }, "<C-n>", vim.lsp.completion.get, { buffer = ev.buf })
     end
   end,
 })
 
 -- }}}
 
--- {{{ Plugins
-
--- Install plugins with native Neovim package manager (requires nvim 12+)
-vim.pack.add {
-  { src = "https://github.com/stevearc/oil.nvim" },
-  { src = "https://github.com/neovim/nvim-lspconfig" },
-  { src = "https://github.com/mason-org/mason-lspconfig.nvim" },
-  { src = "https://github.com/mason-org/mason.nvim" },
-  { src = "https://github.com/nvim-lua/plenary.nvim" },
-  { src = "https://github.com/nvim-telescope/telescope.nvim" },
-  { src = "https://github.com/folke/lazydev.nvim" },
-  { src = "https://github.com/NeogitOrg/neogit" },
-  { src = "https://github.com/sindrets/diffview.nvim" },
-  { src = "https://github.com/folke/tokyonight.nvim" },
-  { src = "https://github.com/ej-shafran/compile-mode.nvim" },
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" },
-  { src = "https://github.com/stevearc/conform.nvim" },
-  { src = "https://github.com/lewis6991/gitsigns.nvim" },
-  { src = "https://github.com/L3MON4D3/LuaSnip" },
-  { src = "https://github.com/ThePrimeagen/harpoon", version = "harpoon2" },
-  { src = "https://github.com/tpope/vim-abolish" },
-}
-
--- Oil: file explorer
-require("oil").setup {
-  skip_confirm_for_simple_edits = true,
-  columns = {
-    "permissions",
-    "size",
-    "mtime",
-  },
-  keymaps = {
-    ["<C-r>"] = "actions.refresh",
-    ["g="] = "actions.preview",
-    ["&"] = "actions.open_cmdline",
-  },
-  view_options = {
-    show_hidden = true,
-  },
-}
-
--- Telescope: pickers and fuzzy searches
-require("telescope").setup {}
-
--- Harpoon: jump between files
-local harpoon = require "harpoon"
-harpoon:setup()
-harpoon:extend {
-  UI_CREATE = function(cx)
-    local function set(keymap, cb)
-      vim.keymap.set("n", keymap, cb, { buffer = cx.bufnr })
-    end
-
-    set("<C-v>", function()
-      require("harpoon").ui:select_menu_item { vsplit = true }
-    end)
-    set("<C-x>", function()
-      require("harpoon").ui:select_menu_item { split = true }
-    end)
-    set("<C-t>", function()
-      require("harpoon").ui:select_menu_item { tabedit = true }
-    end)
-  end,
-}
-
-local hlist = harpoon:list()
-
--- Neogit: Git client
-require("neogit").setup {
-  disable_hint = true,
-  console_timeout = 7000,
-}
-
--- Gitsigns: in-file Git integration
-require("gitsigns").setup {
-  attach_to_untracked = true,
-  current_line_blame_opts = {
-    delay = 0,
-  },
-}
-
--- Conform: formatting
-require("conform").setup {
-  format_after_save = function(bufnr)
-    if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-      return
-    end
-
-    return {
-      lsp_format = "fallback",
-    }
-  end,
-  formatters_by_ft = {
-    lua = { "stylua" },
-    c = { "clang-format" },
-    typescript = { "prettierd", "prettier" },
-    javascript = { "prettierd", "prettier" },
-    css = { "prettierd", "prettier" },
-    scss = { "prettierd", "prettier" },
-    markdown = { "prettierd", "prettier" },
-    json = { "prettierd", "prettier" },
-    jsonc = { "prettierd", "prettier" },
-    yaml = { "prettierd", "prettier" },
-    typescriptreact = { "prettierd", "prettier" },
-    go = { "gofmt" },
-    python = { "black" },
-    kotlin = { "ktlint" },
-  },
-}
-
---- compile-mode: compilation
----@module "compile-mode"
----@type CompileModeOpts
-vim.g.compile_mode = {
-  default_command = "",
-  bang_expansion = true,
-  error_regexp_table = {
-    nodejs = {
-      regex = "^\\s\\+at .\\+ (\\(.\\+\\):\\([1-9][0-9]*\\):\\([1-9][0-9]*\\))$",
-      filename = 1,
-      row = 2,
-      col = 3,
-      priority = 2,
-    },
-    typescript = {
-      regex = "^\\(.\\+\\)(\\([1-9][0-9]*\\),\\([1-9][0-9]*\\)): error TS[1-9][0-9]*:",
-      filename = 1,
-      row = 2,
-      col = 3,
-    },
-    typescript_new = {
-      regex = "^\\(.\\+\\):\\([1-9][0-9]*\\):\\([1-9][0-9]*\\) - error TS[1-9][0-9]*:",
-      filename = 1,
-      row = 2,
-      col = 3,
-    },
-    gradlew = {
-      regex = "^e:\\s\\+file://\\(.\\+\\):\\(\\d\\+\\):\\(\\d\\+\\) ",
-      filename = 1,
-      row = 2,
-      col = 3,
-    },
-    ls_lint = {
-      regex = "\\v^\\d{4}/\\d{2}/\\d{2} \\d{2}:\\d{2}:\\d{2} (.+) failed for rules: .+$",
-      filename = 1,
-    },
-    sass = {
-      regex = "\\s\\+\\(.\\+\\) \\(\\d\\+\\):\\(\\d\\+\\)  .*$",
-      filename = 1,
-      row = 2,
-      col = 3,
-      type = 1,
-    },
-    kotlin = {
-      regex = "^\\%(e\\|w\\): file://\\(.*\\):\\(\\d\\+\\):\\(\\d\\+\\) ",
-      filename = 1,
-      row = 2,
-      col = 3,
-    },
-  },
-}
-
--- Treesitter: syntax highlights + text-objects
----@diagnostic disable-next-line: missing-fields
-require("nvim-treesitter.configs").setup {
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = {},
-  },
-  ensure_installed = {
-    "bash",
-    "c",
-    "gitcommit",
-    "json",
-    "jsonc",
-    "lua",
-    "make",
-    "markdown",
-    "markdown_inline",
-    "yaml",
-    "python",
-    "css",
-    "scss",
-    "html",
-    "javascript",
-    "typescript",
-    "tsx",
-    "go",
-    "gomod",
-    "gosum",
-    "zig",
-    "haskell",
-    "terraform",
-  },
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true,
-      include_surrounding_whitespace = true,
-      keymaps = {
-        ["af"] = { query = "@function.outer", desc = "function" },
-        ["if"] = { query = "@function.inner", desc = "function" },
-        ["ac"] = { query = "@class.outer", desc = "class" },
-        ["ic"] = { query = "@class.inner", desc = "class" },
-        ["aP"] = { query = "@parameter.outer", desc = "arg" },
-        ["iP"] = { query = "@parameter.inner", desc = "arg" },
-        ["aa"] = { query = "@jsx_attr", desc = "JSX attribute" },
-      },
-    },
-  },
-}
-
--- Mason + LSPConfig: install and enable lsp servers
-require("mason").setup {}
-require("mason-lspconfig").setup {
-  ensure_installed = {
-    "lua_ls",
-    "bashls",
-    "clangd",
-    "jsonls",
-    "yamlls",
-    "pylsp",
-    "ts_ls",
-    "html",
-    "cssls",
-    "eslint",
-    "gopls",
-    "zls",
-    "terraformls",
-  },
-}
-
--- LuaSnip: snippets
-local ls = require "luasnip"
-
-vim.snippet.expand = ls.lsp_expand
-
----@diagnostic disable-next-line: duplicate-set-field
-vim.snippet.active = function(filter)
-  filter = filter or {}
-  filter.direction = filter.direction or 1
-
-  if filter.direction == 1 then
-    return ls.expand_or_jumpable()
-  else
-    return ls.jumpable(filter.direction)
-  end
-end
-
----@diagnostic disable-next-line: duplicate-set-field
-vim.snippet.jump = function(direction)
-  if direction == 1 then
-    if ls.expandable() then
-      return ls.expand_or_jump()
-    else
-      return ls.jumpable(1) and ls.jump(1)
-    end
-  else
-    return ls.jumpable(-1) and ls.jump(-1)
-  end
-end
-
-vim.snippet.stop = ls.unlink_current
-
-ls.config.set_config {
-  keep_roots = true,
-  link_roots = true,
-  link_children = true,
-  exit_roots = false,
-  updateevents = { "TextChanged", "TextChangedI" },
-}
-
-for _, ft_path in ipairs(vim.api.nvim_get_runtime_file("snippets/*.lua", true)) do
-  loadfile(ft_path)()
-end
-
--- lazydev: Lua dev environment
----@diagnostic disable-next-line: missing-fields
-require("lazydev").setup {
-  library = { "luvit-meta/library" },
-}
-
--- }}}
-
 -- {{{ Keymaps
 
-vim.keymap.set("n", "-", "<cmd>Oil<cr>")
-vim.keymap.set({ "n", "v", "x" }, "<leader>.", vim.lsp.buf.code_action)
-vim.keymap.set("n", "<leader>?", "<cmd>Telescope help_tags<cr>")
-vim.keymap.set("n", "<leader>`", "<cmd>Telescope resume<cr>")
+local set = vim.keymap.set
+
+-- Leader + letter
+set("n", "<leader>a", function()
+  hlist:add()
+end)
+set("n", "<leader>A", function()
+  hlist:prepend()
+end)
+set("n", "<leader>b", "<cmd>Telescope buffers<cr>")
+set("n", "<leader>c", compile)
+set("n", "<leader>C", "<cmd>Recompile<cr>")
+set("n", "<leader>d", '"+d')
+set("n", "<leader>f", telescope_find_files(false))
+set("n", "<leader>F", telescope_find_files(true))
+set("n", "<leader>g", "<cmd>Neogit<cr>")
+set("n", "<leader>h", "<cmd>split<cr>")
+set("n", "<leader>l", function()
+  require("harpoon").ui:toggle_quick_menu(hlist, {})
+end)
+set("n", "<leader>n", "<cmd>enew<cr>")
+set("n", "<leader>s", telescope_search(false))
+set("n", "<leader>S", telescope_search(true))
+set("n", "<leader>v", "<cmd>vsplit<cr>")
+set("n", "<leader>w", "<cmd>write<cr>")
+set("n", "<leader>p", vim.pack.update)
+set("n", "<leader>q", "<cmd>quit<cr>")
+set("n", "<leader>r", "<cmd>Telescope oldfiles<cr>")
+set("n", "<leader>tb", "<cmd>Gitsigns toggle_current_line_blame<cr>")
+set("n", "<leader>td", function()
+  if vim.fn.getcwd() == vim.fn.getcwd(-1, -1) then
+    vim.cmd.lcd(get_parent_dir())
+  else
+    vim.cmd.lcd(vim.fn.getcwd(-1, -1))
+  end
+  vim.cmd "pwd"
+end)
+set("n", "<leader>ts", "<cmd>set spell!<cr>")
+set("n", "<leader>tt", "<cmd>tab term<cr>")
+set("n", "<leader>tw", "<cmd>set wrap!<cr>")
+set("n", "<leader>tf", "<cmd>AutoformatToggle<cr>")
+set("n", "<leader>tF", "<cmd>AutoformatToggle!<cr>")
+set("n", "<leader>y", '"+y')
+
+-- Leader + other
+set({ "n", "v", "x" }, "<leader>.", vim.lsp.buf.code_action)
+set("n", "<leader>?", "<cmd>Telescope help_tags<cr>")
+set("n", "<leader>`", "<cmd>Telescope resume<cr>")
 for i = 1, 9 do
-  vim.keymap.set("n", "<leader>" .. i, function()
+  set("n", "<leader>" .. i, function()
     hlist:select(i)
   end)
 end
-vim.keymap.set("n", "<leader>a", function()
-  hlist:add()
-end)
-vim.keymap.set("n", "<leader>b", "<cmd>Telescope buffers<cr>")
-vim.keymap.set("n", "<leader>c", compile)
-vim.keymap.set("n", "<leader>C", "<cmd>Recompile<cr>")
-vim.keymap.set("n", "<leader>d", '"+d')
-vim.keymap.set("n", "<leader>f", telescope_find_files(false))
-vim.keymap.set("n", "<leader>F", telescope_find_files(true))
-vim.keymap.set("n", "<leader>g", "<cmd>Neogit<cr>")
-vim.keymap.set("n", "<leader>h", "<cmd>split<cr>")
-vim.keymap.set("n", "<leader>l", function()
-  harpoon.ui:toggle_quick_menu(hlist, {})
-end)
-vim.keymap.set("n", "<leader>n", "<cmd>enew<cr>")
-vim.keymap.set("n", "<leader>s", telescope_search(false))
-vim.keymap.set("n", "<leader>S", telescope_search(true))
-vim.keymap.set("n", "<leader>v", "<cmd>vsplit<cr>")
-vim.keymap.set("n", "<leader>o", "<cmd>update<cr><cmd>source<cr>")
-vim.keymap.set("n", "<leader>w", "<cmd>write<cr>")
-vim.keymap.set("n", "<leader>p", vim.pack.update)
-vim.keymap.set("n", "<leader>q", "<cmd>quit<cr>")
-vim.keymap.set("n", "<leader>r", "<cmd>Telescope oldfiles<cr>")
-vim.keymap.set("n", "<leader>tb", "<cmd>Gitsigns toggle_current_line_blame<cr>")
-vim.keymap.set("n", "<leader>td", function()
-  if vim.fn.getcwd() == vim.fn.getcwd(-1, -1) then
-    lcd_local_directory(vim.fn.expand "%")
-  else
-    lcd_global_directory()
-  end
-  print(vim.fn.getcwd())
-end)
-vim.keymap.set("n", "<leader>ts", "<cmd>set spell!<cr>")
-vim.keymap.set("n", "<leader>tt", "<cmd>tab term<cr>")
-vim.keymap.set("n", "<leader>tw", "<cmd>set wrap!<cr>")
-vim.keymap.set("n", "<leader>tf", "<cmd>AutoformatToggle<cr>")
-vim.keymap.set("n", "<leader>tF", "<cmd>AutoformatToggle!<cr>")
-vim.keymap.set("n", "<leader>y", '"+y')
-vim.keymap.set("n", "<leader><tab>n", "<cmd>tabnew<cr>")
-vim.keymap.set("n", "<leader><tab>q", "<cmd>tabclose<cr>")
-vim.keymap.set("n", "<leader><tab>o", "<cmd>tabonly<cr>")
-vim.keymap.set("n", "[<tab>", "<cmd>tabprevious<cr>")
-vim.keymap.set("n", "]<tab>", "<cmd>tabnext<cr>")
-vim.keymap.set("n", "[h", function()
+set("n", "<leader>!", "<cmd>update<cr><cmd>source<cr>")
+set("n", "<leader>\\", "<cmd>e $MYVIMRC<cr>")
+set("n", "<leader><tab>n", "<cmd>tabnew<cr>")
+set("n", "<leader><tab>q", "<cmd>tabclose<cr>")
+set("n", "<leader><tab>o", "<cmd>tabonly<cr>")
+
+-- Single characters
+set("n", "-", "<cmd>Oil<cr>")
+
+-- Prev/next
+set("n", "[<tab>", "<cmd>tabprevious<cr>")
+set("n", "]<tab>", "<cmd>tabnext<cr>")
+set("n", "[h", function()
   hlist:prev()
 end)
-vim.keymap.set("n", "]h", function()
+set("n", "]h", function()
   hlist:next()
 end)
-vim.keymap.set("n", "[e", "<cmd>PrevError<cr>")
-vim.keymap.set("n", "]e", "<cmd>NextError<cr>")
-vim.keymap.set("x", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
-vim.keymap.set("x", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
-vim.keymap.set("x", "C", "<Plug>(abolish-coerce)")
+set("n", "[e", "<cmd>PrevError<cr>")
+set("n", "]e", "<cmd>NextError<cr>")
 
--- Snippet keymaps
-vim.keymap.set({ "i", "s" }, "<C-l>", function()
-  return vim.snippet.active { direction = 1 } and vim.snippet.jump(1)
+-- Visual
+set("x", "J", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
+set("x", "K", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
+set("x", "C", "<Plug>(abolish-coerce)")
+
+-- Insert/visual
+set({ "i", "s" }, "<C-l>", function()
+  require("luasnip").expand_or_jump()
 end, { silent = true })
-vim.keymap.set({ "i", "s" }, "<C-h>", function()
-  return vim.snippet.active { direction = -1 } and vim.snippet.jump(-1)
+set({ "i", "s" }, "<C-h>", function()
+  require("luasnip").jump(-1)
 end, { silent = true })
 
 -- Override keymaps
-vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>")
-vim.keymap.set("n", "<Esc>", "<Esc><cmd>noh<cr>")
-vim.keymap.set("n", "[c", function()
+set("t", "<Esc><Esc>", "<C-\\><C-n>")
+set("n", "<Esc>", "<Esc><cmd>noh<cr>")
+set("n", "[c", function()
   if vim.wo.diff then
     return "[c"
   end
@@ -524,7 +389,7 @@ vim.keymap.set("n", "[c", function()
   end)
   return "<Ignore>"
 end, { expr = true, desc = "Previous Hunk" })
-vim.keymap.set("n", "]c", function()
+set("n", "]c", function()
   if vim.wo.diff then
     return "]c"
   end
@@ -534,8 +399,8 @@ vim.keymap.set("n", "]c", function()
   end)
   return "<Ignore>"
 end)
-vim.keymap.set("n", "gd", "<cmd>Telescope lsp_definitions<cr>")
-vim.keymap.set("n", "grr", "<cmd>Telescope lsp_references<cr>")
+set("n", "gd", "<cmd>Telescope lsp_definitions<cr>")
+set("n", "grr", "<cmd>Telescope lsp_references<cr>")
 
 -- }}}
 
@@ -543,6 +408,36 @@ vim.keymap.set("n", "grr", "<cmd>Telescope lsp_references<cr>")
 
 vim.cmd "colorscheme tokyonight-night"
 vim.cmd "highlight clear Folded"
+
+-- }}}
+
+-- {{{ LSP
+
+-- Get all configured LSP servers
+local config_root = vim.fn.stdpath "config" .. "/lsp"
+local config_files = (vim.fn.glob(config_root .. "/*", false, true))
+local configured = vim.tbl_map(function(value)
+  return vim.fn.fnamemodify(value, ":t:r")
+end, config_files)
+
+-- Install uninstalled servers on confirm
+local installed = require("mason-registry").get_installed_package_names()
+local uninstalled = vim.tbl_filter(function(server)
+  return not vim.list_contains(installed, server)
+end, configured)
+if #uninstalled > 0 then
+  local uninstalled_text = vim.fn.join(uninstalled, "\n")
+  local choice = vim.fn.confirm(("These servers will be installed:\n\n%s\n"):format(uninstalled_text), "&Yes\n&No", 1)
+
+  if choice == 1 then
+    vim.cmd { cmd = "MasonInstall", args = uninstalled }
+  else
+    vim.notify("Installation not confirmed", vim.log.levels.ERROR)
+  end
+end
+
+-- Enable servers
+vim.lsp.enable(configured)
 
 -- }}}
 

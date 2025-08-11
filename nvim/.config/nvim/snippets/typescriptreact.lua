@@ -1,16 +1,9 @@
-require("luasnip.session.snippet_collection").clear_snippets "typescriptreact"
-
-local ls = require "luasnip"
-local s = ls.snippet
-local i = ls.insert_node
-local f = ls.function_node
-local fmt = require("luasnip.extras.fmt").fmt
-local rep = require("luasnip.extras").rep
-
 ---@param str string
 ---@return string
 local function to_pascal_case(str)
-  str = vim.fn.substitute(str, [[-\([a-z]\)]], [[\u\1]], "g")
+  str = str:gsub("([-_]%w)", function(s)
+    return s:sub(2, 2):upper()
+  end)
   return str:sub(1, 1):upper() .. str:sub(2, -1)
 end
 
@@ -20,22 +13,22 @@ local function to_camel_case(str)
   return str:sub(1, 1):lower() .. str:sub(2, -1)
 end
 
-ls.add_snippets("typescriptreact", {
+return {
   s(
     "component",
-    fmt(
+    fmta(
       [[
-      export declare namespace {comp}{{
-        export interface Props {{
-          {}
-        }}
-      }}
+      export declare namespace <comp> {
+        export interface Props {
+	  <>
+        }
+      }
 
-      export function {comp}({{{}}}: {comp}.Props) {{
-        {}
+      export function <comp>({<>}: <comp>.Props) {
+        <>
 
-        return {};
-      }}
+        return <>;
+      }
       ]],
       {
         i(1),
@@ -48,22 +41,23 @@ ls.add_snippets("typescriptreact", {
       }
     )
   ),
+
   s(
     "html_component",
-    fmt(
+    fmta(
       [[
       import clsx from "clsx";
-      import styles from "{}";
+      import styles from "<>";
 
-      export declare namespace {comp} {{
-        export interface Props extends React.ComponentProps<"{}"> {{}}
+      export declare namespace <comp> {
+        export interface Props extends React.ComponentProps<<"<>">> {}
       }}
 
-      export function {comp}({{ className, ...rest }}: {comp}.Props) {{
-        return <{} className={{clsx(className, styles.{})}} {{...rest}} />;
-      }}
+      export function <comp>({ className, ...rest }: <comp>.Props) {
+        return <<<> className={clsx(className, styles.<>)} {...rest} />>;
+      }
 
-      {comp}.displayName = "{}";
+      <comp>.displayName = "<>";
       ]],
       {
         i(1),
@@ -77,19 +71,20 @@ ls.add_snippets("typescriptreact", {
       }
     )
   ),
+
   s(
     "base_ui_component",
-    fmt(
+    fmta(
       [[
-      import {{ {} as BaseUI{parent} }} from "@base-ui-components/react";
+      import { <> as BaseUI<parent> } from "@base-ui-components/react";
 
-      export declare namespace {comp} {{
-        export interface Props extends BaseUI{parent}.{}.Props {{}}
-      }}
+      export declare namespace <comp> {
+        export interface Props extends BaseUI<parent>.<>.Props {}
+      }
 
-      export function {comp}(props: {comp}.Props) {{
-        return <BaseUI{parent}.{child} {{...props}} />;
-      }}
+      export function <comp>(props: <comp>.Props) {
+        return <<BaseUI<parent>.<child> {...props} />>;
+      }
       ]],
       {
         i(1),
@@ -102,21 +97,22 @@ ls.add_snippets("typescriptreact", {
       }
     )
   ),
+
   s(
     "styled_base_ui_component",
-    fmt(
+    fmta(
       [[
-      import {{ {} as BaseUI{parent} }} from "@base-ui-components/react";
+      import { <> as BaseUI<parent> } from "@base-ui-components/react";
       import clsx from "clsx";
-      import styles from "{}";
+      import styles from "<>";
 
-      export declare namespace {comp} {{
-        export interface Props extends BaseUI{parent}.{}.Props {{}}
-      }}
+      export declare namespace <comp> {
+        export interface Props extends BaseUI<parent>.<>.Props {}
+      }
 
-      export function {comp}({{ className, ...rest }}: {comp}.Props) {{
-        return <BaseUI{parent}.{child} className={{clsx(className, styles.{})}} {{...rest}} />;
-      }}
+      export function <comp>({ className, ...rest }: <comp>.Props) {
+        return <<BaseUI<parent>.<child> className={clsx(className, styles.<>)} {...rest} />>;
+      }
       ]],
       {
         i(1),
@@ -131,29 +127,23 @@ ls.add_snippets("typescriptreact", {
       }
     )
   ),
+
   s(
     "state",
     fmt("const [{}, set{}] = useState({});", {
       i(1),
-      f(function(args)
-        local state = args[1][1] --[[@as string]]
-
-        if state:len() == 0 then
-          return ""
-        end
-
-        return to_pascal_case(state)
-      end, { 1 }),
+      l(to_pascal_case(l._1), { 1 }),
       i(2),
     })
   ),
+
   s(
     "effect",
-    fmt(
+    fmta(
       [[
-      useEffect(() => {{
-        {}
-      }}, [{}]);
+      useEffect(() =>> {
+        <>
+      }, [<>]);
       ]],
       {
         i(1),
@@ -161,38 +151,28 @@ ls.add_snippets("typescriptreact", {
       }
     )
   ),
+
   s(
     "context",
-    fmt(
+    fmta(
       [[
-      import {{ createContextHook }} from "@hilma/tools";
-      import {{ createContext }} from "react";
+      import { createContextHook } from "@hilma/tools";
+      import { createContext } from "react";
 
-      export interface {}Context {{
-        {}
-      }}
+      export interface <>Context {
+        <>
+      }
 
-      export const {camel}Context = createContext<{Pascal}Context | null>(null);
-      {camel}Context.displayName = "{Pascal}";
-      export const use{Pascal} = createContextHook({camel}Context);
+      export const <camel>Context = createContext<<<Pascal>Context | null>>(null);
+      <camel>Context.displayName = "<Pascal>";
+      export const use<Pascal> = createContextHook(<camel>Context);
       ]],
       {
         i(1),
         i(0),
-        Pascal = f(function(args)
-          local state = args[1][1] --[[@as string]]
-          return state
-        end, { 1 }),
-        camel = f(function(args)
-          local state = args[1][1] --[[@as string]]
-
-          if state:len() == 0 then
-            return ""
-          end
-
-          return to_camel_case(state)
-        end, { 1 }),
+        Pascal = rep(1),
+        camel = l(to_camel_case(l._1), { 1 }),
       }
     )
   ),
-})
+}
