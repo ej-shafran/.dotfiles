@@ -174,8 +174,42 @@ require("nvim-treesitter.configs").setup {
 require("mason").setup {}
 
 -- LuaSnip: snippets
-require("luasnip").setup { enable_autosnippet = true, updateevents = { "TextChanged", "TextChangedI" } }
+local luasnip = require "luasnip"
+luasnip.setup {
+  enable_autosnippet = true,
+  updateevents = { "TextChanged", "TextChangedI" },
+}
+
 require("luasnip.loaders.from_lua").load { paths = "./snippets/" }
+
+-- Replace Vim snippet functionality with LuaSnip
+vim.snippet.expand = luasnip.lsp_expand
+vim.snippet.stop = luasnip.unlink_current
+
+---@diagnostic disable-next-line: duplicate-set-field
+vim.snippet.active = function(filter)
+  filter = filter or {}
+  filter.direction = filter.direction or 1
+
+  if filter.direction == 1 then
+    return luasnip.expand_or_jumpable()
+  end
+
+  return luasnip.jumpable(filter.direction)
+end
+
+---@diagnostic disable-next-line: duplicate-set-field
+vim.snippet.jump = function(direction)
+  if direction == 1 then
+    if luasnip.expandable() then
+      return luasnip.expand_or_jump()
+    else
+      return luasnip.jumpable(1) and luasnip.jump(1)
+    end
+  else
+    return luasnip.jumpable(-1) and luasnip.jump(-1)
+  end
+end
 
 -- }}}
 
@@ -370,10 +404,10 @@ set("x", "C", "<Plug>(abolish-coerce)")
 
 -- Insert/visual
 set({ "i", "s" }, "<C-l>", function()
-  require("luasnip").expand_or_jump()
+  return vim.snippet.active { direction = 1 } and vim.snippet.jump(1)
 end, { silent = true })
 set({ "i", "s" }, "<C-h>", function()
-  require("luasnip").jump(-1)
+  return vim.snippet.active { direction = -1 } and vim.snippet.jump(-1)
 end, { silent = true })
 
 -- Override keymaps
@@ -401,6 +435,9 @@ set("n", "]c", function()
 end)
 set("n", "gd", "<cmd>Telescope lsp_definitions<cr>")
 set("n", "grr", "<cmd>Telescope lsp_references<cr>")
+set({ "i", "s" }, "<Tab>", function()
+  return "<Tab>"
+end, { silent = true })
 
 -- }}}
 
