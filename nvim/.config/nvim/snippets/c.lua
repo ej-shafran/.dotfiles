@@ -1,6 +1,6 @@
 local function to_upper_case(str)
-  str = str:gsub(".([A-Z])", function(s)
-    return s:sub(1, 1) .. "_" .. s:upper()
+  str = str:gsub("(.[A-Z])", function(s)
+    return s:sub(1, 1) .. "_" .. s:sub(2, 2):upper()
   end)
 
   return str:upper()
