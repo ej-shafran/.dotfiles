@@ -30,11 +30,18 @@ sourceif "$HOME/.bash_tools.local"
 
 # {{{ Set system path
 
+# Prefixing - high priority
+# Brew
+if command -v brew >/dev/null; then
+	PATH="$(brew --prefix)/bin:$PATH"
+fi
 # Nix
-PATH="$PATH:/nix/var/nix/profiles/default/bin"
+PATH="/nix/var/nix/profiles/default/bin:$PATH"
 # Local binaries
-PATH="$PATH:$HOME/.local/bin"
-PATH="$PATH:$HOME/.screenlayout"
+PATH="$HOME/.screenlayout:$PATH"
+PATH="$HOME/.local/bin:$PATH"
+
+# Suffixing - lower priority
 # Node modules
 PATH="$PATH:$HOME/node_modules/.bin"
 # Tools
@@ -56,6 +63,7 @@ PATH="$PATH:/usr/local/sbin"
 # Google Cloud CLI
 sourceif "$HOME/google-cloud-sdk/path.bash.inc"
 sourceif "$HOME/google-cloud-sdk/completion.bash.inc"
+
 # Remove duplicates
 PATH=$(echo "$PATH" | awk -v RS=':' -v ORS=":" '!a[$1]++{if (NR > 1) printf ORS; printf $a[$1]}')
 export PATH
@@ -76,7 +84,10 @@ shopt -s checkwinsize
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
+  if command -v brew >/dev/null && [ -f "$(brew --prefix)/etc/profile.d/bash_completion.sh" ]; then
+    source "$(brew --prefix)/etc/profile.d/bash_completion.sh" 
+    command -v xcode-select >/dev/null && sourceif "$(xcode-select -p)/usr/share/git-core/git-completion.bash"
+  elif [ -f /usr/share/bash-completion/bash_completion ]; then
     source /usr/share/bash-completion/bash_completion
   elif [ -f /usr/local/etc/profile.d/bash_completion.sh ]; then
     source /usr/local/etc/profile.d/bash_completion.sh
@@ -219,7 +230,6 @@ githubraw() {
 
   curl -SLO "https://github.com/${repo}/raw/main/${path}"
 }
-
 
 # }}}
 
