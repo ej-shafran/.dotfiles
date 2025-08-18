@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# shellcheck disable=SC1091
+
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -208,6 +210,7 @@ fi
 if command -v notify-send >/dev/null; then
 	alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 else
+	# shellcheck disable=SC2154
 	alias alert='title="$([ $? = 0 ] && echo terminal || echo error)"; osascript -e "display notification \"$(history|tail -n1|sed -r -e '\''s/^[ \t]*[0-9]+[ \t]*//;s/[ \t]*[;&|][ \t]*alert$//;'\'')\" with title \"$title\""'
 fi
 # Resource config
