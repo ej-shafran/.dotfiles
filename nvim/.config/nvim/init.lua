@@ -59,6 +59,7 @@ vim.pack.add {
   { src = "https://github.com/L3MON4D3/LuaSnip" },
   { src = "https://github.com/ThePrimeagen/harpoon", version = "harpoon2" },
   { src = "https://github.com/tpope/vim-abolish" },
+  { src = "https://github.com/folke/todo-comments.nvim" },
 }
 
 -- Oil: file explorer
@@ -142,6 +143,12 @@ vim.g.compile_mode = {
       col = 3,
     },
   },
+}
+
+-- Highlight TODO comments
+require("todo-comments").setup {
+  search = { pattern = [[\b(KEYWORDS)(\([^\)]*\))?:]] },
+  highlight = { pattern = [[.*<((KEYWORDS)%(\(.{-1,}\))?):]] },
 }
 
 -- Treesitter: syntax highlights + text-objects
