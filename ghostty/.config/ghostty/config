@@ -1,2 +1,4 @@
 theme = tokyonight
 macos-option-as-alt = left
+font-size = 16
+fullscreen = true
