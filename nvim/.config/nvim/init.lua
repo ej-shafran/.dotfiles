@@ -35,6 +35,7 @@ vim.filetype.add {
   extension = {
     -- Use `gitcommit` filetype for `Neogit`
     NeogitCommitMessage = "gitcommit",
+    lss = "xml",
   },
 }
 
