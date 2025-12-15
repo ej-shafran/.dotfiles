@@ -49,6 +49,7 @@ vim.pack.add {
   { src = "https://github.com/mason-org/mason.nvim" },
   { src = "https://github.com/nvim-lua/plenary.nvim" },
   { src = "https://github.com/nvim-telescope/telescope.nvim" },
+  { src = "https://github.com/nvim-telescope/telescope-ui-select.nvim" },
   { src = "https://github.com/NeogitOrg/neogit" },
   { src = "https://github.com/sindrets/diffview.nvim" },
   { src = "https://github.com/folke/tokyonight.nvim" },
@@ -76,7 +77,16 @@ require("oil").setup {
 }
 
 -- Telescope: pickers and fuzzy searches
-require("telescope").setup {}
+require("telescope").setup {
+  extensions = {
+    ["ui-select"] = {
+      require("telescope.themes").get_cursor {
+        -- even more opts
+      },
+    },
+  },
+}
+require("telescope").load_extension "ui-select"
 
 -- Harpoon: jump between files
 require("harpoon"):setup()
@@ -377,7 +387,21 @@ set("n", "<leader>tF", "<cmd>AutoformatToggle!<cr>")
 set("n", "<leader>y", '"+y')
 
 -- Leader + other
-set({ "n", "v", "x" }, "<leader>.", vim.lsp.buf.code_action)
+set({ "n", "v", "x" }, "<leader>.", function()
+  vim.lsp.buf.code_action {
+    filter = function(action)
+      return action.disabled == nil
+    end,
+  }
+end)
+set({ "n", "v", "x" }, "<leader>,", function()
+  vim.lsp.buf.code_action {
+    apply = true,
+    filter = function(action)
+      return action.command ~= nil and action.command.command == "eslint.applyAllFixes"
+    end,
+  }
+end)
 set("n", "<leader>?", "<cmd>Telescope help_tags<cr>")
 set("n", "<leader>`", "<cmd>Telescope resume<cr>")
 for i = 1, 9 do
