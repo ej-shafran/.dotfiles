@@ -20,7 +20,7 @@ return {
       [[
       export declare namespace <comp> {
         export interface Props {
-	  <>
+          <>
         }
       }
 
