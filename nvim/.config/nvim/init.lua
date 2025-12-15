@@ -470,7 +470,7 @@ end, config_files)
 local installed = require("mason-registry").get_installed_package_names()
 local uninstalled = vim.tbl_filter(function(server)
   return not vim.list_contains(installed, server)
-end, configured)
+end, vim.list_extend({ "shellcheck" }, configured))
 if #uninstalled > 0 then
   local uninstalled_text = vim.fn.join(uninstalled, "\n")
   local choice = vim.fn.confirm(("These servers will be installed:\n\n%s\n"):format(uninstalled_text), "&Yes\n&No", 1)

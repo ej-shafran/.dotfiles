@@ -4,6 +4,7 @@ local plugins = vim.fn.glob(vim.fn.stdpath "data" .. "/site/pack/core/opt/*/lua"
 
 vim.list_extend(library, plugins)
 
+---@type vim.lsp.Config
 return {
   cmd = { "lua-language-server" },
   filetypes = { "lua" },

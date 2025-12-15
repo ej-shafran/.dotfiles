@@ -17,6 +17,7 @@ local function insert_package_json(root_files, field, fname)
   return root_files
 end
 
+---@type vim.lsp.Config
 return {
   cmd = { "vscode-eslint-language-server", "--stdio" },
   filetypes = {
