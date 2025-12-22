@@ -95,6 +95,9 @@ local hlist = require("harpoon"):list()
 -- Neogit: Git client
 require("neogit").setup { disable_hint = true, console_timeout = 7000 }
 
+-- Diffview: Git diff client
+require("diffview").setup { view = { merge_tool = { layout = "diff3_mixed" } } }
+
 -- Gitsigns: in-file Git integration
 require("gitsigns").setup {
   attach_to_untracked = true,
