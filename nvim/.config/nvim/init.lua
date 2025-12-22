@@ -44,7 +44,7 @@ vim.filetype.add {
 -- {{{ Plugins
 
 -- Install plugins with native Neovim package manager (requires nvim 12+)
-vim.pack.add {
+local plugins = {
   { src = "https://github.com/stevearc/oil.nvim" },
   { src = "https://github.com/mason-org/mason.nvim" },
   { src = "https://github.com/nvim-lua/plenary.nvim" },
@@ -53,8 +53,7 @@ vim.pack.add {
   { src = "https://github.com/NeogitOrg/neogit" },
   { src = "https://github.com/sindrets/diffview.nvim" },
   { src = "https://github.com/folke/tokyonight.nvim" },
-  { src = "https://github.com/ej-shafran/compile-mode.nvim" },
-  { src = "https://github.com/nvim-treesitter/nvim-treesitter" },
+  { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "master" },
   { src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects" },
   { src = "https://github.com/stevearc/conform.nvim" },
   { src = "https://github.com/lewis6991/gitsigns.nvim" },
@@ -62,7 +61,19 @@ vim.pack.add {
   { src = "https://github.com/ThePrimeagen/harpoon", version = "harpoon2" },
   { src = "https://github.com/tpope/vim-abolish" },
   { src = "https://github.com/folke/todo-comments.nvim" },
+  { src = "https://github.com/m00qek/baleia.nvim", version = "v1.3.0" },
 }
+
+-- Use local directories for plugins I developed
+local compile_mode_path = vim.env.HOME .. "/plugins/compile-mode.nvim"
+
+if vim.fn.isdirectory(compile_mode_path) == 1 then
+  vim.opt.rtp:append(compile_mode_path)
+else
+  table.insert(plugins, { src = "https://github.com/ej-shafran/compile-mode.nvim" })
+end
+
+vim.pack.add(plugins)
 
 -- Oil: file explorer
 require("oil").setup {
@@ -134,9 +145,17 @@ require("conform").setup {
 ---@module "compile-mode"
 ---@type CompileModeOpts
 vim.g.compile_mode = {
+  baleia_setup = true,
   default_command = "",
   bang_expansion = true,
   error_regexp_table = {
+    custom = {
+      regex = "^\\%(\\[\\%(ERROR\\|\\(WARNING\\)\\|\\(INFO\\)\\)\\] \\)\\?\\([^\n :]\\+\\):\\([1-9][0-9]*\\): ",
+      filename = 3,
+      row = 4,
+      type = { 1, 2 },
+      priority = 2,
+    },
     nodejs = {
       regex = "^\\s\\+at .\\+ (\\(.\\+\\):\\([1-9][0-9]*\\):\\([1-9][0-9]*\\))$",
       filename = 1,
