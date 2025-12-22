@@ -26,4 +26,21 @@ return {
       }
     )
   ),
+  s(
+    "implguard",
+    fmt(
+      [[
+      #ifdef {}_IMPLEMENTATION
+
+      {}
+
+      #endif // {guard}_IMPLEMENTATION
+      ]],
+      {
+        i(1),
+        i(2),
+        guard = rep(1),
+      }
+    )
+  ),
 }
