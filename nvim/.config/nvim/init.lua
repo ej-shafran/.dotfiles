@@ -490,9 +490,6 @@ set("n", "]c", function()
 end)
 set("n", "gd", "<cmd>Telescope lsp_definitions<cr>")
 set("n", "grr", "<cmd>Telescope lsp_references<cr>")
-set({ "i", "s" }, "<Tab>", function()
-  return "<Tab>"
-end, { silent = true })
 
 -- }}}
 
