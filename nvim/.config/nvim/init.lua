@@ -135,6 +135,7 @@ require("conform").setup {
     json = { "prettierd", "prettier" },
     jsonc = { "prettierd", "prettier" },
     yaml = { "prettierd", "prettier" },
+    javascriptreact = { "prettierd", "prettier" },
     typescriptreact = { "prettierd", "prettier" },
     go = { "gofmt" },
     python = { "black" },
