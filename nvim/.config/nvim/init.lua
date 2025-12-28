@@ -129,6 +129,7 @@ require("conform").setup {
     c = { "clang-format" },
     typescript = { "prettierd", "prettier" },
     javascript = { "prettierd", "prettier" },
+    html = { "prettierd", "prettier" },
     css = { "prettierd", "prettier" },
     scss = { "prettierd", "prettier" },
     markdown = { "prettierd", "prettier" },
