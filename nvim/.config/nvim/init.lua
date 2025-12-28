@@ -29,6 +29,7 @@ vim.opt.smartcase = true -- ...unless there's an uppercase
 vim.opt.swapfile = false -- Disable swapfile
 vim.opt.winborder = "rounded" -- Nicer floating windows
 vim.opt.completeopt = { "noselect", "menuone", "fuzzy" } -- Menu for autocompletion, always
+vim.opt.clipboard = "unnamedplus" -- Use system clipboard
 vim.wo.signcolumn = "yes" -- Always keep sign column open
 vim.diagnostic.config { jump = { float = true } } -- Show floating diagnostics when jumping to erro
 vim.filetype.add {
@@ -377,7 +378,6 @@ end)
 set("n", "<leader>b", "<cmd>Telescope buffers<cr>")
 set("n", "<leader>c", compile)
 set("n", "<leader>C", "<cmd>Recompile<cr>")
-set("n", "<leader>d", '"+d')
 set("n", "<leader>f", telescope_find_files(false))
 set("n", "<leader>F", telescope_find_files(true))
 set("n", "<leader>g", "<cmd>Neogit<cr>")
@@ -408,7 +408,6 @@ set("n", "<leader>tt", "<cmd>tab term<cr>")
 set("n", "<leader>tw", "<cmd>set wrap!<cr>")
 set("n", "<leader>tf", "<cmd>AutoformatToggle<cr>")
 set("n", "<leader>tF", "<cmd>AutoformatToggle!<cr>")
-set("n", "<leader>y", '"+y')
 
 -- Leader + other
 set({ "n", "v", "x" }, "<leader>.", function()
