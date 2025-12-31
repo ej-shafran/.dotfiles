@@ -107,6 +107,7 @@ export MANPAGER='nvim +Man!'
 export MYSQL_PS1='[\u@\h] \d> '
 sourceif "$NVM_DIR/nvm.sh"
 sourceif "$NVM_DIR/bash_completion"
+export FZF_CTRL_T_COMMAND=""
 sourceif "$HOME/.fzf.bash"
 sourceif "$HOME/.local/bin/fzf-git.sh"
 sourceif "$GHCUP_DIR/env"
