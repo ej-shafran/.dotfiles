@@ -30,6 +30,7 @@ vim.opt.swapfile = false -- Disable swapfile
 vim.opt.winborder = "rounded" -- Nicer floating windows
 vim.opt.completeopt = { "noselect", "menuone", "fuzzy" } -- Menu for autocompletion, always
 vim.opt.clipboard = "unnamedplus" -- Use system clipboard
+vim.opt.showmode = false -- Do not show the mode, Lualine does that for us
 vim.wo.signcolumn = "yes" -- Always keep sign column open
 vim.diagnostic.config { jump = { float = true } } -- Show floating diagnostics when jumping to erro
 vim.filetype.add {
@@ -63,6 +64,7 @@ local plugins = {
   { src = "https://github.com/tpope/vim-abolish" },
   { src = "https://github.com/folke/todo-comments.nvim" },
   { src = "https://github.com/m00qek/baleia.nvim", version = "v1.3.0" },
+  { src = "https://github.com/nvim-lualine/lualine.nvim" },
 }
 
 -- Use local directories for plugins I developed
@@ -76,6 +78,11 @@ end
 
 vim.pack.add(plugins)
 
+-- Lualine: better statusline
+require("lualine").setup {
+  sections = { lualine_y = { "lsp_status" } },
+  extensions = { "quickfix", "oil", "mason", require "compile-mode.extensions.lualine" },
+}
 -- Oil: file explorer
 require("oil").setup {
   skip_confirm_for_simple_edits = true,
