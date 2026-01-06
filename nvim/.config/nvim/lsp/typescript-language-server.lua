@@ -1,6 +1,41 @@
+local select = vim.ui.select
+---@diagnostic disable-next-line: duplicate-set-field
+vim.ui.select = function(items, opts, on_choice)
+  if opts.kind == "codeaction" then
+    local function handle_choice(item, idx)
+      if
+        item
+        and item.action
+        and item.action.kind == "refactor.move.file"
+        and item.action.command
+        and item.action.command.arguments
+        and #item.action.command.arguments == 1
+      then
+        vim.ui.input({ prompt = "Destination file: ", completion = "file" }, function(input)
+          if not input then
+            return
+          end
+
+          item.action.command.arguments[1].interactiveRefactorArguments = {
+            targetFile = vim.fn.fnamemodify(input, ":p"),
+          }
+
+          on_choice(item, idx)
+        end)
+        return
+      end
+
+      on_choice(item, idx)
+    end
+    return select(items, opts, handle_choice)
+  end
+
+  return select(items, opts, on_choice)
+end
+
 ---@type vim.lsp.Config
 return {
-  init_options = { hostInfo = "neovim" },
+  init_options = { hostInfo = "neovim", supportsMoveToFileCodeAction = true },
   cmd = { "typescript-language-server", "--stdio" },
   filetypes = {
     "javascript",
